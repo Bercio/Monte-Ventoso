@@ -1,4 +1,5 @@
 import random as rnd
+from itertools import chain
 def find_path(graph, start, end, path):
     path += [start]
     if start == end:
@@ -6,17 +7,26 @@ def find_path(graph, start, end, path):
     if graph[start] == []:
         return None
     for node in graph[start]:
-        if node not in path and len(graph[node]) > 2:
+        if node not in path and (len(graph[node]) > 1 or node == end):
             newpath = find_path(graph, node, end, path)
             if newpath: return newpath
     return None
 
 def generate_graph(num_nodes):
+
+    def maieutica(node):
+        endpoint = 6 if (num_nodes - node) > 6 else num_nodes - node
+        return rnd.sample(range(node+1,node+endpoint), rnd.randint(0,endpoint -1))
+
+    def taigeto(child, node,graph):
+        """due nodi possono solo connettersi allo stesso figlio se sono 
+        adiacenti e non vi sono altri figli 'di mezzo' (i nodi vengono ordinati 
+        in ordine di grandezza)"""
+        return child not in chain.from_iterable(graph.values()) or (graph[node-1] != [] and child == max(graph[node-1]))
+
     graph = {}
     for node in range(0, num_nodes):
-        print('go')
-        graph[node] = [child for child in 
-                rnd.sample(range(node,num_nodes),(rnd.randint(0,6 if num_nodes - node > 6 else num_nodes - node))) if (child not in graph) or (child == graph[node-1].sort()[0])]
+        graph[node] = [child for child in maieutica(node) if taigeto(child,node,graph)]
     return graph
 
 def graph_traversable(graph): return find_path(graph,0,max(graph.keys()),[]) is not None
@@ -26,6 +36,5 @@ def generate_traversable_graph(num_nodes):
         graph = generate_graph(num_nodes) 
         if graph_traversable(graph): return graph
 
-generate_traversable_graph(10)
 
 
