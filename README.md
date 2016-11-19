@@ -11,6 +11,8 @@ all'esplorazione di alberi simulanti una parete.
         - [x] più nodi possono avere lo stesso figlio solo se adiacenti 
           e se non vi sono altri figli in mezzo
         - [ ] rendere direzionali i vertici 
+            - [ ] eliminare la generazione di nodi orfani rendendo l'algoritmo 
+              ricorsivo (**Lo**)
         - [ ] assegnare un vettore bidimensionale ai vertici che rappresenti 
           il vettore distanza tra i nodi
     - [x] verificare che un albero sia traversabile rispettando le costrizioni 
