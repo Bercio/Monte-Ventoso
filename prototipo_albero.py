@@ -12,7 +12,7 @@ def find_path(graph, start, end, path):
             if newpath: return newpath
     return None
 
-def generate_graph(end,graph,start):
+def generate_graph(end,graph,path,start=0):
 
     def maieutica():
         last_node = 0 if start==0 else max(chain.from_iterable(graph.values()))
@@ -24,12 +24,21 @@ def generate_graph(end,graph,start):
         adiacenti e non vi sono altri figli 'di mezzo' (i nodi vengono ordinati 
         in ordine di grandezza)"""
         return graph[start-1] != [] and child == max(graph[start-1])
+    if start in path: 
+        for child in graph[start]:
+            generate_graph(end,graph, path,child)
+        path.pop(0)
+        if path == []: return graph
+    else:
+        graph[start] = [child for child in maieutica()] 
+        path.append(start)
+        if path[0] != start: return None
+    return generate_graph(end,graph,path,path[0])
 
-    graph[start] = [child for child in maieutica()] 
-    if graph[start] == []: return None 
-    for child in graph[start]:
-        generate_graph(end, graph, child)
-    return graph
+
+
+            
+  
 
 def graph_traversable(graph): return find_path(graph,0,max(graph.keys()),[]) is not None
 
@@ -39,4 +48,4 @@ def generate_traversable_graph(num_nodes):
         if graph_traversable(graph): return graph
 
 
-
+print(generate_graph(20,{},[]))
