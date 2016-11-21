@@ -1,4 +1,5 @@
 import random as rnd
+from copy import deepcopy
 from itertools import chain
 def find_path(graph, start, end, path):
     path += [start]
@@ -19,11 +20,11 @@ def generate_graph(end,graph,path,max_children,start=0):
         endpoint = max_children if (end - last_node) > max_children else end - last_node
         return range(last_node+1,rnd.randint(last_node+1,last_node+endpoint+1))
 
-    def taigeto():
+    def taigeto(prob_nephew=0.3):
         """due nodi possono solo connettersi allo stesso figlio se sono 
         adiacenti e non vi sono altri figli 'di mezzo' (i nodi vengono ordinati 
         in ordine di grandezza)"""
-        if start == 0 or start in graph[start-1] or graph[start-1] == [] or rnd.random() > 0.2: return []
+        if start == 0 or start in graph[start-1] or graph[start-1] == [] or rnd.random() > prob_nephew: return []
         return [max(graph[start-1])]
 
     if start in path: 
@@ -38,6 +39,16 @@ def generate_graph(end,graph,path,max_children,start=0):
         if path[0] != start: return None
     return generate_graph(end,graph,path,max_children,path[0])
 
+def mono_to_bidirectional(graph,prob_double=0.9,prob_back=0.2):
+    g = deepcopy(graph)
+    for node in g:
+        for child in g[node]:
+            if (node == 0 or child not in g[node-1]) and rnd.random() < prob_double:
+                if rnd.random() < prob_back/prob_double:
+                    graph[node].remove(child)
+                graph[child].append(node)
+    return graph
+
 
 
             
@@ -51,4 +62,4 @@ def generate_traversable_graph(num_nodes):
         if graph_traversable(graph): return graph
 
 
-print(generate_graph(20,{},[],6))
+print(mono_to_bidirectional(generate_graph(20,{},[],4)))
