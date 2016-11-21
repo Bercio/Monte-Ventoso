@@ -13,7 +13,9 @@ def find_path(graph, start, end, path):
             if newpath: return newpath
     return None
 
-def generate_graph(end,graph,path,max_children,start=0):
+def generate_graph(end,graph,path,max_children=-1,start=0):
+
+    max_children = max_children if max_children > 0 else end/5
 
     def maieutica():
         last_node = 0 if start==0 else max(chain.from_iterable(graph.values()))
@@ -56,10 +58,11 @@ def mono_to_bidirectional(graph,prob_double=0.9,prob_back=0.2):
 
 def graph_traversable(graph): return find_path(graph,0,max(graph.keys()),[]) is not None
 
-def generate_traversable_graph(num_nodes):
+def generate_traversable_graph(num_nodes,bi=False):
     while True:
-        graph = generate_graph(num_nodes,{},0) 
+        graph = generate_graph(num_nodes,{},[]) 
+        if bi: graph = mono_to_bidirectional(graph)
         if graph_traversable(graph): return graph
 
 
-print(mono_to_bidirectional(generate_graph(20,{},[],4)))
+print(mono_to_bidirectional(generate_graph(20,{},[])))
