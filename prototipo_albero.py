@@ -12,11 +12,11 @@ def find_path(graph, start, end, path):
             if newpath: return newpath
     return None
 
-def generate_graph(end,graph,path,start=0):
+def generate_graph(end,graph,path,max_children,start=0):
 
     def maieutica():
         last_node = 0 if start==0 else max(chain.from_iterable(graph.values()))
-        endpoint = 4 if (end - last_node) > 4 else end - last_node
+        endpoint = max_children if (end - last_node) > max_children else end - last_node
         return range(last_node+1,rnd.randint(last_node+1,last_node+endpoint+1))
 
     def taigeto(child):
@@ -26,14 +26,14 @@ def generate_graph(end,graph,path,start=0):
         return graph[start-1] != [] and child == max(graph[start-1])
     if start in path: 
         for child in graph[start]:
-            generate_graph(end,graph, path,child)
+            generate_graph(end,graph, path,max_children,child)
         path.pop(0)
         if path == []: return graph
     else:
         graph[start] = [child for child in maieutica()] 
         path.append(start)
         if path[0] != start: return None
-    return generate_graph(end,graph,path,path[0])
+    return generate_graph(end,graph,path,max_children,path[0])
 
 
 
@@ -48,4 +48,4 @@ def generate_traversable_graph(num_nodes):
         if graph_traversable(graph): return graph
 
 
-print(generate_graph(20,{},[]))
+print(generate_graph(20,{},[],6))
