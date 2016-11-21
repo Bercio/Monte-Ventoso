@@ -19,18 +19,21 @@ def generate_graph(end,graph,path,max_children,start=0):
         endpoint = max_children if (end - last_node) > max_children else end - last_node
         return range(last_node+1,rnd.randint(last_node+1,last_node+endpoint+1))
 
-    def taigeto(child):
+    def taigeto():
         """due nodi possono solo connettersi allo stesso figlio se sono 
         adiacenti e non vi sono altri figli 'di mezzo' (i nodi vengono ordinati 
         in ordine di grandezza)"""
-        return graph[start-1] != [] and child == max(graph[start-1])
+        if start == 0 or start in graph[start-1] or graph[start-1] == [] or rnd.random() > 0.2: return []
+        return [max(graph[start-1])]
+
     if start in path: 
         for child in graph[start]:
             generate_graph(end,graph, path,max_children,child)
+        graph[start] += taigeto()
         path.pop(0)
         if path == []: return graph
     else:
-        graph[start] = [child for child in maieutica()] 
+        graph[start] = [child for child in maieutica()]
         path.append(start)
         if path[0] != start: return None
     return generate_graph(end,graph,path,max_children,path[0])
