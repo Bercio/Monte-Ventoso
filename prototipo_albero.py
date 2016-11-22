@@ -51,7 +51,22 @@ def mono_to_bidirectional(graph,prob_double=0.9,prob_back=0.2):
                 graph[child].append(node)
     return graph
 
+def print_graph(graph):
+    max_children = max(graph,key=lambda node: len(graph[node]))
+    end = max(graph.values())
 
+    def space_needed(node):
+        nodes_left = end - node
+        levels = floor(math.log(1+nodes_left(max_children-1),max_children)-1) #serie geometrica \sum^n(c^i) = 1-x^{n+1}/1-x
+        rest = nodes_left - (1-max_children**(levels+1))/(1-max_children)
+        return max_children**(levels) if rest < max_children**levels else rest
+
+    def print_node(node): return '{0}{1}{0}'.format(' '*space_needed(node)//2,node if node!=in_node else '\033[91m'+str(node)+'\033[0m')
+    def print_children(node): 
+        children = graph[node]
+        s = [print_node(child) for child in children] + ['\n'] + ['{0}|{0}'.format('_'*space_needed(child)//2) for child in children] +
+            ['\n'] + ['{0}|{0}'.format(' '*space_needed/max_children) for child in children]
+        return "".join(s)
 
             
   
