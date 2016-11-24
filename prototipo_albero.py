@@ -71,5 +71,5 @@ def demo(num_nodes):
     G.layout('dot')
     find_path(g, 0, num_nodes, [],demo=True,visual=G)
         
-#while True:
-    #demo(20)
+while True:
+    demo(20)

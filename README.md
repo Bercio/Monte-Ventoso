@@ -12,10 +12,12 @@ all'esplorazione di alberi simulanti una parete.
           e se non vi sono altri figli in mezzo
         - [x] rendere direzionali i vertici 
             - [x] eliminare la generazione di nodi orfani rendendo l'algoritmo 
-              ricorsivo (**Lo**)
+              ricorsivo 
         - [x] rappresentare grafici su stdout
-        - [ ] assegnare un vettore bidimensionale ai vertici che rappresenti 
-          il vettore distanza tra i nodi
+        - [ ] assegnare un vettore bidimensionale ai vertici che rappresenti il 
+          vettore distanza tra i nodi (**Lo**)
+            - [ ] rappresentare le distanze reali nella rappresentazione 
+              grafica
     - [x] verificare che un albero sia traversabile rispettando le costrizioni 
       della simulazione
         - [x] nodo viabile solo se connesso ad almeno due nodi
