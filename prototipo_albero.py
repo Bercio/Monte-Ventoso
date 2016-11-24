@@ -52,19 +52,19 @@ def mono_to_bidirectional(graph,prob_double=0.9,prob_back=0.2):
     g = deepcopy(graph)
     for node in g:
         for child in g[node]:
-            if (node == 0 or child not in g[node-1]) and rnd.random() < prob_double:
+            if rnd.random() < prob_double:
                 if rnd.random() < prob_back/prob_double:
                     graph[node].remove(child)
                 graph[child].append(node)
     return graph
 
-def graph_traversable(graph): return find_path(graph,0,max(graph.keys()),[]) is not None
+def graph_traversable(graph, end): return find_path(graph,0,end,[]) is not None
 
 def generate_traversable_graph(num_nodes,bi=False):
     while True:
         graph = generate_graph(num_nodes,{},[]) 
         if bi: graph = mono_to_bidirectional(graph)
-        if graph_traversable(graph): return graph
+        if graph_traversable(graph,num_nodes): return graph
 def demo(num_nodes):
     g = generate_traversable_graph(num_nodes,True)
     G = pgv.AGraph(g,directed=True)
