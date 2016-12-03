@@ -10,6 +10,7 @@ def find_path(graph, start, end, path,demo=False,visual=None):
         visual.draw('demo.png')
         visual.get_node(start).attr['color'] = 'blue'
         time.sleep(3)
+        time.
     if start == end:
         return path
     if graph[start] == []:
