@@ -1,9 +1,7 @@
 //SIMULARE L'EVOLUZIONE 
-
-//far andare le scimmie nel grafo
-
-#include<genetico.cpp>
+#include"prova.h"
 #include <random>
+#include "Snap.h"
 
 using namespace std;
 
@@ -13,45 +11,49 @@ const float p_cross=0.90;
 const float p_muta=0.05;
 const float p_clona=0.05;
 
-const int n_gen;//numero generazioni
-const int n_ind; //numero individui per generazione
-const int brave=n_gen/10;
 
-Scimmia generazione[n_ind];
-
-void prima_gen()
+void prima_gen(Scimmia generazione[], int dim)
 {
-	for(int i=0; i<n_ind; i++) generazione[i]=Scimmia();
+	for(int i=0; i<dim; i++) generazione[i]=Scimmia();
 }
 
-void prolificazione ()
-{//riordino gli elementi dell'array generazione in base al punteggio nel fit
-	int min;
-	Scimmia new_gen[n_ind];
-	uniform_real_distribution<> dis(0,1)
-	uniform_int_distribution<int> best(0, brave)
+void prolificazione (Scimmia generazione[], int dim)
+{
 
-	for(i=0; i<n_ind; i++)
-	{
+	//riordino gli elementi dell'array generazione in base al punteggio nel fit
+	
+	Scimmia new_gen[dim];
+	uniform_real_distribution<> dis(0,1);
+	
+	int min;
+	for(int i=0; i<dim; i++)
+	{ 
 		min = i;
 
-		for(j=i+1; j<n_ind; j++)
-		  if(generazione[j].fit_distanza < generazione[min].fit_distanza)
-		    min = j;
-
+		for(int j=i+1; j<dim; j++)
+		  if(generazione[j].fit< generazione[min].fit) min = j;
+		Scimmia temp;
 		temp=generazione[min];
 		generazione[min]=generazione[i];
 		generazione[i]=temp;
 	}
+	//creo l'array dei parametri di fit ordinati
+	
+	vector<int> pesi;
+	for (int i = 0; i < dim; ++i) pesi.push_back(generazione[i].fit);
+	
+
+	discrete_distribution<> best(pesi.begin(), pesi.end());
+
 //inizializzo new_gen con Scimmie selezionate con cross-over, mutazione e clonazione
-	for (int i=0; i<n_ind; i++)
+	for (int i=0; i<dim; i++)
 	{
 		if(dis(casuale)<p_cross){new_gen[i]= Scimmia(generazione[best(casuale)], generazione[best(casuale)]);}
-		if(dis(casuale)>p_cross && dis(casuale)<p_cross+p_clona){new_gen[i] = generazione[best(casuale)];}
+		if(dis(casuale)>p_cross && dis(casuale)<p_cross+p_clona){new_gen[i] = Scimmia(generazione[best(casuale)].dna);}
 		if(dis(casuale)>p_cross+p_clona){new_gen[i]=generazione[best(casuale)]; new_gen[i].muta();}
 	}
 //inizializzo generazione[]	
-	for (int i=0; i<n_ind; i++)
+	for (int i=0; i<dim; i++)
 	{
 		generazione[i]=new_gen[i];
 	}
@@ -59,17 +61,30 @@ void prolificazione ()
 
 int main (int argc,char*argv[])
 {
-n_gen=argv[0]; 
-n_ind=argv[1]; 
+int n_gen=atoi(argv[1]); 
+int n_ind=atoi(argv[2]);
+int n_passi=50;
 
-prima_gen();
+Scimmia generazione[n_ind];
+prima_gen(generazione, n_ind);
 
 PNGraph NGraph;
-    const int Fanout=4; //max figli
+   	const int Fanout=4; //max figli
     const int Levels=5;
     NGraph = GenTree<PNGraph>(Fanout, Levels, true, true);
+TNGraph::TNodeI Gianni;
 
-for int(i=0; i<n_gen; ++i)
-{prolificazione();}
+for (int i=0; i<n_gen; ++i)
+{
+	generazione[i].fit=0;
+	
+	Gianni=NGraph->BegNI();
+	for (int j=0; j<n_passi; ++j) Gianni=NGraph->GetNI(move(generazione[i], Gianni));
+	//la scimmia fa 50 passi, Gianni è il nodo a cui arriva
 
+	generazione[i].fit+=generazione[i].fit_distanza(Gianni.GetId(), NGraph);
+	//ho calcolato la bravura delle scimmie ora posso farli prolificare
+	prolificazione(generazione, n_ind);
+}
+for(int i=0; i<n_ind; ++i) cout<<" "<<generazione[i].fit;
 }
