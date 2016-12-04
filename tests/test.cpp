@@ -1,5 +1,6 @@
 #include <string>
 #include <gtest/gtest.h>
+#include <iostream>
 #include "../genetico.h"
 
 using namespace std;
@@ -18,6 +19,7 @@ public:
     do {
         N = NGraph->GetRndNI();
     } while (N.GetOutDeg() != 5);
+
     }
 };
 
@@ -98,13 +100,18 @@ TEST_F(GraphTest, scimegraf){
 TEST_F(GraphTest, fit_func){
     Scimmia s;
     s.set_memoria(0);
+    TNGraph::TNodeI end =NGraph->EndNI();
+    end--;
+    cout << end.GetId();
+
     for(int i = 0; i < 20; ++i) {
         int cnode = NGraph->GetRndNId();
-        TNGraph::TNodeI end =NGraph->EndNI();
-        end--;
         s.set_fit(cnode, NGraph);
         if ( end.GetId()-4 < cnode) EXPECT_EQ(s.get_fit(),1);
         else EXPECT_LE(s.get_fit(),1);
-
     }
+    s.set_fit(end.GetId(),NGraph);
+    int endfit = s.get_fit();
+    s.set_fit(20,NGraph);
+    EXPECT_NE(endfit,s.get_fit()) << end.GetId();
 }
