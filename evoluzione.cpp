@@ -1,3 +1,4 @@
+//SIMULARE L'EVOLUZIONE 
 #include"genetico.cpp"
 #include <random>
 #include "Snap.h"
@@ -59,15 +60,19 @@ int main (int argc,char*argv[])
 		{	
 			Gianni=NGraph->BegNI();
 			for (int j=0; j<n_passi; ++j) 
-			{	//faccio muovere la scimmia, se arriva in cima smette di muoversi
+			{	//faccio muovere la scimmia
 				
 				generazione[i].set_stato(Gianni); 
 				Gianni=NGraph->GetNI(generazione[i].move(Gianni));
-				if(Gianni.GetId()!=NGraph->GetMxNId())
-				{
+				//se arriva in cima smette di muoversi
+				if(Gianni.GetId()!=NGraph->GetMxNId()-1)
+				{ 	
+					vector<int> m =generazione[i].get_memoria();									
 					generazione[i].set_memoria(Gianni.GetId());
 					generazione[i].set_nodi_visitati(Gianni.GetId());
-				} else break;
+					if(j>3 && *(m.end()-2)==*(m.end()-1)) generazione[i].set_loop(true);
+				} 
+				else break;
 			}
 			//setfit
 			generazione[i].set_fit_locale(Gianni.GetId(), NGraph);
@@ -83,7 +88,8 @@ int main (int argc,char*argv[])
 			vector<int> n=generazione[i].get_nodi_visitati();
 			cout<<endl<<"nodi visitati:  ";
 			for (int k=0; k<n.size(); k++){cout<<n[k]<<" ";}
-			cout<<endl<<endl;
+			cout<<endl;
+			if (generazione[i].get_loop()==true) cout<<"loop = true"<<endl<<endl; else cout<<"loop = false"<<endl<<endl;
 		}
 		riproduzione(generazione, n_ind);
 	}

@@ -20,9 +20,10 @@ class Scimmia
 	double fit_locale;
     std::vector<int> memoria;
 	std::vector<int> nodi_visitati;
-	
+	bool loop;
 public:
-
+	void set_loop(bool l);
+	bool get_loop();
     std::vector<int> get_dna();
     void set_dna(const std::vector<int> &dna);
     int scegli_azione();

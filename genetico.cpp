@@ -63,12 +63,12 @@ void Scimmia::set_stato(TNGraph::TNodeI node){
     stato = fn + pn*2 + fi*4 + pi*8;
 }
 
-Scimmia::Scimmia(): dna(N), fit(0), nodi_visitati(1){
+Scimmia::Scimmia(): dna(N), fit(0), nodi_visitati(1), loop(false){
     uniform_int_distribution<int> actions(0,3);
     generate(dna.begin(),dna.end(),[&](){return actions(gen);});
     }
 
-Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), nodi_visitati(1) {
+Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), nodi_visitati(1), loop(false) {
     vector<int> _dna(N);
     uniform_int_distribution<int> range(1,14);
     int rnd = range(gen);
@@ -88,24 +88,30 @@ void Scimmia::muta(){
     set_dna(_dna);
     }
 
-Scimmia::Scimmia(Scimmia& s): fit(0), nodi_visitati(1) {
+Scimmia::Scimmia(Scimmia& s): fit(0), nodi_visitati(1), loop(false) {
     set_dna(s.get_dna());
 }
 
 double Scimmia::get_fit(){ return fit;}
 
-Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), nodi_visitati(1) {;
+Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), nodi_visitati(1), loop(false) {;
     }
 
 void Scimmia::set_fit_locale(int pos, PNGraph g){
     TNGraph::TNodeI end  = g->EndNI();
     end--;
     int endi = end.GetId();
+	
 
-	double i=nodi_visitati.size()-1;
-	double j=memoria.size();
-	fit_locale = i/j;
-    }
+	if(loop==false){	
+		fit_locale=((double)nodi_visitati.size()-1)/(double)memoria.size();
+	 	for (int k=0; k<nodi_visitati.size(); k++) fit_locale+=(double)nodi_visitati[k]/(double)memoria.size();
+	}
+	else {
+		fit_locale=(((double)nodi_visitati.size()-1))/(double)memoria.size(); 
+		for (int k=0; k<nodi_visitati.size(); k++) fit_locale+=0.01*(double)nodi_visitati[k]/(double)memoria.size();
+	}
+}
 
 double Scimmia::get_fit_locale(){return fit_locale;}
 
@@ -130,6 +136,9 @@ for (int i=0; i<nodi_visitati.size(); i++){if(node!=nodi_visitati[i]) continue; 
 if(presente==false) nodi_visitati.push_back(node);
 }
 
+void Scimmia::set_loop(bool l){loop=l;}
+
+bool Scimmia::get_loop(){return loop;}
 
 
 
