@@ -7,9 +7,9 @@ using namespace std;
 random_device caso;
 default_random_engine casuale(caso());
 
-const float p_cross=0.90;
+const float p_cross=0.80;
 const float p_muta=0.05;
-const float p_clona=0.05;
+const float p_clona=0.15;
 
 
 void riproduzione (Scimmia generazione[], int dim)
