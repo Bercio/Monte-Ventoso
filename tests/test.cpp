@@ -1,7 +1,7 @@
 #include <string>
 #include <gtest/gtest.h>
 #include <iostream>
-#include "../genetico.h"
+#include "../scimmia.h"
 
 using namespace std;
 using namespace TSnap;

@@ -18,22 +18,30 @@ struct Point : public TIntPr {
     Point(int _Val1, int _Val2);
     Point operator-(const Point& p);
 };
-class Parete : public TNodeEDatNet<Point,Point> {
+class Parete {
+    TPt<TNodeEDatNet<Point,Point>> p;
     int d_nodi;
     double prob_appiglio;
     double prob_appoggio;
     int end;
     int start;
     int min_depth;
-    TPt<Parete> PParete;
     void norm_coord();
     bool is_viable();
     void set_start();
     void set_end();
-
 public:
+    int get_endID();
+    int get_startID();
+    int get_min_depth();
+    TPt<TNodeEDatNet<Point,Point>> get_p();
+    int get_d();
+    double get_prob_appiglio();
+    double get_prob_appoggio();
+    Parete();
+    Parete(Parete &pr);
     Parete(std::vector<Point> ret, int d, double p_ap, double p_appi, int min_depth);
-    Parete(int N, int x, int y, int d, double p_ap, double p_appi, int min_depth);
+    friend Parete get_random_p(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
     void write_schema(TStr filename);
 };
 #endif //SISTEMI_COMPLESSI_GRAPH_H
