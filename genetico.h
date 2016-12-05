@@ -1,3 +1,4 @@
+
 #ifndef SCIMMIA
 #define SCIMMIA
 #include <iostream>
@@ -16,8 +17,12 @@ class Scimmia
     std::vector<int> dna;
     int stato;
     double fit;
+	double fit_locale;
     std::vector<int> memoria;
+	std::vector<int> nodi_visitati;
+	
 public:
+
     std::vector<int> get_dna();
     void set_dna(const std::vector<int> &dna);
     int scegli_azione();
@@ -26,8 +31,12 @@ public:
     void set_stato(TNGraph::TNodeI node);
     int get_stato();
     double get_fit();
-    void set_fit(int pos, PNGraph g);
-    Scimmia();
+   	void set_fit(double f); 
+	void set_fit_locale(int pos, PNGraph g);
+	double get_fit_locale();
+	std::vector<int> get_nodi_visitati();
+	void set_nodi_visitati(int node);
+	Scimmia();
     Scimmia(Scimmia& m, Scimmia& p);
     void muta(); 
     Scimmia(Scimmia& s);
