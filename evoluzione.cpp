@@ -66,11 +66,11 @@ int main (int argc,char*argv[])
 				Gianni=NGraph->GetNI(generazione[i].move(Gianni));
 				//se arriva in cima smette di muoversi
 				if(Gianni.GetId()!=NGraph->GetMxNId()-1)
-				{ 	
+				{ 
 					vector<int> m =generazione[i].get_memoria();									
 					generazione[i].set_memoria(Gianni.GetId());
 					generazione[i].set_nodi_visitati(Gianni.GetId());
-					if(j>3 && *(m.end()-2)==*(m.end()-1)) generazione[i].set_loop(true);
+					if(j>3 && *(m.end()-2)==*(m.end()-1)||j>6 && *(m.end()-2)==*(m.end()-4) && *(m.end()-1)==*(m.end()-3)) generazione[i].set_loop(true);
 				} 
 				else break;
 			}
