@@ -5,7 +5,7 @@
 #include <random>
 #include <algorithm>
 #include <Snap.h>
-#include "genetico.h"
+#include "scimmia.h"
 using namespace std;
 using namespace TSnap;
 
