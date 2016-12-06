@@ -31,7 +31,7 @@ void Parete::set_end() {
         TIntV nodi(p->GetNodes());
         p->GetNIdV(nodi);
         end = *max_element(nodi.BegI(), nodi.EndI(),
-               [&](auto &n, auto &m) { return p->GetNDat(m).Val2 > p->GetNDat(n).Val2; });
+               [&](auto &m, auto &n) { return p->GetNDat(m).Val2 < p->GetNDat(n).Val2; });
     }
 
 void Parete::set_start(){
@@ -39,7 +39,7 @@ void Parete::set_start(){
     TIntV nodi(g->GetNodes());
     g->GetNIdV(nodi);
     start = *min_element(nodi.BegI(), nodi.EndI(), [&](auto& n, auto& m){
-        return p->GetNDat(m).Val2 > p->GetNDat(n).Val2; });
+        return p->GetNDat(n).Val2 < p->GetNDat(m).Val2; });
 }
 
 bool Parete::is_viable(){
@@ -50,8 +50,8 @@ bool Parete::is_viable(){
 void Parete::norm_coord(){
     TIntV nodi(p->GetNodes());
     p->GetNIdV(nodi);
-    int shortest = *min_element(nodi.BegI(), nodi.EndI(), [&](auto& n, auto& m){return p->GetNDat(m).Val2 > p->GetNDat(n).Val2; });
-    int leftist = *min_element(nodi.BegI(), nodi.EndI(), [&](auto& n, auto& m){return p->GetNDat(m).Val1 > p->GetNDat(n).Val1; });
+    int shortest = *min_element(nodi.BegI(), nodi.EndI(), [&](auto& n, auto& m){return p->GetNDat(n).Val2 < p->GetNDat(m).Val2; });
+    int leftist = *min_element(nodi.BegI(), nodi.EndI(), [&](auto& n, auto& m){return p->GetNDat(n).Val1 < p->GetNDat(m).Val1; });
     int min_y = p->GetNDat(shortest).Val2;
     int min_x = p->GetNDat(leftist).Val1;
     for_each(nodi.BegI(),nodi.EndI(),[&](auto& e){
