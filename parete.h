@@ -11,6 +11,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <SFML/Graphics.hpp>
 #include <stdlib.h>
 struct Point : public TIntPr {
     Point();
@@ -27,6 +28,7 @@ class Parete {
     double prob_appoggio;
     int end;
     int start;
+    double corr;
     int min_depth;
     void norm_coord();
     bool is_viable();
@@ -40,6 +42,8 @@ public:
     int get_d()const ;
     double get_prob_appiglio() const;
     double get_prob_appoggio() const;
+    void draw(int n, sf::RenderWindow& window);
+    void set_window( sf::RenderWindow& window);
     Parete();
     Parete(const Parete &pr);
     bool operator==(const Parete& pr) const;

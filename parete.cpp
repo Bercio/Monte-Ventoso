@@ -2,6 +2,8 @@
 #include <exception>
 #include "ctime"
 #include <utility>
+#include <iostream>
+
 using namespace TSnap;
 using namespace std;
 
@@ -17,7 +19,8 @@ bool Point::operator==(const Point& p) const {return p.Val1 == Val1 && p.Val2 ==
 Point::Point(const Point &p){Val1 = p.Val1; Val2 = p.Val2;}
 
 vector<Point> gen_p_distr(int N,int x, int y){
-    default_random_engine gen;
+    random_device rd;
+    default_random_engine gen(rd());
     vector<Point> res;
     uniform_int_distribution<> xgen(0,x);
     uniform_int_distribution<> ygen(0,y);
@@ -62,7 +65,8 @@ void Parete::norm_coord(){
 Parete::Parete(vector<Point> points, int d, double p_appi, double p_appo, int m_depth) :
         d_nodi(d), prob_appiglio(p_appi), prob_appoggio(p_appo), min_depth(m_depth){
     uniform_real_distribution<> probs(0,1);
-    default_random_engine gen;
+    random_device rd;
+    default_random_engine gen(rd());
     p = PNet::New();
     for(int i = 0; i < points.size(); ++i){
         if ( ! p->IsNode(i) ) p->AddNode(i,points[i]);
@@ -99,7 +103,52 @@ Parete::Parete(const Parete &pr) {
     prob_appoggio = pr.get_prob_appoggio();
 }
 Parete::Parete() = default;
+void Parete::set_window(sf::RenderWindow& window){
+    TIntV v;
+    p->GetNIdV(v);
+    int nmaxx = p->GetNDat(*max_element(v.BegI(), v.EndI(), [&](TInt& n, TInt& m){ return p->GetNDat(n).Val1 < p->GetNDat(m).Val1;})).Val1;
+    int nmaxy = p->GetNDat(get_endID()).Val2;
+    corr = 50.0/d_nodi;
+    int pix_h = ceil(corr * nmaxy) + 40;
+    int pix_w = ceil(corr * nmaxx) + 40;
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+    if (pix_w > desktop.width) {
+        pix_w = desktop.width;
+        corr = (desktop.width - 20)/((double)nmaxx);
+    }
+    if (pix_h > desktop.height) {
+        pix_h = desktop.height;
+        corr = (desktop.height -100)/((double)nmaxy);
+    }
 
+    sf::ContextSettings settings = window.getSettings();
+    settings.antialiasingLevel = 8;
+    window.create(sf::VideoMode(pix_w, pix_h), "Parete", sf::Style::Default, settings);
+    sf::View viw = window.getView();
+    viw.rotate(180);
+    viw.setCenter(nmaxx*corr/2.0, nmaxy*corr/2.0);
+    window.setView(viw);
+}
+void Parete::draw(int n, sf::RenderWindow& window){
+    vector<sf::CircleShape> app;
+    sf::CircleShape shape(4.f);
+    for(auto i = p->BegNI(); i < p->EndNI(); i++) {
+        bool appog=false, appigl=false;
+        for(int j = 0; j < i.GetInDeg(); ++j){
+            if(i.GetInEDat(j).Val2 > 0) appog = true;
+            else appigl = true;
+        }
+        if (appog == appigl) shape.setPointCount(6);
+        else shape.setPointCount(3);
+        if (appog) shape.rotate(180);
+        shape.setPosition((i.GetDat().Val1*corr), (i.GetDat().Val2*corr));
+        if (i.GetId() == end) shape.setFillColor(sf::Color::Green);
+        else if (i.GetId() == n) shape.setFillColor(sf::Color::Red);
+        else shape.setFillColor(sf::Color::Black);
+        window.draw(shape);
+    }
+
+}
 int Parete::get_d()const { return d_nodi;}
 int Parete::get_startID()const { return start;}
 int Parete::get_endID()const { return end;}
