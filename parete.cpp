@@ -1,4 +1,6 @@
 #include "parete.h"
+#include <exception>
+#include "ctime"
 #include <utility>
 using namespace TSnap;
 using namespace std;
@@ -11,6 +13,8 @@ double Point::dist(Point p){
 }
 Point::Point(int _Val1, int _Val2) : TIntPr(_Val1, _Val2) {;}
 Point Point::operator-(const Point& p){return Point(p.Val1 - Val1, p.Val2 - Val2);}
+bool Point::operator==(const Point& p) const {return p.Val1 == Val1 && p.Val2 == Val2;}
+Point::Point(const Point &p){Val1 = p.Val1; Val2 = p.Val2;}
 
 vector<Point> gen_p_distr(int N,int x, int y){
     default_random_engine gen;
@@ -40,7 +44,7 @@ void Parete::set_start(){
 
 bool Parete::is_viable(){
     int depth, size;
-    GetSubTreeSz(p,end,false,true,size,depth);
+    GetSubTreeSz(this->get_p(),end,false,true,size,depth);
     return depth > min_depth;
 }
 void Parete::norm_coord(){
@@ -76,6 +80,7 @@ Parete::Parete(vector<Point> points, int d, double p_appi, double p_appo, int m_
         }
     }
     set_end();
+    set_start();
 }
 void Parete::write_schema(TStr filename){
     TIntStrH Nomi;
@@ -84,7 +89,7 @@ void Parete::write_schema(TStr filename){
     }
     DrawGViz(p, gvlDot,filename," ",Nomi);
 }
-Parete::Parete(Parete &pr) {
+Parete::Parete(const Parete &pr) {
     p = pr.get_p();
     d_nodi = pr.get_d();
     end = pr.get_endID();
@@ -95,20 +100,26 @@ Parete::Parete(Parete &pr) {
 }
 Parete::Parete() = default;
 
-int Parete::get_d(){ return d_nodi;}
-int Parete::get_startID(){ return start;}
-int Parete::get_endID(){ return end;}
-int Parete::get_min_depth(){ return min_depth;}
-double Parete::get_prob_appiglio(){ return prob_appiglio;}
-double Parete::get_prob_appoggio(){ return prob_appoggio;}
-PNet Parete::get_p(){return p;}
-
+int Parete::get_d()const { return d_nodi;}
+int Parete::get_startID()const { return start;}
+int Parete::get_endID()const { return end;}
+int Parete::get_min_depth()const { return min_depth;}
+double Parete::get_prob_appiglio()const { return prob_appiglio;}
+double Parete::get_prob_appoggio()const { return prob_appoggio;}
+PNet Parete::get_p()const {return p;}
+bool Parete::operator ==(const Parete& pr) const {return end == pr.end && start == pr.start;}
 Parete get_random_p(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth) {
     vector<Point> ret = gen_p_distr(N,x,y);
     Parete wall;
+    double time = clock();
     do {
         wall = Parete(ret,d, prob_appo,prob_appi,min_depth);
-        wall.p = GetMxWcc(wall.p);
+        wall.p = GetMxWcc(wall.get_p());
+        wall.set_end();
+        if((clock()-time)/CLOCKS_PER_SEC > 20) {
+            throw invalid_argument("too few numbers or too small a "
+                    "distance for min_depth specified.");
+        }
     } while (!wall.is_viable());
     wall.set_end();
     wall.set_start();
