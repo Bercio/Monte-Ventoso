@@ -11,6 +11,15 @@ const float p_cross=0.80;
 const float p_muta=0.05;
 const float p_clona=0.15;
 
+PNGraph GeneraAlbero(int n_figli, int livelli)
+{
+	PNGraph NGraph;
+	
+	NGraph = GenTree<PNGraph>(n_figli, livelli, false);
+	return NGraph;
+}
+
+
 
 void riproduzione (Scimmia generazione[], int dim)
 {	
@@ -48,10 +57,9 @@ int main (int argc,char*argv[])
 	Scimmia generazione[n_ind];
 
 	//creo l'albero
-	PNGraph NGraph;
-	   	const int Fanout=2; //max figli
-		const int Levels=5;
-		NGraph = GenTree<PNGraph>(Fanout, Levels, false, true);
+
+	PNGraph NGraph=GeneraAlbero(3, 5);
+
 	TNGraph::TNodeI Gianni;
 
 	for (int n=0; n<n_gen;++n)
@@ -93,5 +101,5 @@ int main (int argc,char*argv[])
 		}
 		riproduzione(generazione, n_ind);
 	}
-cout<<NGraph->GetMxNId();
+cout<<"nodo in cima: "<<NGraph->GetMxNId()-1<<endl;
 }
