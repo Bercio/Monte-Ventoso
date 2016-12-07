@@ -35,8 +35,8 @@ void riproduzione (Scimmia generazione[], int dim)
 	for (int i=0; i<dim; i++)
 	{
 		if(dis(casuale)<p_cross){new_gen[i]= Scimmia(generazione[best(casuale)], generazione[best(casuale)]);}
-		if(dis(casuale)>p_cross && dis(casuale)<p_cross+p_clona){new_gen[i] = Scimmia(generazione[best(casuale)], generazione[best(casuale)]);}
-		if(dis(casuale)>p_cross+p_clona){new_gen[i]=generazione[best(casuale)]; new_gen[i].muta();}
+		if(dis(casuale)>p_cross && dis(casuale)<p_cross+p_clona){new_gen[i] = Scimmia(generazione[best(casuale)]);}
+		if(dis(casuale)>p_cross+p_clona){new_gen[i]= Scimmia(generazione[best(casuale)]); new_gen[i].muta();}
 	}
 //inizializzo generazione[]	
 	for (int i=0; i<dim; i++)

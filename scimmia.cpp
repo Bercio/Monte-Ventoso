@@ -105,11 +105,11 @@ void Scimmia::set_fit_locale(int pos, PNGraph g, bool l){
 	double normalizzazione;
 	for (int i=0; i<g->GetMxNId()-1; i++) normalizzazione+=i;
 	if(l==false){	
-		fit_locale=((double)nodi_visitati.size()-1)/(double)memoria.size();
+		fit_locale=((double)nodi_visitati.size()-1)/pow((double)memoria.size(),2);
 	 	for (int k=0; k<nodi_visitati.size(); k++) fit_locale+=(double)nodi_visitati[k]/(normalizzazione*(double)pow(memoria.size(), 2));
 	}
 	else {
-		fit_locale=(0.01*((double)nodi_visitati.size()-1))/(double)memoria.size(); 
+		fit_locale=(0.01*((double)nodi_visitati.size()-1))/pow((double)memoria.size(), 2); 
 		for (int k=0; k<nodi_visitati.size(); k++) fit_locale+=0.01*(double)nodi_visitati[k]/(normalizzazione*(double)pow(memoria.size(), 2));
 	}cout<<endl<<"bool l: "<<l<<endl;
 }
