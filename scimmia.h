@@ -17,8 +17,13 @@ class Scimmia
     std::vector<int> dna;
     int stato;
     double fit;
+	double fit_locale;
     std::vector<int> memoria;
+	std::vector<int> nodi_visitati;
+	bool loop;
 public:
+	void set_loop(bool l);
+	bool get_loop();
     std::vector<int> get_dna();
     void set_dna(const std::vector<int> &dna);
     int scegli_azione();
@@ -30,6 +35,12 @@ public:
     double fit_func(TNodeEDatNet<Point,Point>::TNodeI ,const Parete& g);
     void set_fit(double f);
     Scimmia();
+   	void set_fit(double f);
+	void set_fit_locale(int pos, PNGraph g, bool l);
+	double get_fit_locale();
+	std::vector<int> get_nodi_visitati();
+	void set_nodi_visitati(int node);
+	Scimmia();
     Scimmia(Scimmia& m, Scimmia& p);
     void muta(); 
     Scimmia(Scimmia& s);
