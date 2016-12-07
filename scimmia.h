@@ -7,6 +7,7 @@
 #include <vector>
 #include <random>
 #include <algorithm>
+#include "parete.h"
 #include <Snap.h>
 
 void fill_figli_e_padri(TNGraph::TNodeI node, std::vector<int>::iterator fp, std::vector<int>::iterator fl,
@@ -23,15 +24,16 @@ public:
     int scegli_azione();
     void set_memoria(int node);
     std::vector<int> get_memoria();
-    void set_stato(TNGraph::TNodeI node);
+    void set_stato(TNodeEDatNet<Point,Point>::TNodeI node);
     int get_stato();
     double get_fit();
-    void set_fit(int pos, PNGraph g);
+    double fit_func(TNodeEDatNet<Point,Point>::TNodeI ,const Parete& g);
+    void set_fit(double f);
     Scimmia();
     Scimmia(Scimmia& m, Scimmia& p);
     void muta(); 
     Scimmia(Scimmia& s);
     Scimmia(std::vector<int>& _dna);
-    int move(TNGraph::TNodeI pos);
+    int move(TNodeEDatNet<Point,Point>::TNodeI pos);
 };
 #endif

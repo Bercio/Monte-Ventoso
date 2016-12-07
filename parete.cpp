@@ -126,7 +126,7 @@ void Parete::set_window(sf::RenderWindow& window){
     window.create(sf::VideoMode(pix_w, pix_h), "Parete", sf::Style::Default, settings);
     sf::View viw = window.getView();
     viw.rotate(180);
-    viw.setCenter(nmaxx*corr/2.0, nmaxy*corr/2.0);
+    viw.setCenter(ceil(nmaxx*corr/2.0), ceil(nmaxy*corr/2.0));
     window.setView(viw);
 }
 void Parete::draw(int n, sf::RenderWindow& window){
