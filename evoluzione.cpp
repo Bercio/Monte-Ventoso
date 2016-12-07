@@ -1,5 +1,5 @@
 //SIMULARE L'EVOLUZIONE 
-#include"genetico.cpp"
+#include"scimmia.cpp"
 #include <random>
 #include "Snap.h"
 
@@ -18,7 +18,6 @@ PNGraph GeneraAlbero(int n_figli, int livelli)
 	NGraph = GenTree<PNGraph>(n_figli, livelli, false);
 	return NGraph;
 }
-
 
 
 void riproduzione (Scimmia generazione[], int dim)
@@ -48,7 +47,6 @@ void riproduzione (Scimmia generazione[], int dim)
 
 int main (int argc,char*argv[])
 {
-
 	
 	int n_ind=atoi(argv[1]);
 	int n_gen=atoi(argv[2]); 
@@ -58,7 +56,7 @@ int main (int argc,char*argv[])
 
 	//creo l'albero
 
-	PNGraph NGraph=GeneraAlbero(3, 5);
+	PNGraph NGraph=GeneraAlbero(3, 4);
 
 	TNGraph::TNodeI Gianni;
 
@@ -83,7 +81,8 @@ int main (int argc,char*argv[])
 				else break;
 			}
 			//setfit
-			generazione[i].set_fit_locale(Gianni.GetId(), NGraph);
+			bool l=generazione[i].get_loop();
+			generazione[i].set_fit_locale(Gianni.GetId(), NGraph, l);
 			double f=generazione[i].get_fit_locale();
 			generazione[i].set_fit(f);
 			
@@ -97,7 +96,8 @@ int main (int argc,char*argv[])
 			cout<<endl<<"nodi visitati:  ";
 			for (int k=0; k<n.size(); k++){cout<<n[k]<<" ";}
 			cout<<endl;
-			if (generazione[i].get_loop()==true) cout<<"loop = true"<<endl<<endl; else cout<<"loop = false"<<endl<<endl;
+			if (generazione[i].get_loop()==true) cout<<"loop = true"<<endl<<endl; else cout<<"loop = false"<<endl;
+			cout<<m.size()<<endl<<endl;
 		}
 		riproduzione(generazione, n_ind);
 	}

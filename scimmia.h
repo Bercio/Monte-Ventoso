@@ -33,7 +33,7 @@ public:
     int get_stato();
     double get_fit();
    	void set_fit(double f); 
-	void set_fit_locale(int pos, PNGraph g);
+	void set_fit_locale(int pos, PNGraph g, bool l);
 	double get_fit_locale();
 	std::vector<int> get_nodi_visitati();
 	void set_nodi_visitati(int node);

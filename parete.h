@@ -47,5 +47,5 @@ public:
     friend Parete get_random_p(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
     void write_schema(TStr filename);
 };
-Parete get_random_p(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
+Parete get_random_p(int N, int x, int y, int dm, double prob_appo, double prob_appi,int min_depth);
 #endif //SISTEMI_COMPLESSI_GRAPH_H

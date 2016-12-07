@@ -97,21 +97,21 @@ double Scimmia::get_fit(){ return fit;}
 Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), nodi_visitati(1), loop(false) {;
     }
 
-void Scimmia::set_fit_locale(int pos, PNGraph g){
+void Scimmia::set_fit_locale(int pos, PNGraph g, bool l){
     TNGraph::TNodeI end  = g->EndNI();
     end--;
     int endi = end.GetId();
 	
 	double normalizzazione;
 	for (int i=0; i<g->GetMxNId()-1; i++) normalizzazione+=i;
-	if(loop==false){	
+	if(l==false){	
 		fit_locale=((double)nodi_visitati.size()-1)/(double)memoria.size();
 	 	for (int k=0; k<nodi_visitati.size(); k++) fit_locale+=(double)nodi_visitati[k]/(normalizzazione*(double)pow(memoria.size(), 2));
 	}
 	else {
-		fit_locale=(((double)nodi_visitati.size()-1))/(double)memoria.size(); 
+		fit_locale=(0.01*((double)nodi_visitati.size()-1))/(double)memoria.size(); 
 		for (int k=0; k<nodi_visitati.size(); k++) fit_locale+=0.01*(double)nodi_visitati[k]/(normalizzazione*(double)pow(memoria.size(), 2));
-	}
+	}cout<<endl<<"bool l: "<<l<<endl;
 }
 
 double Scimmia::get_fit_locale(){return fit_locale;}
