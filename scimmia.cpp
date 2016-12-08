@@ -27,6 +27,9 @@ int Scimmia::scegli_azione(){
 void Scimmia::set_memoria(int node){
     memoria.push_back(node);
     }
+
+//QUI
+
 void Scimmia::set_stato(TNodeEDatNet<Point,Point>::TNodeI node){
     bool fn=0,pn(0),fi(0),pi(0);
     for (int i = 0; i < node.GetOutDeg(); ++i){
@@ -78,15 +81,16 @@ double Scimmia::get_fit(){ return fit;}
 Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), nodi_visitati(1), loop(false) {;
     }
 
+//QUI
+
 double Scimmia::fit_func(TNodeEDatNet<Point,Point>::TNodeI n, const Parete& g){
     return pow(g.get_p()->GetNDat(g.get_endID()).Val2/(double)n.GetDat().Val2,-2);
     }
-void Scimmia::set_fit(double f){ fit += f;}
+
 void Scimmia::set_fit_locale(int pos, PNGraph g, bool l){
     TNGraph::TNodeI end  = g->EndNI();
     end--;
     int endi = end.GetId();
-
 	double normalizzazione;
 	for (int i=0; i<g->GetMxNId()-1; i++) normalizzazione+=i;
 	if(l==false){
@@ -96,7 +100,7 @@ void Scimmia::set_fit_locale(int pos, PNGraph g, bool l){
 	else {
 		fit_locale=(0.01*((double)nodi_visitati.size()-1))/pow((double)memoria.size(), 2);
 		for (int k=0; k<nodi_visitati.size(); k++) fit_locale+=0.01*(double)nodi_visitati[k]/(normalizzazione*(double)pow(memoria.size(), 2));
-	}cout<<endl<<"bool l: "<<l<<endl;
+	}
 }
 
 double Scimmia::get_fit_locale(){return fit_locale;}
@@ -117,9 +121,14 @@ int Scimmia::get_stato(){ return stato;}
 vector<int> Scimmia:: get_nodi_visitati(){return nodi_visitati;}
 
 void Scimmia::set_nodi_visitati(int node)
-{bool presente=false;
-for (int i=0; i<nodi_visitati.size(); i++){if(node!=nodi_visitati[i]) continue; else {presente=true; break;}}
-if(presente==false) nodi_visitati.push_back(node);
+{
+	bool presente=false;
+	for (int i=0; i<nodi_visitati.size(); i++)
+	{	
+		if(node!=nodi_visitati[i]) continue; 
+		else {presente=true; break;}
+	}
+	if(presente==false) nodi_visitati.push_back(node);
 }
 
 void Scimmia::set_loop(bool l){loop=l;}
@@ -127,12 +136,13 @@ void Scimmia::set_loop(bool l){loop=l;}
 bool Scimmia::get_loop(){return loop;}
 
 
-
 enum Azione {a_f_noto=0, a_p_noto, a_f_ignoto, a_p_ignoto};
+
+//QUI
+
 int Scimmia::move(TNodeEDatNet<Point,Point>::TNodeI pos){
     vector<int> padri_n, padri_ig, figli_n, figli_ig;
     for(int i = 0; i<pos.GetOutDeg(); ++i){
-
         int outNode = pos.GetOutEDat(i).Val2;
         if (outNode < 0){
             if (find(memoria.begin(),memoria.end(), outNode)!= memoria.end()) padri_n.push_back(outNode);

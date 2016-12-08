@@ -50,6 +50,7 @@ bool Parete::is_viable(){
     GetSubTreeSz(this->get_p(),end,false,true,size,depth);
     return depth > min_depth;
 }
+
 void Parete::norm_coord(){
     TIntV nodi(p->GetNodes());
     p->GetNIdV(nodi);
@@ -86,6 +87,7 @@ Parete::Parete(vector<Point> points, int d, double p_appi, double p_appo, int m_
     set_end();
     set_start();
 }
+
 void Parete::write_schema(TStr filename){
     TIntStrH Nomi;
     for(PNet::TObj::TNodeI i = p->BegNI(); i < p->EndNI(); i++ ){

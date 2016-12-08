@@ -34,6 +34,7 @@ class Parete {
     bool is_viable();
     void set_start();
     void set_end();
+
 public:
     int get_endID()const ;
     int get_startID()const ;
