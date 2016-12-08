@@ -34,8 +34,6 @@ public:
     double get_fit();
     double fit_func(TNodeEDatNet<Point,Point>::TNodeI ,const Parete& g);
     void set_fit(double f);
-    Scimmia();
-   	void set_fit(double f);
 	void set_fit_locale(int pos, PNGraph g, bool l);
 	double get_fit_locale();
 	std::vector<int> get_nodi_visitati();

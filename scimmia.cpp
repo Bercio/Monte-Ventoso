@@ -79,7 +79,7 @@ Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), nodi_visitati(1), loop(f
     }
 
 double Scimmia::fit_func(TNodeEDatNet<Point,Point>::TNodeI n, const Parete& g){
-    return pow(g.get_p()->GetNDat(g.get_endID()).Val2/(double)n.GetDat().Val2,-2);
+    return pow(g.get_p()->GetNDat(g.get_endID()).dist(n.GetDat()),-2);
     }
 void Scimmia::set_fit(double f){ fit += f;}
 void Scimmia::set_fit_locale(int pos, PNGraph g, bool l){
@@ -100,8 +100,6 @@ void Scimmia::set_fit_locale(int pos, PNGraph g, bool l){
 }
 
 double Scimmia::get_fit_locale(){return fit_locale;}
-
-void Scimmia::set_fit(double f){fit+=f;}
 
 void Scimmia::set_dna(const vector<int> &dna) {
     Scimmia::dna = dna;
@@ -134,11 +132,12 @@ int Scimmia::move(TNodeEDatNet<Point,Point>::TNodeI pos){
     for(int i = 0; i<pos.GetOutDeg(); ++i){
 
         int outNode = pos.GetOutEDat(i).Val2;
+        int IDoutNode = pos.GetOutNId(i);
         if (outNode < 0){
-            if (find(memoria.begin(),memoria.end(), outNode)!= memoria.end()) padri_n.push_back(outNode);
-            else padri_ig.push_back(outNode);
-        } else if (find(memoria.begin(),memoria.end(), outNode)!= memoria.end()) figli_n.push_back(outNode);
-        else figli_ig.push_back(outNode);
+            if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()) padri_n.push_back(IDoutNode);
+            else padri_ig.push_back(IDoutNode);
+        } else if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()) figli_n.push_back(IDoutNode);
+        else figli_ig.push_back(IDoutNode);
     }
     switch(scegli_azione())
     { 
