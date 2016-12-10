@@ -44,6 +44,7 @@ public:
     double get_prob_appoggio() const;
     void draw(int n, sf::RenderWindow& window);
     void set_window( sf::RenderWindow& window);
+    void animate(std::vector<int> v);
     Parete();
     Parete(const Parete &pr);
     bool operator==(const Parete& pr) const;

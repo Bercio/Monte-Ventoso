@@ -149,6 +149,23 @@ void Parete::draw(int n, sf::RenderWindow& window){
     }
 
 }
+void Parete::animate(vector<int> v){
+    sf::RenderWindow window;
+    this->set_window(window);
+    vector<int>::iterator i = v.begin();
+    while (window.isOpen() && i != v.end() ){
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+        window.clear(sf::Color::White);
+        this->draw(*i, window);
+        window.display();
+        ++i;
+        sleep(1);
+    }
+}
 int Parete::get_d()const { return d_nodi;}
 int Parete::get_startID()const { return start;}
 int Parete::get_endID()const { return end;}

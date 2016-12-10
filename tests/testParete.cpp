@@ -50,24 +50,16 @@ TEST_F(PareteTest, ArgsEffect){
 TEST_F(PareteTest, Grafica){
     Parete T;
     T = get_random_p(300, x, y, 5, prob_appo, prob_appi, 4);
-    sf::RenderWindow v, window;
+    sf::RenderWindow window;
     T.set_window(window);
     /* T.set_window(v);
     T.draw(T.get_startID(),v);
     EXPECT_NO_FATAL_FAILURE(T.draw(T.get_startID(),w)); */
-    auto i = T.get_p()->BegNI();
-    while (window.isOpen() && i != T.get_p()->EndNI()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-        window.clear(sf::Color::White);
-        T.draw(i.GetId(), window);
-        window.display();
-        i++;
-        sleep(1);
+    vector<int> v;
+    for(auto i = T.get_p()->BegNI(); i < T.get_p()->EndNI(); i++){
+        v.push_back(i.GetId());
     }
+    T.animate(v);
 }
 
 
