@@ -47,12 +47,12 @@ void Scimmia::set_stato(TNodeEDatNet<Point,Point>::TNodeI node){
     stato = fn + pn*2 + fi*4 + pi*8;
 }
 
-Scimmia::Scimmia(): dna(N), fit(0), nodi_visitati(1), loop(false){
+Scimmia::Scimmia(): dna(N), fit(0), loop(false){
     uniform_int_distribution<int> actions(0,3);
     generate(dna.begin(),dna.end(),[&](){return actions(gen);});
     }
 
-Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), nodi_visitati(1), loop(false) {
+Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false) {
     vector<int> _dna(N);
     uniform_int_distribution<int> range(1,14);
     int rnd = range(gen);
@@ -72,38 +72,40 @@ void Scimmia::muta(){
     set_dna(_dna);
     }
 
-Scimmia::Scimmia(Scimmia& s): fit(0), nodi_visitati(1), loop(false) {
+Scimmia::Scimmia(Scimmia& s): fit(0), loop(false) {
     set_dna(s.get_dna());
 }
 
 double Scimmia::get_fit(){ return fit;}
 
-Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), nodi_visitati(1), loop(false) {;
+Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), loop(false) {;
     }
 
-//QUI
+void Scimmia::set_fit(double f){fit+=f;}
 
-double Scimmia::fit_func(TNodeEDatNet<Point,Point>::TNodeI n, const Parete& g){
-    return pow(g.get_p()->GetNDat(g.get_endID()).dist(n.GetDat()),-2);
-    }
+/*double Scimmia::fit_func(TNodeEDatNet<Point,Point>::TNodeI n, const Parete& g){
+	if(loop==false){
+    	return pow(g.get_p()->GetNDat(g.get_endID()).dist(n.GetDat()),-1)*pow(memoria.size(),-1);}
+	else return {0.1*pow(g.get_p()->GetNDat(g.get_endID()).dist(n.GetDat()),-1)*pow(memoria.size(),-1)};
 
-void Scimmia::set_fit_locale(int pos, PNGraph g, bool l){
-    TNGraph::TNodeI end  = g->EndNI();
-    end--;
-    int endi = end.GetId();
+    }*/
+double Scimmia::fit_func(TNodeEDatNet<Point,Point>::TNodeI n, const Parete& g)
+{	double fit;
 	double normalizzazione;
-	for (int i=0; i<g->GetMxNId()-1; i++) normalizzazione+=i;
-	if(l==false){
-		fit_locale=((double)nodi_visitati.size()-1)/pow((double)memoria.size(),2);
-	 	for (int k=0; k<nodi_visitati.size(); k++) fit_locale+=(double)nodi_visitati[k]/(normalizzazione*(double)pow(memoria.size(), 2));
+	set<int> nodi_visitati(memoria.begin(),memoria.end());
+	for (int i=0; i<g.get_endID(); i++) normalizzazione+=i;
+	if(loop==false){
+
+		fit=((double)nodi_visitati.size()-1)/pow((double)memoria.size(),2);cout<<"nodi ";
+	 	for (auto k : nodi_visitati) {fit+=g.get_p()->GetNDat(k).Val2/(normalizzazione*(double)pow(memoria.size(), 2));}
 	}
 	else {
-		fit_locale=(0.01*((double)nodi_visitati.size()-1))/pow((double)memoria.size(), 2);
-		for (int k=0; k<nodi_visitati.size(); k++) fit_locale+=0.01*(double)nodi_visitati[k]/(normalizzazione*(double)pow(memoria.size(), 2));
+		fit=(0.01*((double)nodi_visitati.size()-1))/pow((double)memoria.size(), 2);
+		for (auto k : nodi_visitati) fit+=0.01*g.get_p()->GetNDat(k).Val2/(normalizzazione*(double)pow(memoria.size(), 2));
 	}
+	return fit;
 }
 
-double Scimmia::get_fit_locale(){return fit_locale;}
 
 void Scimmia::set_dna(const vector<int> &dna) {
     Scimmia::dna = dna;
@@ -115,19 +117,6 @@ vector<int> Scimmia::get_dna() {
 vector<int> Scimmia::get_memoria(){ return memoria;}
 
 int Scimmia::get_stato(){ return stato;}
-
-vector<int> Scimmia:: get_nodi_visitati(){return nodi_visitati;}
-
-void Scimmia::set_nodi_visitati(int node)
-{
-	bool presente=false;
-	for (int i=0; i<nodi_visitati.size(); i++)
-	{	
-		if(node!=nodi_visitati[i]) continue; 
-		else {presente=true; break;}
-	}
-	if(presente==false) nodi_visitati.push_back(node);
-}
 
 void Scimmia::set_loop(bool l){loop=l;}
 
@@ -141,6 +130,7 @@ enum Azione {a_f_noto=0, a_p_noto, a_f_ignoto, a_p_ignoto};
 int Scimmia::move(TNodeEDatNet<Point,Point>::TNodeI pos){
     vector<int> padri_n, padri_ig, figli_n, figli_ig;
     for(int i = 0; i<pos.GetOutDeg(); ++i){
+
         int outNode = pos.GetOutEDat(i).Val2;
         int IDoutNode = pos.GetOutNId(i);
         if (outNode < 0){
