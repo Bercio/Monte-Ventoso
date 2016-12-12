@@ -83,20 +83,22 @@ Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), loop(false) {;
 
 void Scimmia::set_fit(double f){fit+=f;}
 
-/*double Scimmia::fit_func(TNodeEDatNet<Point,Point>::TNodeI n, const Parete& g){
+double Scimmia::fit_func_lo(TNodeEDatNet<Point,Point>::TNodeI n, const Parete& g){
 	if(loop==false){
-    	return pow(g.get_p()->GetNDat(g.get_endID()).dist(n.GetDat()),-1)*pow(memoria.size(),-1);}
+    	return pow(g.get_p()->GetNDat(g.get_endID()).dist(n.GetDat()),-2)*pow(memoria.size(),-1);}
 	else return {0.1*pow(g.get_p()->GetNDat(g.get_endID()).dist(n.GetDat()),-1)*pow(memoria.size(),-1)};
 
-    }*/
-double Scimmia::fit_func(TNodeEDatNet<Point,Point>::TNodeI n, const Parete& g)
+    }
+
+
+double Scimmia::fit_func_riri(TNodeEDatNet<Point,Point>::TNodeI n, const Parete& g)
 {	double fit;
-	double normalizzazione;
+	double normalizzazione=1;
 	set<int> nodi_visitati(memoria.begin(),memoria.end());
-	for (int i=0; i<g.get_endID(); i++) normalizzazione+=i;
+	//for (int i=0; i<g.get_endID(); i++) normalizzazione+=i;
 	if(loop==false){
 
-		fit=((double)nodi_visitati.size()-1)/pow((double)memoria.size(),2);cout<<"nodi ";
+		fit=((double)nodi_visitati.size()-1)/pow((double)memoria.size(),2);
 	 	for (auto k : nodi_visitati) {fit+=g.get_p()->GetNDat(k).Val2/(normalizzazione*(double)pow(memoria.size(), 2));}
 	}
 	else {
@@ -124,8 +126,6 @@ bool Scimmia::get_loop(){return loop;}
 
 
 enum Azione {a_f_noto=0, a_p_noto, a_f_ignoto, a_p_ignoto};
-
-//QUI
 
 int Scimmia::move(TNodeEDatNet<Point,Point>::TNodeI pos){
     vector<int> padri_n, padri_ig, figli_n, figli_ig;
