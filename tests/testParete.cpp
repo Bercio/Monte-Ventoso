@@ -51,7 +51,7 @@ TEST_F(PareteTest, Grafica){
     Parete T;
     T = get_random_p(300, x, y, 5, prob_appo, prob_appi, 4);
     sf::RenderWindow window;
-    T.set_window(window);
+    T.set_window(window, std::__cxx11::string());
     /* T.set_window(v);
     T.draw(T.get_startID(),v);
     EXPECT_NO_FATAL_FAILURE(T.draw(T.get_startID(),w)); */

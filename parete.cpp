@@ -105,7 +105,7 @@ Parete::Parete(const Parete &pr) {
     prob_appoggio = pr.get_prob_appoggio();
 }
 Parete::Parete() = default;
-void Parete::set_window(sf::RenderWindow& window){
+void Parete::set_window(sf::RenderWindow& window, string titolo="Parete"){
     TIntV v;
     p->GetNIdV(v);
     int nmaxx = p->GetNDat(*max_element(v.BegI(), v.EndI(), [&](TInt& n, TInt& m){ return p->GetNDat(n).Val1 < p->GetNDat(m).Val1;})).Val1;
@@ -125,7 +125,7 @@ void Parete::set_window(sf::RenderWindow& window){
 
     sf::ContextSettings settings = window.getSettings();
     settings.antialiasingLevel = 8;
-    window.create(sf::VideoMode(pix_w, pix_h), "Parete", sf::Style::Default, settings);
+    window.create(sf::VideoMode(pix_w, pix_h),titolo , sf::Style::Default, settings);
     sf::View viw = window.getView();
     viw.rotate(180);
     viw.setCenter(ceil(nmaxx*corr/2.0), ceil(nmaxy*corr/2.0));
@@ -151,21 +151,26 @@ void Parete::draw(int n, sf::RenderWindow& window){
     }
 
 }
-void Parete::animate(vector<int> v){
+void Parete::animate(vector<int> v, string titolo="Parete"){
     sf::RenderWindow window;
-    this->set_window(window);
+    this->set_window(window, titolo);
     vector<int>::iterator i = v.begin();
-    while (window.isOpen() && i != v.end() ){
+    bool parti = false;
+    while (window.isOpen() ){
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
+            if (event.type == sf::Event::MouseButtonPressed) parti = !parti;
         }
-        window.clear(sf::Color::White);
-        this->draw(*i, window);
-        window.display();
-        ++i;
-        sleep(1);
+        if (i == v.end()) i = v.begin();
+        if (parti) {
+            window.clear(sf::Color::White);
+            this->draw(*i, window);
+            window.display();
+            ++i;
+            sleep(1);
+        }
     }
 }
 int Parete::get_d()const { return d_nodi;}

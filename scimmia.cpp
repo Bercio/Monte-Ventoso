@@ -72,8 +72,16 @@ void Scimmia::muta(){
     set_dna(_dna);
     }
 
-Scimmia::Scimmia(const Scimmia& s): fit(0), loop(false),memoria({}), stato(0) {
-    set_dna(s.get_dna());
+Scimmia Scimmia::clona(){
+    Scimmia s;
+    s.set_dna(get_dna());
+    return s;
+}
+Scimmia::Scimmia(const Scimmia& s) :
+        fit(s.get_fit()), loop(s.get_loop()),
+        dna(s.get_dna()), stato(s.get_stato()),
+        memoria(s.get_memoria()) {
+    ;
 }
 
 double Scimmia::get_fit()const { return fit;}
@@ -124,10 +132,39 @@ void Scimmia::set_loop(bool l){loop=l;}
 
 bool Scimmia::get_loop() const {return loop;}
 
-void Scimmia::operator=(const Scimmia& s) { memoria=s.get_memoria(); fit=s.get_fit();
-											 loop=s.get_loop(); dna=get_dna(); stato=s.get_stato();
+void swap(Scimmia& first, Scimmia& second){
+    using std::swap;
+    swap(first.dna, second.dna);
+    swap(first.fit, second.fit);
+    swap(first.loop, second.loop);
+    swap(first.memoria, second.memoria);
+    swap(first.stato, second.stato);
 }
 
+Scimmia Scimmia::operator=(Scimmia s) {
+    swap(*this,s);
+    return *this;
+}
+TNodeEDatNet<Point,Point>::TNodeI Scimmia::traverse(Parete parete, int n_passi) {
+
+    TNodeEDatNet<Point,Point>::TNodeI pos = parete.get_p()->GetNI(parete.get_startID());
+    set_memoria(pos.GetId());
+    for (int j = 0; j < n_passi; j++) {
+        set_stato(pos);
+        pos = parete.get_p()->GetNI(move(pos));
+
+        if (pos.GetId() != parete.get_endID()) {
+            set_memoria(pos.GetId());
+            if (j > 3 &&
+                *(get_memoria().end() - 2) == *(get_memoria().end() - 1) ||
+                j > 6 &&
+                *(get_memoria().end() - 2) == *(get_memoria().end() - 4) &&
+                *(get_memoria().end() - 1) == *(get_memoria().end() - 3))
+                set_loop(true);
+        } else break;
+    }
+    return pos;
+}
 
 enum Azione {a_f_noto=0, a_p_noto, a_f_ignoto, a_p_ignoto};
 
