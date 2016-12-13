@@ -108,16 +108,45 @@ int main (int argc,char*argv[])
 	Parete parete=GeneraParete(1000, 70, 100, 3, 0.2, 0.2, 2);
 
 
-	Scimmia LaMeglioRita;
-	LaMeglioRita = evoluzione(true, n_ind, n_gen, n_passi,parete);
-	vector<int> rdna = LaMeglioRita.get_dna();	
-	//Scimmia LaMeglioBercio;
-	//LaMeglioBercio = evoluzione(false, n_ind, n_gen, n_passi,parete);
-	//vector<int> bdna = LaMeglioBercio.get_dna();
-	cout << "DNA di ri: ";
-	for_each(rdna.begin(), rdna.end(), [&](auto& e){ cout << e << ", ";});
-   /* cout << "\nDNA di lo: ";
-	for_each(rdna.begin(), bdna.end(), [&](auto& e){ cout << e << ", ";});
-	cout << endl;
-*/
+	vector<Scimmia> generazione;
+	for(int i = 0; i < n_ind; ++i) {
+	Scimmia s;
+	generazione.push_back(s);
+	}
+
+	TNodeEDatNet<Point,Point>::TNodeI pos;
+	for (int n=0; n<n_gen;++n){
+
+			if(n != 0) riproduzione(generazione,n_ind);
+			for (int i=0; i<n_ind; ++i)
+			{
+				pos=parete.get_p()->GetNI(parete.get_startID());
+
+				generazione[i].set_memoria(pos.GetId());
+				for (int j=0; j<n_passi; j++)
+				{
+					generazione[i].set_stato(pos);
+					pos=parete.get_p()->GetNI(generazione[i].move(pos));
+				
+					if(pos.GetId()!=parete.get_endID())
+					{
+						generazione[i].set_memoria(pos.GetId());
+						if(j>3 && *(generazione[i].get_memoria().end()-2)==*(generazione[i].get_memoria().end()-1)||j>6 && *(generazione[i].get_memoria().end()-2)==*(generazione[i].get_memoria().end()-4) && *(generazione[i].get_memoria().end()-1)==*(generazione[i].get_memoria().end()-3)) generazione[i].set_loop(true);	
+					}
+					else break;
+				}
+				generazione[i].set_fit(generazione[i].fit_func_riri(pos, parete));
+				
+			}
+
+		}
+	int piu_brava=0;
+				for (int i=0; i<n_ind; i++)
+				{	if (generazione[i].get_fit()>generazione[piu_brava].get_fit())
+					piu_brava=i;
+				}
+	Scimmia brava;
+	brava = generazione[piu_brava];
+	for (int i=0; i<get_dna().size; i++)cout<<generazione[piu_brava].get_dna()[i]<<" ";cout<<endl;
+	parete.animate
 }
