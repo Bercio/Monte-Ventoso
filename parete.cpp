@@ -79,8 +79,8 @@ Parete::Parete(vector<Point> points, int d, double p_appi, double p_appo, int m_
                 //if l under i appo is i.l and appi is l.i; if not appi (->) surely at least <-, if neither appi nor appo l<.i;
                 if(points[l].Val2<points[i].Val2){_prob_appoggio = prob_appiglio; _prob_appi = prob_appoggio;}
                 double prob = probs(gen);
-                if(prob > _prob_appoggio) p->AddEdge(i,l,points[l] - points[i]);
-                if(prob < 1-_prob_appi) p->AddEdge(l,i, points[i] - points[l]);
+                if(prob > _prob_appoggio) p->AddEdge(i,l,points[i] - points[l]);
+                if(prob < 1-_prob_appi) p->AddEdge(l,i, points[l] - points[i]);
             }
         }
     }
@@ -161,16 +161,15 @@ void Parete::animate(vector<int> v, string titolo="Parete"){
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
-            if (event.type == sf::Event::MouseButtonPressed) parti = !parti;
+            if (event.type == sf::Event::MouseButtonPressed) ++i; //parti = !parti;
         }
         if (i == v.end()) i = v.begin();
-        if (parti) {
+        //if (parti) {
             window.clear(sf::Color::White);
             this->draw(*i, window);
             window.display();
-            ++i;
             sleep(1);
-        }
+        //}
     }
 }
 int Parete::get_d()const { return d_nodi;}

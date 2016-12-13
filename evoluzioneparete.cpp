@@ -92,7 +92,7 @@ int main (int argc,char*argv[])
 
 
 	Scimmia LaMeglioRita;
-	LaMeglioRita.set_dna({0,0,1,0,2,2,2,2,3,3,3,3,2,2,2,2});
+	LaMeglioRita.set_dna({0,0,1,1,2,2,2,2,3,3,3,3,2,2,2,2});
 	TNodeEDatNet<Point,Point>::TNodeI pos = LaMeglioRita.traverse(parete, n_passi);
     LaMeglioRita.set_fit(LaMeglioRita.fit_func_riri(pos,parete));
 	vector<int> rdna = LaMeglioRita.get_dna();
