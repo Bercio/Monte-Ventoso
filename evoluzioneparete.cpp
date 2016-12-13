@@ -89,26 +89,20 @@ int main (int argc,char*argv[])
 	//creo la parete
 
 	Parete parete=GeneraParete(1000, 70, 100, 3, 0.2, 0.2, 2);
-
-
 	Scimmia LaMeglioRita;
-	LaMeglioRita.set_dna({0,0,1,1,2,2,2,2,3,3,3,3,2,2,2,2,2});
-	TNodeEDatNet<Point,Point>::TNodeI pos = LaMeglioRita.traverse(parete, n_passi);
-    LaMeglioRita.set_fit(LaMeglioRita.fit_func_riri(pos,parete));
+	LaMeglioRita = evoluzione(true, n_ind, n_gen, n_passi,parete);
 	vector<int> rdna = LaMeglioRita.get_dna();
 	cout << "DNA di ri: ";
 	for_each(rdna.begin(), rdna.end(), [&](auto& e){ cout << e << ", ";});
 	cout << "; Fit di ri: " << scientific << setprecision(5) << LaMeglioRita.get_fit();
 	parete.animate(LaMeglioRita.get_memoria(), "Rita");
-    /*
-	LaMeglioRita = evoluzione(true, n_ind, n_gen, n_passi,parete);
 	Scimmia LaMeglioBercio;
 	LaMeglioBercio = evoluzione(false, n_ind, n_gen, n_passi,parete);
+    vector<int> bdna = LaMeglioBercio.get_dna();
 	parete.animate(LaMeglioBercio.get_memoria(), "Lorenzo");
 	cout << "\nDNA di lo: ";
 	for_each(bdna.begin(), bdna.end(), [&](auto& e){ cout << e << ", ";});
 	cout << "; Fit di lo: " << scientific << setprecision(5) << LaMeglioBercio.get_fit();
 	cout << endl;
-	*/
 
 }

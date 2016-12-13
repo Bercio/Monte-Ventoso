@@ -168,15 +168,16 @@ void Parete::animate(vector<int> v, string titolo="Parete"){
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
-            if (event.type == sf::Event::MouseButtonPressed) ++i; //parti = !parti;
+            if (event.type == sf::Event::MouseButtonPressed) parti = !parti;
         }
         if (i == v.end()) i = v.begin();
-        //if (parti) {
+        if (parti) {
             window.clear(sf::Color::White);
             this->draw(*i, window);
             window.display();
+            ++i;
             sleep(1);
-        //}
+        }
     }
 }
 int Parete::get_d()const { return d_nodi;}
