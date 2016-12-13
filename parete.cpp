@@ -133,17 +133,24 @@ void Parete::set_window(sf::RenderWindow& window, string titolo="Parete"){
 }
 void Parete::draw(int n, sf::RenderWindow& window){
     vector<sf::CircleShape> app;
-    sf::CircleShape shape(4.f);
+    sf::VertexArray line(sf::Lines, 2);
+    sf::CircleShape shape(2.f);
     for(auto i = p->BegNI(); i < p->EndNI(); i++) {
         bool appog=false, appigl=false;
+        line[0].position = sf::Vector2f(i.GetDat().Val1*corr, i.GetDat().Val2*corr);
+        line[0].color = sf::Color::Black;
         for(int j = 0; j < i.GetInDeg(); ++j){
             if(i.GetInEDat(j).Val2 > 0) appog = true;
             else appigl = true;
+            line[1].position = sf::Vector2f(i.GetInNDat(j).Val1*corr, i.GetInNDat(j).Val2*corr);
+            line[1].color = sf::Color::Black;
+            window.draw(line);
         }
         if (appog == appigl) shape.setPointCount(6);
         else shape.setPointCount(3);
         if (appog) shape.rotate(180);
         shape.setPosition((i.GetDat().Val1*corr), (i.GetDat().Val2*corr));
+        line[0] = sf::Vector2f(i.GetDat().Val1, i.GetDat().Val2);
         if (i.GetId() == end) shape.setFillColor(sf::Color::Green);
         else if (i.GetId() == n) shape.setFillColor(sf::Color::Red);
         else shape.setFillColor(sf::Color::Black);
