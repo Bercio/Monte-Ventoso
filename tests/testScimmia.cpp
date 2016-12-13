@@ -28,16 +28,6 @@ public:
  //   EXPECT_NE
 
 
-TEST_F(GraphTest, figliEpadri){
-    vector<int> f(N.GetOutDeg()-1),p(1);
-    fill_figli_e_padri(N, f.begin(),f.end(),p.begin(),p.end());
-    EXPECT_EQ(f.size(),N.GetOutDeg()-1);
-    ASSERT_EQ(p.size(),1);
-    for (int i = 0; i < N.GetOutDeg(); ++i){
-        if (N.GetOutNId(i) > N.GetId()) EXPECT_EQ(count(f.begin(),f.end(),N.GetOutNId(i)),1);
-        else EXPECT_EQ(count(p.begin(),p.end(),N.GetOutNId(i)),1);
-        }
-}
 TEST_F(GraphTest, set_state){
     vector<int> di (16, 1);
     di[12] = 3;

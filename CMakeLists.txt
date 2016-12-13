@@ -19,5 +19,6 @@ set_target_properties( snap PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib
 add_library(Scimmia scimmia.cpp)
 add_library(Parete parete.cpp)
 target_link_libraries(Parete snap rt)
-target_link_libraries(Scimmia snap rt)
+target_link_libraries(Parete sfml-graphics sfml-system sfml-window)
+target_link_libraries(Scimmia Parete)
 target_include_directories (Scimmia PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
