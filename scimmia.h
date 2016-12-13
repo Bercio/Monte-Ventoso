@@ -40,6 +40,7 @@ public:
     Scimmia(Scimmia& m, Scimmia& p);
     void muta(); 
     Scimmia(const Scimmia& s);
+	bool is_looping(int passi);
 	TNodeEDatNet<Point,Point>::TNodeI traverse(Parete parete, int n_passi);
 	Scimmia operator=(Scimmia s);
     Scimmia(std::vector<int>& _dna);

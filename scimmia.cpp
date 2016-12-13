@@ -151,19 +151,19 @@ TNodeEDatNet<Point,Point>::TNodeI Scimmia::traverse(Parete parete, int n_passi) 
     set_memoria(pos.GetId());
     for (int j = 0; j < n_passi; j++) {
         set_stato(pos);
+        set_memoria(pos.GetId());
+        if(is_looping(j)) set_loop(true);
+        if(pos.GetId() == parete.get_endID()) break;
         pos = parete.get_p()->GetNI(move(pos));
-
-        if (pos.GetId() != parete.get_endID()) {
-            set_memoria(pos.GetId());
-            if (j > 3 &&
-                *(get_memoria().end() - 2) == *(get_memoria().end() - 1) ||
-                j > 6 &&
-                *(get_memoria().end() - 2) == *(get_memoria().end() - 4) &&
-                *(get_memoria().end() - 1) == *(get_memoria().end() - 3))
-                set_loop(true);
-        } else break;
     }
     return pos;
+}
+bool Scimmia::is_looping(int passi) {
+    return passi > 3 &&
+    *(get_memoria().end() - 2) == *(get_memoria().end() - 1) ||
+    passi > 6 &&
+    *(get_memoria().end() - 2) == *(get_memoria().end() - 4) &&
+    *(get_memoria().end() - 1) == *(get_memoria().end() - 3);
 }
 
 enum Azione {a_f_noto=0, a_p_noto, a_f_ignoto, a_p_ignoto};
