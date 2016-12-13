@@ -47,12 +47,12 @@ void Scimmia::set_stato(TNodeEDatNet<Point,Point>::TNodeI node){
     stato = fn + pn*2 + fi*4 + pi*8;
 }
 
-Scimmia::Scimmia(): dna(N), fit(0), loop(false){
+Scimmia::Scimmia(): dna(N), fit(0), loop(false), stato(0), memoria({}){
     uniform_int_distribution<int> actions(0,3);
     generate(dna.begin(),dna.end(),[&](){return actions(gen);});
     }
 
-Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false) {
+Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false),stato(0), memoria({}) {
     vector<int> _dna(N);
     uniform_int_distribution<int> range(1,14);
     int rnd = range(gen);
@@ -72,11 +72,11 @@ void Scimmia::muta(){
     set_dna(_dna);
     }
 
-Scimmia::Scimmia(Scimmia& s): fit(0), loop(false) {
+Scimmia::Scimmia(const Scimmia& s): fit(0), loop(false),memoria({}), stato(0) {
     set_dna(s.get_dna());
 }
 
-double Scimmia::get_fit(){ return fit;}
+double Scimmia::get_fit()const { return fit;}
 
 Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), loop(false) {;
     }
@@ -109,20 +109,24 @@ double Scimmia::fit_func_riri(TNodeEDatNet<Point,Point>::TNodeI n, const Parete&
 }
 
 
-void Scimmia::set_dna(const vector<int> &dna) {
-    Scimmia::dna = dna;
+void Scimmia::set_dna(const vector<int>& _dna) {
+    this->dna = _dna;
 }
 
-vector<int> Scimmia::get_dna() {
+vector<int> Scimmia::get_dna() const {
     return dna;
 }
-vector<int> Scimmia::get_memoria(){ return memoria;}
+vector<int> Scimmia::get_memoria()const{ return memoria;}
 
-int Scimmia::get_stato(){ return stato;}
+int Scimmia::get_stato() const { return stato;}
 
 void Scimmia::set_loop(bool l){loop=l;}
 
-bool Scimmia::get_loop(){return loop;}
+bool Scimmia::get_loop() const {return loop;}
+
+void Scimmia::operator=(const Scimmia& s) { memoria=s.get_memoria(); fit=s.get_fit();
+											 loop=s.get_loop(); dna=s.get_dna(); stato=s.get_stato();
+}
 
 
 enum Azione {a_f_noto=0, a_p_noto, a_f_ignoto, a_p_ignoto};
