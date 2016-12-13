@@ -33,13 +33,14 @@ void Scimmia::set_memoria(int node){
 void Scimmia::set_stato(TNodeEDatNet<Point,Point>::TNodeI node){
     bool fn=0,pn(0),fi(0),pi(0);
     for (int i = 0; i < node.GetOutDeg(); ++i){
-        int fnode = node.GetOutEDat(i).Val2;
-        if (fnode < 0) {
-            if (find(memoria.begin(), memoria.end(), fnode) != memoria.end()) {
+        int fnodeEdge = node.GetOutEDat(i).Val2;
+        int fnodeID = node.GetOutNId(i);
+        if (fnodeEdge < 0) {
+            if (find(memoria.begin(), memoria.end(), fnodeID) != memoria.end()) {
                 pn = 1;
             } else pi = 1;
         } else {
-            if (find(memoria.begin(),memoria.end(), fnode)!= memoria.end()){
+            if (find(memoria.begin(),memoria.end(), fnodeID)!= memoria.end()){
                 fn = 1;
             } else fi = 1;
         }
