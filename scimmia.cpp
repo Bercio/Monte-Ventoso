@@ -89,23 +89,6 @@ double Scimmia::fit_func_lo(TNodeEDatNet<Point,Point>::TNodeI n, const Parete& g
 	else return {0.1*pow(g.get_p()->GetNDat(g.get_endID()).dist(n.GetDat()),-1)*pow(memoria.size(),-1)};
 
     }
-/*
-void Scimmia::set_fit_locale(int pos, PNGraph g, bool l){
-    TNGraph::TNodeI end  = g->EndNI();
-    end--;
-    int endi = end.GetId();
-	
-	double normalizzazione;
-	for (int i=0; i<g->GetMxNId()-1; i++) normalizzazione+=i;
-	if(l==false){	
-		fit_locale=((double)nodi_visitati.size()-1)/pow((double)memoria.size(),2);
-	 	for (int k=0; k<nodi_visitati.size(); k++) fit_locale+=(double)nodi_visitati[k]/(normalizzazione*(double)pow(memoria.size(), 2));
-	}
-	else {
-		fit_locale=(0.01*((double)nodi_visitati.size()-1))/pow((double)memoria.size(), 2); 
-		for (int k=0; k<nodi_visitati.size(); k++) fit_locale+=0.01*(double)nodi_visitati[k]/(normalizzazione*(double)pow(memoria.size(), 2));
-	}cout<<endl<<"bool l: "<<l<<endl;
-*/
 
 double Scimmia::fit_func_riri(TNodeEDatNet<Point,Point>::TNodeI n, const Parete& g)
 {	double fit;
@@ -141,8 +124,8 @@ void Scimmia::set_loop(bool l){loop=l;}
 
 bool Scimmia::get_loop() const {return loop;}
 
-void Scimmia::operator=(const Scimmia& s) { memoria(s.get_memoria()); fit=s.get_fit();
-											 loop=s.get_loop(); dna(get_dna()); stato=s.get_stato();
+void Scimmia::operator=(const Scimmia& s) { memoria=s.get_memoria(); fit=s.get_fit();
+											 loop=s.get_loop(); dna=get_dna(); stato=s.get_stato();
 }
 
 
