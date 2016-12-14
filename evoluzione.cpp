@@ -5,7 +5,7 @@ random_device caso;
 default_random_engine casuale(caso());
 typedef TNodeEDatNet<Point,Point> TNet;
 
-Parete GeneraParete(int N=1000, int x=70, int y=100, int d=3, double prob_appo=0.2, double prob_appi=0.2,int min_depth=2)
+Parete GeneraParete(int N, int x, int y, int d, double prob_appo, double prob_appi, int min_depth)
 {
 	return get_random_p(N, x, y, d, prob_appo, prob_appi, min_depth);
 }
@@ -29,7 +29,7 @@ void riproduzione (vector<Scimmia>& generazione, double p_cross, double p_muta)
     swap(generazione,new_gen);
 }
 
-void evoluzione(int n_passi, double p_cross, double p_muta, Parete& parete, vector<Scimmia>& generazione, function<double(const Scimmia&, TNet::TNodeI&, Parete&)> fit_func) {
+void evoluzione(int n_passi, double p_cross, double p_muta, Parete& parete, vector<Scimmia>& generazione, function<double(Scimmia&, TNet::TNodeI&, const Parete&)> fit_func) {
     riproduzione(generazione, p_cross, p_muta);
     for (auto& i : generazione) {
         TNet::TNodeI pos = i.traverse(parete, n_passi);

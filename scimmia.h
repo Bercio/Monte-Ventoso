@@ -8,7 +8,7 @@
 #include <set>
 #include <random>
 #include <algorithm>
-#include "parete.cpp"
+#include "parete.h"
 #include <Snap.h>
 
 class Scimmia
