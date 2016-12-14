@@ -89,23 +89,19 @@ void Scimmia::set_stato(TNodeEDatNet<Point,Point>::TNodeI node){
     for (int i = 0; i < node.GetOutDeg(); ++i){
         int fnodeEdge = node.GetOutEDat(i).Val2;
         int fnodeID = node.GetOutNId(i);
-        if (fnodeEdge < 0) {
-            if (find(memoria.begin(), memoria.end(), fnodeID) != memoria.end()) {
-                pn = 1;
-            } else pi = 1;
+        if (find(memoria.begin(), memoria.end(), fnodeID) != memoria.end())  {
+            if  (fnodeEdge < 0) pn = 1;
+            else fn = 1;
         } else {
-            if (find(memoria.begin(),memoria.end(), fnodeID)!= memoria.end()){
-                fn = 1;
-            } else fi = 1;
+            if (fnodeEdge < 0)  pi = 1;
+            else fi = 1;
         }
     }
     stato = fn + pn*2 + fi*4 + pi*8;
 }
 
 bool Scimmia::is_looping(int passi) {
-    return passi > 3 &&
-           *(get_memoria().end() - 2) == *(get_memoria().end() - 1) ||
-           passi > 6 &&
+           return passi > 6 &&
            *(get_memoria().end() - 2) == *(get_memoria().end() - 4) &&
            *(get_memoria().end() - 1) == *(get_memoria().end() - 3);
 }
@@ -124,10 +120,10 @@ int Scimmia::move(TNodeEDatNet<Point,Point>::TNodeI pos){
 
         int outNode = pos.GetOutEDat(i).Val2;
         int IDoutNode = pos.GetOutNId(i);
-        if (outNode < 0){
-            if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()) padri_n.push_back(IDoutNode);
-            else padri_ig.push_back(IDoutNode);
-        } else if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()) figli_n.push_back(IDoutNode);
+        if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()){
+            if (outNode < 0) padri_n.push_back(IDoutNode);
+            else figli_n.push_back(IDoutNode);
+        } else if (outNode < 0) padri_ig.push_back(IDoutNode);
         else figli_ig.push_back(IDoutNode);
     }
     switch(scegli_azione())
@@ -145,13 +141,18 @@ int Scimmia::move(TNodeEDatNet<Point,Point>::TNodeI pos){
 
 TNodeEDatNet<Point,Point>::TNodeI Scimmia::traverse(Parete parete, int n_passi) {
     TNodeEDatNet<Point,Point>::TNodeI pos = parete.get_p()->GetNI(parete.get_startID());
-    set_memoria(pos.GetId());
     for (int j = 0; j < n_passi; j++) {
+        int posID = pos.GetId();
         set_stato(pos);
-        set_memoria(pos.GetId());
+        set_memoria(posID);
         if(is_looping(j)) set_loop(true);
-        if(pos.GetId() == parete.get_endID()) break;
+        if(posID == parete.get_endID()) break;
         pos = parete.get_p()->GetNI(move(pos));
+        if(get_memoria().back() == pos.GetId()) {
+            for(int i = j+1; i < n_passi; ++i) set_memoria(posID);
+            set_loop(true);
+            break;
+        }
     }
     return pos;
 }
