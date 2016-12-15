@@ -4,11 +4,10 @@
 #include "evoluzione.h"
 using namespace std;
 int main(){
-    Parete p = GeneraParete();
-    vector<Scimmia> gen(300);
-    for(int i = 0; i < 1000; ++i) {
-        evoluzione(100, 0.8, 0.1, p, gen, &Scimmia::fit_func_lo);
+    Evoluzione e(100,300,0.8,0.1);
+    for(int i = 0; i < 100; ++i) {
+        e.evoluzione(&Scimmia::fit_func_lo);
     }
-    cout << best_scimmia(gen).get_fit();
+    cout << e.best_scimmia().get_fit();
 }
 

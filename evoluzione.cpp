@@ -5,12 +5,12 @@ random_device caso;
 default_random_engine casuale(caso());
 typedef TNodeEDatNet<Point,Point> TNet;
 
-Parete GeneraParete(int N, int x, int y, int d, double prob_appo, double prob_appi, int min_depth)
+void Evoluzione::change_parete(int N, int x, int y, int d, double prob_appo, double prob_appi, int min_depth)
 {
-	return get_random_p(N, x, y, d, prob_appo, prob_appi, min_depth);
+	parete = get_random_p(N, x, y, d, prob_appo, prob_appi, min_depth);
 }
 
-void riproduzione (vector<Scimmia>& generazione, double p_cross, double p_muta)
+void Evoluzione::riproduzione ()
 {
 	vector<Scimmia> new_gen;
 	vector<double> pesi;
@@ -18,7 +18,7 @@ void riproduzione (vector<Scimmia>& generazione, double p_cross, double p_muta)
 	uniform_real_distribution<> dis(0,1);
 	discrete_distribution<> best(pesi.begin(), pesi.end());
 //inizializzo new_gen con Scimmie selezionate con cross-over, mutazione e clonazione
-	for (int i=0; i<generazione.size(); i++)
+	for (int i=0; i<individui; i++)
 	{
 		double prob = dis(casuale);
 		Scimmia p = generazione[best(casuale)], m = generazione[best(casuale)];
@@ -29,14 +29,40 @@ void riproduzione (vector<Scimmia>& generazione, double p_cross, double p_muta)
     swap(generazione,new_gen);
 }
 
-void evoluzione(int n_passi, double p_cross, double p_muta, Parete& parete, vector<Scimmia>& generazione, function<double(Scimmia&, TNet::TNodeI&, const Parete&)> fit_func) {
-    riproduzione(generazione, p_cross, p_muta);
+void Evoluzione::evoluzione(function<double(Scimmia&, TNet::TNodeI&, const Parete&)> fit_func) {
+    riproduzione();
     for (auto& i : generazione) {
-        TNet::TNodeI pos = i.traverse(parete, n_passi);
+        TNet::TNodeI pos = i.traverse(parete, passi);
         i.set_fit(fit_func(i, pos, parete));
     }
 }
 
-Scimmia best_scimmia(vector<Scimmia>& generazione){
+Scimmia Evoluzione::best_scimmia(){
 	return *max_element(generazione.begin(), generazione.end(), [&](auto &e, auto &i) { return e.get_fit() < i.get_fit(); });
+}
+
+Evoluzione::Evoluzione() = default;
+
+Evoluzione::Evoluzione(int passi, int individui, double p_cross, double p_muta) :
+		passi(passi), individui(individui), p_cross(p_cross), p_muta(p_muta), generazione(individui), parete(){
+	change_parete();
+}
+
+void Evoluzione::new_gen(){
+	generate(generazione.begin(),generazione.end(),[](){return Scimmia();});
+}
+void Evoluzione::set_individui(int _individui) {
+    individui = _individui;
+}
+
+void Evoluzione::set_passi(int _passi) {
+	passi = _passi;
+}
+
+void Evoluzione::set_pcross(double _p_cross) {
+	p_cross = _p_cross;
+}
+
+void Evoluzione::set_pmuta(double _p_muta) {
+	p_muta = _p_muta;
 }

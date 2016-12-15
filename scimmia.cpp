@@ -35,33 +35,8 @@ Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false),stato(0), memoria(
     copy(secondo.begin()+rnd,secondo.end(), l );
     set_dna(_dna);
 }
+
 Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), loop(false) {;
-}
-
-Scimmia::Scimmia(const Scimmia& s) :
-        fit(s.get_fit()), loop(s.get_loop()),
-        dna(s.get_dna()), stato(s.get_stato()),
-        memoria(s.get_memoria()) {
-}
-
-Scimmia Scimmia::clona(){
-    Scimmia s;
-    s.set_dna(get_dna());
-    return s;
-}
-
-void swap(Scimmia& first, Scimmia& second){
-    using std::swap;
-    swap(first.dna, second.dna);
-    swap(first.fit, second.fit);
-    swap(first.loop, second.loop);
-    swap(first.memoria, second.memoria);
-    swap(first.stato, second.stato);
-}
-
-Scimmia Scimmia::operator=(Scimmia s) {
-    swap(*this,s);
-    return *this;
 }
 
 void Scimmia::set_memoria(int node){ memoria.push_back(node); }
