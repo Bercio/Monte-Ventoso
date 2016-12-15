@@ -96,10 +96,15 @@ int main (int argc,char*argv[])
 	TNodeEDatNet<Point,Point>::TNodeI pos = LaMeglioRita.traverse(parete, n_passi);
     LaMeglioRita.set_fit(LaMeglioRita.fit_func_riri(pos,parete));
 	vector<int> rdna = LaMeglioRita.get_dna();
+	cout<<endl;
 	cout << "DNA di ri: ";
 	for_each(rdna.begin(), rdna.end(), [&](auto& e){ cout << e << ", ";});
+	cout<<endl;
 	cout << "; Fit di ri: " << scientific << setprecision(5) << LaMeglioRita.get_fit();
 	parete.animate(LaMeglioRita.get_memoria(), "Rita");
+	vector<int> mem=LaMeglioRita.get_memoria();
+	for_each(mem.begin(), mem.end(), [&](auto& e){ cout << e << ", ";});
+	cout<<endl;
     /*
 	LaMeglioRita = evoluzione(true, n_ind, n_gen, n_passi,parete);
 	Scimmia LaMeglioBercio;

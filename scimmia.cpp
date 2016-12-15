@@ -152,6 +152,7 @@ TNodeEDatNet<Point,Point>::TNodeI Scimmia::traverse(Parete parete, int n_passi) 
     set_memoria(pos.GetId());
     for (int j = 0; j < n_passi; j++) {
         set_stato(pos);
+        cout<<get_stato()<<" ";
         set_memoria(pos.GetId());
         if(is_looping(j)) set_loop(true);
         if(pos.GetId() == parete.get_endID()) break;
