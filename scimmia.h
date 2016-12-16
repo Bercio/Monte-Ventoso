@@ -8,11 +8,9 @@
 #include <set>
 #include <random>
 #include <algorithm>
-#include "parete.cpp"
+#include "parete.h"
 #include <Snap.h>
 
-void fill_figli_e_padri(TNGraph::TNodeI node, std::vector<int>::iterator fp, std::vector<int>::iterator fl,
-                        std::vector<int>::iterator pp, std::vector<int>::iterator pl);
 class Scimmia
 {
     std::vector<int> dna;
@@ -20,6 +18,7 @@ class Scimmia
     double fit;
     std::vector<int> memoria;
 	bool loop;
+	enum Azione {a_f_noto=0, a_p_noto, a_f_ignoto, a_p_ignoto};
 public:
 	void set_loop(bool l);
 	bool get_loop() const;
@@ -30,19 +29,15 @@ public:
     std::vector<int> get_memoria() const;
     void set_stato(TNodeEDatNet<Point,Point>::TNodeI node);
     int get_stato() const;
-    Scimmia clona();
     double get_fit() const;
-    double fit_func_lo(TNodeEDatNet<Point,Point>::TNodeI ,const Parete& g);
-    double fit_func_riri(TNodeEDatNet<Point,Point>::TNodeI ,const Parete& g);
+    double fit_func_lo(TNodeEDatNet<Point,Point>::TNodeI& n,const Parete& g);
+    double fit_func_riri(TNodeEDatNet<Point,Point>::TNodeI& n ,const Parete& g);
     void set_fit(double f);
 	Scimmia();
-	void friend swap(Scimmia& f, Scimmia& s);
     Scimmia(Scimmia& m, Scimmia& p);
     void muta(); 
-    Scimmia(const Scimmia& s);
 	bool is_looping(int passi);
 	TNodeEDatNet<Point,Point>::TNodeI traverse(Parete parete, int n_passi);
-	Scimmia operator=(Scimmia s);
     Scimmia(std::vector<int>& _dna);
     int move(TNodeEDatNet<Point,Point>::TNodeI pos);
 };

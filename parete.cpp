@@ -95,7 +95,7 @@ void Parete::write_schema(TStr filename){
     }
     DrawGViz(p, gvlDot,filename," ",Nomi);
 }
-Parete::Parete(const Parete &pr) {
+Parete::Parete(const Parete &pr){
     p = pr.get_p();
     d_nodi = pr.get_d();
     end = pr.get_endID();
@@ -104,6 +104,27 @@ Parete::Parete(const Parete &pr) {
     prob_appiglio = pr.get_prob_appiglio();
     prob_appoggio = pr.get_prob_appoggio();
 }
+
+Parete::Parete(Parete&& pr) : p(move(pr.p)), d_nodi(pr.d_nodi), prob_appiglio(pr.prob_appiglio),
+                              prob_appoggio(pr.prob_appoggio), end(pr.end), start(pr.start),
+                              corr(pr.corr), min_depth(pr.min_depth) {
+}
+
+void swap(Parete& p, Parete& s){
+    using std::swap;
+    swap(p.p, s.p);
+    swap(p.prob_appiglio,s.prob_appiglio);
+    swap(p.prob_appoggio,s.prob_appoggio);
+    swap(p.end,s.end);
+    swap(p.start,s.start);
+    swap(p.corr,s.corr);
+    swap(p.min_depth,s.min_depth);
+}
+Parete Parete::operator=(Parete pr){
+    swap(*this,pr);
+    return *this;
+}
+
 Parete::Parete() = default;
 void Parete::set_window(sf::RenderWindow& window, string titolo="Parete"){
     TIntV v;
@@ -158,7 +179,7 @@ void Parete::draw(int n, sf::RenderWindow& window){
     }
 
 }
-void Parete::animate(vector<int> v, string titolo="Parete"){
+void Parete::animate(vector<int> v, string titolo){
     sf::RenderWindow window;
     this->set_window(window, titolo);
     vector<int>::iterator i = v.begin();
@@ -168,15 +189,16 @@ void Parete::animate(vector<int> v, string titolo="Parete"){
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
-            if (event.type == sf::Event::MouseButtonPressed) ++i; //parti = !parti;
+            if (event.type == sf::Event::MouseButtonPressed) parti = !parti;
         }
         if (i == v.end()) i = v.begin();
-        //if (parti) {
+        if (parti) {
             window.clear(sf::Color::White);
             this->draw(*i, window);
             window.display();
+            ++i;
             sleep(1);
-        //}
+        }
     }
 }
 int Parete::get_d()const { return d_nodi;}
@@ -186,8 +208,7 @@ int Parete::get_min_depth()const { return min_depth;}
 double Parete::get_prob_appiglio()const { return prob_appiglio;}
 double Parete::get_prob_appoggio()const { return prob_appoggio;}
 PNet Parete::get_p()const {return p;}
-bool Parete::operator ==(const Parete& pr) const {return end == pr.end && start == pr.start;}
-Parete get_random_p(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth) {
+Parete get_random_p(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth){
     vector<Point> ret = gen_p_distr(N,x,y);
     Parete wall;
     double time = clock();
@@ -205,4 +226,5 @@ Parete get_random_p(int N, int x, int y, int d, double prob_appo, double prob_ap
     wall.norm_coord();
     return wall;
 }
+bool Parete::operator ==(const Parete& pr) const {return end == pr.end && start == pr.start;}
 

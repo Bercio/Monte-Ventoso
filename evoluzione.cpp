@@ -1,105 +1,68 @@
-//SIMULARE L'EVOLUZIONE 
-#include"scimmia.cpp"
-#include <random>
-#include "Snap.h"
+#include "evoluzione.h"
 
 using namespace std;
 random_device caso;
 default_random_engine casuale(caso());
+typedef TNodeEDatNet<Point,Point> TNet;
 
-const float p_cross=0.80;
-const float p_muta=0.05;
-const float p_clona=0.15;
-
-PNGraph GeneraAlbero(int n_figli, int livelli)
+void Evoluzione::change_parete(int N, int x, int y, int d, double prob_appo, double prob_appi, int min_depth)
 {
-	PNGraph NGraph;
-	
-	NGraph = GenTree<PNGraph>(n_figli, livelli, false);
-	return NGraph;
+	parete = get_random_p(N, x, y, d, prob_appo, prob_appi, min_depth);
 }
 
-
-void riproduzione (Scimmia generazione[], int dim)
-{	
-	
-	Scimmia new_gen[dim];
-	
+void Evoluzione::riproduzione ()
+{
+	vector<Scimmia> new_gen;
 	vector<double> pesi;
-	for (int i = 0; i < dim; ++i) pesi.push_back(generazione[i].get_fit());
-	
+	for (int i = 0; i < generazione.size(); ++i) pesi.push_back(generazione[i].get_fit());
 	uniform_real_distribution<> dis(0,1);
 	discrete_distribution<> best(pesi.begin(), pesi.end());
-
 //inizializzo new_gen con Scimmie selezionate con cross-over, mutazione e clonazione
-	for (int i=0; i<dim; i++)
+	for (int i=0; i<individui; i++)
 	{
-		if(dis(casuale)<p_cross){new_gen[i]= Scimmia(generazione[best(casuale)], generazione[best(casuale)]);}
-		if(dis(casuale)>p_cross && dis(casuale)<p_cross+p_clona){new_gen[i] = Scimmia(generazione[best(casuale)]);}
-		if(dis(casuale)>p_cross+p_clona){new_gen[i]= Scimmia(generazione[best(casuale)]); new_gen[i].muta();}
+		double prob = dis(casuale);
+		Scimmia p = generazione[best(casuale)], m = generazione[best(casuale)];
+		if(prob < p_cross) p = Scimmia(p,m);
+		if(prob > 1-p_muta) p.muta();
+        new_gen.push_back(p);
 	}
-//inizializzo generazione[]	
-	for (int i=0; i<dim; i++)
-	{
-		generazione[i]=new_gen[i];
-	}
+    swap(generazione,new_gen);
 }
 
-int main (int argc,char*argv[])
-{
-	
-	int n_ind=atoi(argv[1]);
-	int n_gen=atoi(argv[2]); 
-	int n_passi=atoi(argv[3]);
+void Evoluzione::evoluzione(function<double(Scimmia&, TNet::TNodeI&, const Parete&)> fit_func) {
+    riproduzione();
+    for (auto& i : generazione) {
+        TNet::TNodeI pos = i.traverse(parete, passi);
+        i.set_fit(fit_func(i, pos, parete));
+    }
+}
 
-	Scimmia generazione[n_ind];
+Scimmia Evoluzione::best_scimmia(){
+	return *max_element(generazione.begin(), generazione.end(), [&](auto &e, auto &i) { return e.get_fit() < i.get_fit(); });
+}
 
-	//creo l'albero
+Evoluzione::Evoluzione() = default;
 
-	PNGraph NGraph=GeneraAlbero(3, 4);
+Evoluzione::Evoluzione(int passi, int individui, double p_cross, double p_muta) :
+		passi(passi), individui(individui), p_cross(p_cross), p_muta(p_muta), generazione(individui), parete(){
+	change_parete();
+}
 
-	TNGraph::TNodeI Gianni;
+void Evoluzione::new_gen(){
+	generate(generazione.begin(),generazione.end(),[](){return Scimmia();});
+}
+void Evoluzione::set_individui(int _individui) {
+    individui = _individui;
+}
 
-	for (int n=0; n<n_gen;++n)
-	{	cout<<endl<<endl<<"GENERAZIONE "<<n+1<<endl<<endl;
-		for (int i=0; i<n_ind; ++i)
-		{	
-			Gianni=NGraph->BegNI();
-			for (int j=0; j<n_passi; ++j) 
-			{	//faccio muovere la scimmia
-				
-				generazione[i].set_stato(Gianni); 
-				Gianni=NGraph->GetNI(generazione[i].move(Gianni));
-				//se arriva in cima smette di muoversi
-				if(Gianni.GetId()!=NGraph->GetMxNId()-1)
-				{ 
-					vector<int> m =generazione[i].get_memoria();									
-					generazione[i].set_memoria(Gianni.GetId());
-					generazione[i].set_nodi_visitati(Gianni.GetId());
-					if(j>3 && *(m.end()-2)==*(m.end()-1)||j>6 && *(m.end()-2)==*(m.end()-4) && *(m.end()-1)==*(m.end()-3)) generazione[i].set_loop(true);
-				} 
-				else break;
-			}
-			//setfit
-			bool l=generazione[i].get_loop();
-			generazione[i].set_fit_locale(Gianni.GetId(), NGraph, l);
-			double f=generazione[i].get_fit_locale();
-			generazione[i].set_fit(f);
-			
-			cout<<"fit: "<<generazione[i].get_fit()<<endl<<"nodo di arrivo "<<Gianni.GetId()<<endl<<"dna:  ";
-			vector <int> v = generazione[i].get_dna();
-			for (int j=0;j<v.size();j++){cout<<v[j]<<" ";}
-			vector<int> m =generazione[i].get_memoria();
-			cout<<endl<<"memoria:  ";		
-			for (int k=0; k<m.size(); k++){cout<<m[k]<<" ";}
-			vector<int> n=generazione[i].get_nodi_visitati();
-			cout<<endl<<"nodi visitati:  ";
-			for (int k=0; k<n.size(); k++){cout<<n[k]<<" ";}
-			cout<<endl;
-			if (generazione[i].get_loop()==true) cout<<"loop = true"<<endl<<endl; else cout<<"loop = false"<<endl;
-			cout<<m.size()<<endl<<endl;
-		}
-		riproduzione(generazione, n_ind);
-	}
-cout<<"nodo in cima: "<<NGraph->GetMxNId()-1<<endl;
+void Evoluzione::set_passi(int _passi) {
+	passi = _passi;
+}
+
+void Evoluzione::set_pcross(double _p_cross) {
+	p_cross = _p_cross;
+}
+
+void Evoluzione::set_pmuta(double _p_muta) {
+	p_muta = _p_muta;
 }
