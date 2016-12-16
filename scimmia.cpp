@@ -1,10 +1,3 @@
-#include <iostream>
-#include <cmath>
-#include <set>
-#include <vector>
-#include <random>
-#include <algorithm>
-#include <Snap.h>
 #include "scimmia.h"
 using namespace std;
 using namespace TSnap;
@@ -39,7 +32,7 @@ Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false),stato(0), memoria(
 Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), loop(false) {;
 }
 
-void Scimmia::set_memoria(int node){ memoria.push_back(node); }
+void Scimmia::set_memoria(const int& node){ memoria.push_back(node); }
 
 void Scimmia::set_fit(double f){fit+=f;}
 
@@ -59,7 +52,7 @@ int Scimmia::get_stato() const { return stato;}
 
 int Scimmia::scegli_azione(){ return dna[stato]; }
 
-void Scimmia::set_stato(TNodeEDatNet<Point,Point>::TNodeI node){
+void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
     bool fn=0,pn(0),fi(0),pi(0);
     for (int i = 0; i < node.GetOutDeg(); ++i){
         int fnodeEdge = node.GetOutEDat(i).Val2;
@@ -75,7 +68,7 @@ void Scimmia::set_stato(TNodeEDatNet<Point,Point>::TNodeI node){
     stato = fn + pn*2 + fi*4 + pi*8;
 }
 
-bool Scimmia::is_looping(int passi) {
+bool Scimmia::is_looping(const int& passi) {
            return passi > 6 &&
            *(get_memoria().end() - 2) == *(get_memoria().end() - 4) &&
            *(get_memoria().end() - 1) == *(get_memoria().end() - 3);
@@ -89,7 +82,7 @@ void Scimmia::muta(){
     set_dna(_dna);
 }
 
-int Scimmia::move(TNodeEDatNet<Point,Point>::TNodeI pos){
+int Scimmia::move(const TNodeEDatNet<Point,Point>::TNodeI& pos){
     vector<int> padri_n, padri_ig, figli_n, figli_ig;
     for(int i = 0; i<pos.GetOutDeg(); ++i){
 
@@ -114,7 +107,7 @@ int Scimmia::move(TNodeEDatNet<Point,Point>::TNodeI pos){
     }
 }
 
-TNodeEDatNet<Point,Point>::TNodeI Scimmia::traverse(Parete parete, int n_passi) {
+TNodeEDatNet<Point,Point>::TNodeI Scimmia::traverse(const Parete& parete, int n_passi) {
     TNodeEDatNet<Point,Point>::TNodeI pos = parete.get_p()->GetNI(parete.get_startID());
     for (int j = 0; j < n_passi; j++) {
         int posID = pos.GetId();

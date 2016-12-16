@@ -31,9 +31,10 @@ void Evoluzione::riproduzione ()
 
 void Evoluzione::evoluzione(function<double(Scimmia&, TNet::TNodeI&, const Parete&)> fit_func) {
     riproduzione();
-    for (auto& i : generazione) {
-        TNet::TNodeI pos = i.traverse(parete, passi);
-        i.set_fit(fit_func(i, pos, parete));
+    #pragma omp parallel for
+    for (int i =0; i < generazione.size(); ++i) {
+        TNet::TNodeI pos = generazione[i].traverse(parete, passi);
+        generazione[i].set_fit(fit_func(generazione[i], pos, parete));
     }
 }
 
@@ -45,7 +46,7 @@ Evoluzione::Evoluzione() = default;
 
 Evoluzione::Evoluzione(int passi, int individui, double p_cross, double p_muta) :
 		passi(passi), individui(individui), p_cross(p_cross), p_muta(p_muta), generazione(individui), parete(){
-	change_parete();
+	change_parete(1000,70,100,3,0.2,0.2,3);
 }
 
 void Evoluzione::new_gen(){
@@ -65,4 +66,7 @@ void Evoluzione::set_pcross(double _p_cross) {
 
 void Evoluzione::set_pmuta(double _p_muta) {
 	p_muta = _p_muta;
+}
+void Evoluzione::animate(){
+    parete.animate(best_scimmia().get_memoria());
 }

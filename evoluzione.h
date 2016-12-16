@@ -39,5 +39,7 @@ public:
     void set_pcross(double _p_cross);
 
     void set_pmuta(double _p_muta);
+
+    void animate();
 };
 #endif //SISTEMI_COMPLESSI_EVOLUZIONE_H
