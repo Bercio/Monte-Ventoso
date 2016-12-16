@@ -29,7 +29,10 @@ void Evoluzione::riproduzione ()
     swap(generazione,new_gen);
 }
 
-void Evoluzione::evoluzione(function<double(Scimmia&, TNet::TNodeI&, const Parete&)> fit_func) {
+void Evoluzione::set_fitfunc(function<double(Scimmia&, TNet::TNodeI&, const Parete&)> _fit_func){
+    fit_func = _fit_func;
+}
+void Evoluzione::evoluzione() {
     riproduzione();
     #pragma omp parallel for
     for (int i =0; i < generazione.size(); ++i) {
@@ -50,7 +53,8 @@ Evoluzione::Evoluzione(int passi, int individui, double p_cross, double p_muta) 
 }
 
 void Evoluzione::new_gen(){
-	generate(generazione.begin(),generazione.end(),[](){return Scimmia();});
+    vector<Scimmia> newgen(individui);
+    swap(generazione,newgen);
 }
 void Evoluzione::set_individui(int _individui) {
     individui = _individui;
@@ -69,4 +73,33 @@ void Evoluzione::set_pmuta(double _p_muta) {
 }
 void Evoluzione::animate(){
     parete.animate(best_scimmia().get_memoria());
+}
+
+const Parete &Evoluzione::getParete() const {
+    return parete;
+}
+
+const vector<Scimmia> &Evoluzione::getGenerazione() const {
+    return generazione;
+}
+
+double Evoluzione::getP_cross() const {
+    return p_cross;
+}
+
+double Evoluzione::getP_muta() const {
+    return p_muta;
+}
+
+const function<double(Scimmia &, TNodeEDatNet<Point, Point>::TNodeI &, const Parete &)> &
+Evoluzione::getFit_func() const {
+    return fit_func;
+}
+
+int Evoluzione::getPassi() const {
+    return passi;
+}
+
+int Evoluzione::getIndividui() const {
+    return individui;
 }

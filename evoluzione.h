@@ -15,6 +15,23 @@ class Evoluzione {
     Parete parete;
     std::vector<Scimmia> generazione;
     double p_cross, p_muta;
+    std::function<double(Scimmia&, TNodeEDatNet<Point,Point>::TNodeI&, const Parete&)> fit_func
+public:
+    const Parete &getParete() const;
+
+    const std::vector<Scimmia> &getGenerazione() const;
+
+    double getP_cross() const;
+
+    double getP_muta() const;
+
+    const std::function<double(Scimmia &, TNodeEDatNet<Point, Point>::TNodeI &, const Parete &)> &getFit_func() const;
+
+    int getPassi() const;
+
+    int getIndividui() const;
+
+private:
     int passi, individui;
 public:
     void change_parete(int N = 1000, int x = 70, int y = 100, int d = 3, double prob_appo = 0.2, double prob_appi = 0.2,
@@ -22,7 +39,7 @@ public:
 
     void riproduzione();
 
-    void evoluzione(std::function<double(Scimmia &, TNodeEDatNet<Point, Point>::TNodeI &, const Parete &)> fit_func);
+    void evoluzione();
 
     Scimmia best_scimmia();
 
@@ -39,6 +56,8 @@ public:
     void set_pcross(double _p_cross);
 
     void set_pmuta(double _p_muta);
+
+    void set_fitfunc(function<double(Scimmia&, TNodeEDatNet<Point,Point>::TNodeI&, const Parete&)> _fit_func);
 
     void animate();
 };
