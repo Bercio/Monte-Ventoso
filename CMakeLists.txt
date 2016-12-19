@@ -19,9 +19,8 @@ set_target_properties( snap PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib
 add_library(Scimmia scimmia.cpp)
 add_library(Parete parete.cpp)
 target_link_libraries(Parete snap rt)
-target_link_libraries(Parete sfml-graphics sfml-system sfml-window)
 target_link_libraries(Scimmia Parete)
-add_library(Evoluzione evoluzione.cpp)
+add_library(Evoluzione STATIC evoluzione.cpp)
 add_executable(testSpeed testSpeed.cpp)
 
 target_link_libraries(Evoluzione Scimmia)

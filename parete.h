@@ -11,8 +11,8 @@
 #include <vector>
 #include <algorithm>
 #include <string>
-#include <SFML/Graphics.hpp>
 #include <stdlib.h>
+
 struct Point : public TIntPr {
     Point();
     double dist(Point p);
@@ -43,9 +43,6 @@ public:
     int get_d()const ;
     double get_prob_appiglio() const;
     double get_prob_appoggio() const;
-    void set_window(sf::RenderWindow& window, std::string titolo);
-    void draw(int n, sf::RenderWindow& window);
-    void animate(std::vector<int> v, std::string titolo="Parete");
     Parete();
     Parete(const Parete &pr);
     Parete(Parete &&pr);

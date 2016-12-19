@@ -1,14 +1,19 @@
 QT += qml quick
 
 CONFIG += c++14
-
+LIBS += -L$$PWD/../ -lEvoluzione
+LIBS += -L$$PWD/../ -lScimmia
+LIBS += -L$$PWD/../ -lParete
+LIBS += $$PWD/../lib/Snap-3.0/snap-core/Snap.o
+LIBS += -lrt
+LIBS += -fopenmp
 SOURCES += main.cpp \
     grafica.cpp
 
 RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
+QML_IMPORT_PATH =/opt/Qt/5.7/
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
@@ -33,3 +38,25 @@ HEADERS += \
     grafica.h
 
 FORMS +=
+
+
+INCLUDEPATH += $$PWD/../
+INCLUDEPATH += $$PWD/../lib/Snap-3.0/snap-core
+INCLUDEPATH += $$PWD/../lib/Snap-3.0/glib-core
+DEPENDPATH += $$PWD/../
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../libEvoluzione.a
+
+DISTFILES += \
+    SchermataForm.ui.qml \
+    Schermata.qml \
+    qt.conf
+
+unix:!macx: LIBS += -L$$PWD/../ -lEvoluzione
+
+INCLUDEPATH += $$PWD/../
+DEPENDPATH += $$PWD/../
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../libEvoluzione.a
+
+unix: CONFIG += link_pkgconfig

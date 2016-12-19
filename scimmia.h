@@ -1,15 +1,12 @@
 #ifndef SCIMMIA
 #define SCIMMIA
-#include <iostream>
 #include <cmath>
 #include <set>
 #include <cstdlib>
 #include <vector>
-#include <set>
 #include <random>
 #include <algorithm>
 #include "parete.h"
-#include <Snap.h>
 
 class Scimmia
 {

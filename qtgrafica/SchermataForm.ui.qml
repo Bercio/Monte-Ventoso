@@ -1,5 +1,4 @@
 import QtQuick 2.4
-import QtQuick.Controls.Material 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Extras 1.4
@@ -8,12 +7,12 @@ Item {
     id: item1
     width: 1200
     height: 600
+    property alias text1: text1
     property alias parete: parete
     property alias individui: individui
     property alias passi: passi
     property alias pcross: pcross
     property alias pmuta: pmuta
-    property alias textField: textField
     property alias busyIndicator: busyIndicator
     property alias button2: button2
     property alias button1: button1
@@ -60,7 +59,6 @@ Item {
 
         ComboBox {
             id: comboBox
-            model: ["Rita", "Lorenzo"]
             currentIndex: 0
         }
 
@@ -158,13 +156,14 @@ Item {
         x: 484
         y: 193
     }
-    
-    TextField {
-        id: textField
-        x: 414
-        y: 289
-        text: qsTr("Text Field")
-        anchors.horizontalCenter: busyIndicator.horizontalCenter
+
+    Text {
+        id: text1
+        x: 501
+        y: 146
+        text: qsTr("Text")
+        fontSizeMode: Text.Fit
+        font.pixelSize: 12
     }
 
 }

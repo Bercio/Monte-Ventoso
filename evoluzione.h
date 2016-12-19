@@ -6,16 +6,13 @@
 
 #include <random>
 #include "scimmia.h"
-#include <stdlib.h>
-#include <iomanip>
 #include <functional>
-#include "Snap.h"
 
 class Evoluzione {
     Parete parete;
     std::vector<Scimmia> generazione;
     double p_cross, p_muta;
-    std::function<double(Scimmia&, TNodeEDatNet<Point,Point>::TNodeI&, const Parete&)> fit_func
+    std::function<double(Scimmia&, TNodeEDatNet<Point,Point>::TNodeI&, const Parete&)> fit_func;
 public:
     const Parete &getParete() const;
 
@@ -57,8 +54,6 @@ public:
 
     void set_pmuta(double _p_muta);
 
-    void set_fitfunc(function<double(Scimmia&, TNodeEDatNet<Point,Point>::TNodeI&, const Parete&)> _fit_func);
-
-    void animate();
+    void set_fitfunc(std::function<double(Scimmia&, TNodeEDatNet<Point,Point>::TNodeI&, const Parete&)> _fit_func);
 };
 #endif //SISTEMI_COMPLESSI_EVOLUZIONE_H

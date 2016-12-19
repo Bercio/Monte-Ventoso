@@ -2,7 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>Window.qml</file>
-        <file>WindowForm.ui.qml</file>
+        <file>Schermata.qml</file>
+        <file>SchermataForm.ui.qml</file>
     </qresource>
 </RCC>

@@ -12,12 +12,15 @@ Iter select_randomly(Iter start, Iter end) {
     std::advance(start, dis(gen));
     return start;
 }
-
+//genera una scimmia con dna casuale-> è un numero compreso tra 0 e 3 poichè sono 4 le azioni possibili:
+//andare su padri noti, padri ignoti, figli noti, figli ignoti
 Scimmia::Scimmia(): dna(N), fit(0), loop(false), stato(0), memoria({}){
     uniform_int_distribution<int> actions(0,3);
     generate(dna.begin(),dna.end(),[&](){return actions(gen);});
 }
 
+//genera una scimmia con dna derivato dal cross over: scelgo un punto di taglio del dna (a caso tra la pos 1 e la pos 14)
+//il dna del nascituro è l'unione della parte a sinistra del taglio del dna della madre e della parte a destra del dna del padre.
 Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false),stato(0), memoria({}) {
     vector<int> _dna(N);
     uniform_int_distribution<int> range(1,14);
@@ -28,7 +31,7 @@ Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false),stato(0), memoria(
     copy(secondo.begin()+rnd,secondo.end(), l );
     set_dna(_dna);
 }
-
+//scimmia con dna impostabile dall'esterno
 Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), loop(false) {;
 }
 
@@ -51,7 +54,11 @@ vector<int> Scimmia::get_dna() const { return dna; }
 int Scimmia::get_stato() const { return stato;}
 
 int Scimmia::scegli_azione(){ return dna[stato]; }
-
+//lo stato è la configurazione di nodi che la scimmia vede
+//la scimmia può vedere solo nodi appartenenti a 4 categorie ciascuna contrassegnata dall'etichetta presente (1) o non presente (0).
+// Quindi ogni stato può essere rappresentato da un numero binario tra 0 e 15.
+//set stato categorizza i nodi (node) raggiungibili dalla scimmia in base a se sono piu in alto (Val2 è la y) o più in
+//basso e controlla se sono presenti in memoria o meno.
 void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
     bool fn=0,pn(0),fi(0),pi(0);
     for (int i = 0; i < node.GetOutDeg(); ++i){
@@ -68,7 +75,8 @@ void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
     stato = fn + pn*2 + fi*4 + pi*8;
 }
 
-bool Scimmia::is_looping(const int& passi) {
+//controlla se la scimia si alterna tra due nodi;
+bool Scimmia::is_looping() {
            return passi > 6 &&
            *(get_memoria().end() - 2) == *(get_memoria().end() - 4) &&
            *(get_memoria().end() - 1) == *(get_memoria().end() - 3);
@@ -81,6 +89,10 @@ void Scimmia::muta(){
     _dna[range(gen)] = actions(gen);
     set_dna(_dna);
 }
+//fa muovere la scimmia in base alla sua strategia (dna)  tramite la funz scegli_azione
+//prima di chiamarla devo chiamare set stato altrimenti non ha senso
+//riceve la posizione della scimmia assegna ogni id del nodo a una categoria e poi nello switch sposta la posizione
+//in uno dei nodi a caso appartenente alla categoria scelta
 
 int Scimmia::move(const TNodeEDatNet<Point,Point>::TNodeI& pos){
     vector<int> padri_n, padri_ig, figli_n, figli_ig;
@@ -107,18 +119,20 @@ int Scimmia::move(const TNodeEDatNet<Point,Point>::TNodeI& pos){
     }
 }
 
+//far muovere la scimmia per n_passi sulla parete
+//dichiara la posizione e la aggiorna chiamando move. Setta anche la memoria e il loop
 TNodeEDatNet<Point,Point>::TNodeI Scimmia::traverse(const Parete& parete, int n_passi) {
     TNodeEDatNet<Point,Point>::TNodeI pos = parete.get_p()->GetNI(parete.get_startID());
     for (int j = 0; j < n_passi; j++) {
         int posID = pos.GetId();
         set_stato(pos);
         set_memoria(posID);
-        if(is_looping(j)) set_loop(true);
+        set_loop(is_looping());
         if(posID == parete.get_endID()) break;
         pos = parete.get_p()->GetNI(move(pos));
         if(get_memoria().back() == pos.GetId()) {
-            for(int i = j+1; i < n_passi; ++i) set_memoria(posID);
             set_loop(true);
+            for(int i = j+1; i < n_passi; ++i) set_memoria(posID);
             break;
         }
     }
