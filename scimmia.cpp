@@ -76,7 +76,7 @@ void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
 }
 
 //controlla se la scimia si alterna tra due nodi;
-bool Scimmia::is_looping() {
+bool Scimmia::is_looping(const int& passi) {
            return passi > 6 &&
            *(get_memoria().end() - 2) == *(get_memoria().end() - 4) &&
            *(get_memoria().end() - 1) == *(get_memoria().end() - 3);
@@ -127,7 +127,7 @@ TNodeEDatNet<Point,Point>::TNodeI Scimmia::traverse(const Parete& parete, int n_
         int posID = pos.GetId();
         set_stato(pos);
         set_memoria(posID);
-        set_loop(is_looping());
+        set_loop(is_looping(memoria.size()));
         if(posID == parete.get_endID()) break;
         pos = parete.get_p()->GetNI(move(pos));
         if(get_memoria().back() == pos.GetId()) {

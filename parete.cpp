@@ -85,8 +85,8 @@ Parete::Parete(vector<Point> points, int d, double p_appi, double p_appo, int m_
                 //if l under i appo is i->l and appi is l->i; if not appi (->) surely at least <-, if neither appi nor appo l<.i;
                 if(points[l].Val2<points[i].Val2){swap(prob_appoggio,prob_appiglio);}
                 double prob = probs(gen);
-                if(prob > _prob_appoggio) p->AddEdge(i,l,points[i] - points[l]);
-                if(prob < 1-_prob_appi) p->AddEdge(l,i, points[l] - points[i]);
+                if(prob > prob_appoggio) p->AddEdge(i,l,points[i] - points[l]);
+                if(prob < 1-prob_appiglio) p->AddEdge(l,i, points[l] - points[i]);
             }
         }
     }
