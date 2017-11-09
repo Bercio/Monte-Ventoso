@@ -9,16 +9,16 @@ set(SOURCE_FILES
     cmake-build-debug/CMakeFiles/3.6.2/CompilerIdCXX/CMakeCXXCompilerId.cpp
     cmake-build-debug/CMakeFiles/feature_tests.c
     cmake-build-debug/CMakeFiles/feature_tests.cxx
-    genetico.h
         )
 
 include_directories(lib/Snap-3.0/glib-core lib/Snap-3.0/snap-core)
-add_library( snap SHARED IMPORTED)
 add_subdirectory(tests)
+add_library(snap SHARED IMPORTED)
 set_target_properties( snap PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib/Snap-3.0/snap-core/Snap.o)
 add_library(Scimmia scimmia.cpp)
 add_library(Parete parete.cpp)
 target_link_libraries(Parete snap rt)
+target_link_libraries(Parete sfml-graphics sfml-system sfml-window)
 target_link_libraries(Scimmia Parete)
 add_library(Evoluzione STATIC evoluzione.cpp)
 add_executable(testSpeed testSpeed.cpp)
