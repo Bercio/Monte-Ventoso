@@ -1,13 +1,14 @@
 #include "evoluzione.h"
-
 using namespace std;
+using namespace TSnap;
 random_device caso;
 default_random_engine casuale(caso());
 typedef TNodeEDatNet<Point,Point> TNet;
 
 void Evoluzione::change_parete(int N, int x, int y, int d, double prob_appo, double prob_appi, int min_depth)
 {
-	parete = get_random_p(N, x, y, d, prob_appo, prob_appi, min_depth);
+	parete = rnd_solvable_parete(N, x, y, d, prob_appo, prob_appi, min_depth);
+
 }
 
 void Evoluzione::riproduzione ()
@@ -18,6 +19,7 @@ void Evoluzione::riproduzione ()
 	uniform_real_distribution<> dis(0,1);
 	discrete_distribution<> best(pesi.begin(), pesi.end());
 //inizializzo new_gen con Scimmie selezionate con cross-over, mutazione e clonazione
+        //if individui gets changed riproduzione will generate a bigger generazione than the previous one. swap works regardless.
 	for (int i=0; i<individui; i++)
 	{
 		double prob = dis(casuale);
@@ -29,11 +31,15 @@ void Evoluzione::riproduzione ()
     swap(generazione,new_gen);
 }
 
-void Evoluzione::evoluzione(function<double(Scimmia&, TNet::TNodeI&, const Parete&)> fit_func) {
+void Evoluzione::set_fitfunc(function<double(Scimmia&, TNet::TNodeI&, const Parete&)> _fit_func){
+    fit_func = _fit_func;
+}
+void Evoluzione::evoluzione() {
     riproduzione();
-    for (auto& i : generazione) {
-        TNet::TNodeI pos = i.traverse(parete, passi);
-        i.set_fit(fit_func(i, pos, parete));
+    #pragma omp parallel for
+    for (auto i = generazione.begin(); i < generazione.end(); ++i) {
+        TNet::TNodeI pos = i->traverse(parete, passi);
+        i->set_fit(fit_func(*i, pos, parete));
     }
 }
 
@@ -44,12 +50,13 @@ Scimmia Evoluzione::best_scimmia(){
 Evoluzione::Evoluzione() = default;
 
 Evoluzione::Evoluzione(int passi, int individui, double p_cross, double p_muta) :
-		passi(passi), individui(individui), p_cross(p_cross), p_muta(p_muta), generazione(individui), parete(){
+		passi(passi), individui(individui), p_cross(p_cross), p_muta(p_muta), generazione(individui), parete(), fit_func(&Scimmia::fit_func_riri){
 	change_parete();
 }
 
 void Evoluzione::new_gen(){
-	generate(generazione.begin(),generazione.end(),[](){return Scimmia();});
+    vector<Scimmia> newgen(individui);
+    swap(generazione,newgen);
 }
 void Evoluzione::set_individui(int _individui) {
     individui = _individui;
@@ -65,4 +72,32 @@ void Evoluzione::set_pcross(double _p_cross) {
 
 void Evoluzione::set_pmuta(double _p_muta) {
 	p_muta = _p_muta;
+}
+const Parete &Evoluzione::getParete() const {
+    return parete;
+}
+
+const vector<Scimmia> &Evoluzione::getGenerazione() const {
+    return generazione;
+}
+
+double Evoluzione::getP_cross() const {
+    return p_cross;
+}
+
+double Evoluzione::getP_muta() const {
+    return p_muta;
+}
+
+const function<double(Scimmia &, TNodeEDatNet<Point, Point>::TNodeI &, const Parete &)> &
+Evoluzione::getFit_func() const {
+    return fit_func;
+}
+
+int Evoluzione::getPassi() const {
+    return passi;
+}
+
+int Evoluzione::getIndividui() const {
+    return individui;
 }

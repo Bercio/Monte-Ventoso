@@ -1,15 +1,12 @@
 #ifndef SCIMMIA
 #define SCIMMIA
-#include <iostream>
 #include <cmath>
 #include <set>
 #include <cstdlib>
 #include <vector>
-#include <set>
 #include <random>
 #include <algorithm>
 #include "parete.h"
-#include <Snap.h>
 
 class Scimmia
 {
@@ -25,9 +22,9 @@ public:
     std::vector<int> get_dna() const;
     void set_dna(const std::vector<int> &dna);
     int scegli_azione();
-    void set_memoria(int node);
+    void set_memoria(const int& node);
     std::vector<int> get_memoria() const;
-    void set_stato(TNodeEDatNet<Point,Point>::TNodeI node);
+    void set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node);
     int get_stato() const;
     double get_fit() const;
     double fit_func_lo(TNodeEDatNet<Point,Point>::TNodeI& n,const Parete& g);
@@ -36,9 +33,9 @@ public:
 	Scimmia();
     Scimmia(Scimmia& m, Scimmia& p);
     void muta(); 
-	bool is_looping(int passi);
-	TNodeEDatNet<Point,Point>::TNodeI traverse(Parete parete, int n_passi);
+	bool is_looping(const int& passi);
+	TNodeEDatNet<Point,Point>::TNodeI traverse(const Parete& parete, int n_passi);
     Scimmia(std::vector<int>& _dna);
-    int move(TNodeEDatNet<Point,Point>::TNodeI pos);
+    int move(const TNodeEDatNet<Point,Point>::TNodeI& pos);
 };
 #endif

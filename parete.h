@@ -45,16 +45,13 @@ public:
     double get_prob_appoggio() const;
     void set_window(sf::RenderWindow& window, std::string titolo);
     void draw(int n, sf::RenderWindow& window);
-    void animate(std::vector<int> v, std::string titolo="Parete");
+    void animate(std::vector<int> v, std::string titolo);
     Parete();
     Parete(const Parete &pr);
-    Parete(Parete &&pr);
-    Parete operator=(Parete pr);
     bool operator==(const Parete& pr) const;
     Parete(std::vector<Point> ret, int d, double p_ap, double p_appi, int min_depth);
-    friend Parete get_random_p(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
-    friend void swap(Parete& p, Parete& s);
+    friend Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
     void write_schema(TStr filename);
 };
-Parete get_random_p(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
+Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
 #endif //SISTEMI_COMPLESSI_GRAPH_H
