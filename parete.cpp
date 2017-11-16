@@ -1,8 +1,4 @@
 #include "parete.h"
-#include <exception>
-#include "ctime"
-#include <utility>
-#include <iostream>
 
 using namespace TSnap;
 using namespace std;
@@ -110,17 +106,17 @@ void Parete::set_window(sf::RenderWindow& window, string titolo="Parete"){
     p->GetNIdV(v);
     int nmaxx = p->GetNDat(*max_element(v.BegI(), v.EndI(), [&](TInt& n, TInt& m){ return p->GetNDat(n).Val1 < p->GetNDat(m).Val1;})).Val1;
     int nmaxy = p->GetNDat(get_endID()).Val2;
-    corr = 50.0/d_nodi;
+    corr = 300.0/d_nodi;
     int pix_h = ceil(corr * nmaxy) + 40;
     int pix_w = ceil(corr * nmaxx) + 40;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     if (pix_w > desktop.width) {
         pix_w = desktop.width;
-        corr = (desktop.width - 20)/((double)nmaxx);
+        corr = (desktop.width - 40)/((double)nmaxx);
     }
     if (pix_h > desktop.height) {
         pix_h = desktop.height;
-        corr = (desktop.height -100)/((double)nmaxy);
+        corr = (desktop.height -400)/((double)nmaxy);
     }
 
     sf::ContextSettings settings = window.getSettings();
@@ -134,7 +130,7 @@ void Parete::set_window(sf::RenderWindow& window, string titolo="Parete"){
 void Parete::draw(int n, sf::RenderWindow& window){
     vector<sf::CircleShape> app;
     sf::VertexArray line(sf::Lines, 2);
-    sf::CircleShape shape(2.f);
+    sf::CircleShape shape(10.f);
     for(auto i = p->BegNI(); i < p->EndNI(); i++) {
         bool appog=false, appigl=false;
         line[0].position = sf::Vector2f(i.GetDat().Val1*corr, i.GetDat().Val2*corr);
@@ -162,13 +158,13 @@ void Parete::animate(vector<int> v, string titolo="Parete"){
     sf::RenderWindow window;
     this->set_window(window, titolo);
     vector<int>::iterator i = v.begin();
-    bool parti = false;
+    bool parti = true;
     while (window.isOpen() ){
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
-            if (event.type == sf::Event::MouseButtonPressed) parti = !parti;
+            if (event.type == sf::Event::MouseButtonPressed) parti = true;
         }
         if (i == v.end()) i = v.begin();
         if (parti) {
@@ -177,6 +173,7 @@ void Parete::animate(vector<int> v, string titolo="Parete"){
             window.display();
             ++i;
             sleep(1);
+            parti = false;
         }
     }
 }
@@ -188,7 +185,7 @@ double Parete::get_prob_appiglio()const { return prob_appiglio;}
 double Parete::get_prob_appoggio()const { return prob_appoggio;}
 PNet Parete::get_p()const {return p;}
 bool Parete::operator ==(const Parete& pr) const {return end == pr.end && start == pr.start;}
-Parete get_random_p(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth) {
+Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth) {
     vector<Point> ret = gen_p_distr(N,x,y);
     Parete wall;
     double time = clock();

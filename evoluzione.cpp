@@ -7,7 +7,8 @@ typedef TNodeEDatNet<Point,Point> TNet;
 
 void Evoluzione::change_parete(int N, int x, int y, int d, double prob_appo, double prob_appi, int min_depth)
 {
-	parete = get_random_p(N, x, y, d, prob_appo, prob_appi, min_depth);
+	parete = rnd_solvable_parete(N, x, y, d, prob_appo, prob_appi, min_depth);
+
 }
 
 void Evoluzione::riproduzione ()
