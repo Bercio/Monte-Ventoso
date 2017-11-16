@@ -6,6 +6,7 @@
 
 #include <random>
 #include "scimmia.h"
+#include <iostream>
 #include <functional>
 
 class Evoluzione {

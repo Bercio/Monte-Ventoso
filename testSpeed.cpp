@@ -1,6 +1,7 @@
 //
 // Created by bercio on 15/12/16.
 //
+#include <iostream>
 #include "evoluzione.h"
 using namespace std;
 int main(){

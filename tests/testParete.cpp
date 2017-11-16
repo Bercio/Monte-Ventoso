@@ -55,7 +55,7 @@ TEST_F(PareteTest, Grafica){
     for(auto i = T.get_p()->BegNI(); i < T.get_p()->EndNI(); i++){
         v.push_back(i.GetId());
     }
-    T.animate(v);
+    T.animate(v,"titolo");
 }
 
 
