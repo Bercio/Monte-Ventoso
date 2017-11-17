@@ -1,0 +1,5 @@
+/home/rita/Documenti/Programmi/Monte-Ventoso/tests/CMakeFiles/testScimmia.dir
+/home/rita/Documenti/Programmi/Monte-Ventoso/tests/CMakeFiles/rebuild_cache.dir
+/home/rita/Documenti/Programmi/Monte-Ventoso/tests/CMakeFiles/testParete.dir
+/home/rita/Documenti/Programmi/Monte-Ventoso/tests/CMakeFiles/test.dir
+/home/rita/Documenti/Programmi/Monte-Ventoso/tests/CMakeFiles/edit_cache.dir
