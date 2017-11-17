@@ -22,7 +22,9 @@ target_link_libraries(Parete sfml-graphics sfml-system sfml-window)
 target_link_libraries(Scimmia Parete)
 add_library(Evoluzione STATIC evoluzione.cpp)
 add_executable(testSpeed testSpeed.cpp) #l'eseguibile è testSpeed
+add_executable(sfml mainsfml.cpp)
 
 target_link_libraries(Evoluzione Scimmia)
 target_link_libraries(testSpeed Evoluzione)
+target_link_libraries(sfml Evoluzione)
 target_include_directories (Evoluzione PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

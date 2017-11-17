@@ -10,6 +10,7 @@
 #include <cmath>
 #include <vector>
 #include <algorithm>
+#include <utility>
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <stdlib.h>
@@ -28,7 +29,6 @@ class Parete {
     double prob_appoggio;
     int end;
     int start;
-    double corr;
     int min_depth;
     void norm_coord();
     bool is_viable();
@@ -43,9 +43,10 @@ public:
     int get_d()const ;
     double get_prob_appiglio() const;
     double get_prob_appoggio() const;
-    void set_window(sf::RenderWindow& window, std::string titolo);
-    void draw(int n, sf::RenderWindow& window);
-    void animate(std::vector<int> v, std::string titolo);
+    const std::tuple<double, unsigned int, unsigned int> corr() const;
+        void set_window(sf::RenderWindow &window, std::string titolo) const;
+    void draw(int n, sf::RenderWindow& window) const;
+    void animate(std::vector<int> v, std::string titolo) const;
     Parete();
     Parete(const Parete &pr);
     bool operator==(const Parete& pr) const;

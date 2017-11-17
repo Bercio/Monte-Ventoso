@@ -22,7 +22,7 @@ public:
             v.push_back(Point(i / 2, i));
         }
         X = Parete(v,3,0,0, min_depth);
-        G = get_random_p(N,x,y,d,prob_appo,prob_appi,min_depth);
+        G = rnd_solvable_parete(N,x,y,d,prob_appo,prob_appi,min_depth);
         P = G;
         AC = TSnap::GetMxWcc(X.get_p());
     }
@@ -40,14 +40,14 @@ TEST_F(PareteTest, constructtest) {
 }
 TEST_F(PareteTest, ArgsEffect){
     Parete T;
-    T = get_random_p(N,x,y,d,prob_appo,prob_appi,2);
+    T = rnd_solvable_parete(N,x,y,d,prob_appo,prob_appi,2);
     EXPECT_LE(G.get_p()->GetNodes(),T.get_p()->GetNodes());
     Parete M(v,10,0.1,0.3,8);
     EXPECT_GT(AC->GetNodes(), TSnap::GetMxWccSz(M.get_p()));
 }
 TEST_F(PareteTest, Grafica){
     Parete T;
-    T = get_random_p(300, x, y, 5, prob_appo, prob_appi, 2);
+    T = rnd_solvable_parete(300, x, y, 5, prob_appo, prob_appi, 2);
     /* T.set_window(v);
     T.draw(T.get_startID(),v);
     EXPECT_NO_FATAL_FAILURE(T.draw(T.get_startID(),w)); */

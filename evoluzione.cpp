@@ -11,7 +11,7 @@ void Evoluzione::change_parete(int N, int x, int y, int d, double prob_appo, dou
 
 }
 
-void Evoluzione::riproduzione ()
+void Evoluzione::riproduzione ()//inizializza generazione con la nuova generazione di scimmie selezionate in base al fit
 {
 	vector<Scimmia> new_gen;
 	vector<double> pesi;
@@ -34,7 +34,7 @@ void Evoluzione::riproduzione ()
 void Evoluzione::set_fitfunc(function<double(Scimmia&, TNet::TNodeI&, const Parete&)> _fit_func){
     fit_func = _fit_func;
 }
-void Evoluzione::evoluzione() {
+void Evoluzione::evoluzione() { //TODO devo fare una funzione che animi scimmia.memoria
     riproduzione();
     #pragma omp parallel for
     for (auto i = generazione.begin(); i < generazione.end(); ++i) {

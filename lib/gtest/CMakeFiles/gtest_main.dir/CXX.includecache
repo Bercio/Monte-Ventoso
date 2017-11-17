@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/bercio/Uni/Programmazione/Sistemi_Complessi/lib/gtest/src/gtest_main.cc
+/home/rita/Documenti/Programmi/Monte-Ventoso/lib/gtest/src/gtest_main.cc
 stdio.h
 -
 gtest/gtest.h
-/home/bercio/Uni/Programmazione/Sistemi_Complessi/lib/gtest/src/gtest/gtest.h
+/home/rita/Documenti/Programmi/Monte-Ventoso/lib/gtest/src/gtest/gtest.h
 
 lib/gtest/include/gtest/gtest-death-test.h
 gtest/internal/gtest-death-test-internal.h

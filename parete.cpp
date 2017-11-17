@@ -101,51 +101,55 @@ Parete::Parete(const Parete &pr) {
     prob_appoggio = pr.get_prob_appoggio();
 }
 Parete::Parete() = default;
-void Parete::set_window(sf::RenderWindow& window, string titolo="Parete"){
+const tuple<double, unsigned int, unsigned int> Parete::corr() const {
+    tuple<double, unsigned int, unsigned int> r;
     TIntV v;
     p->GetNIdV(v);
     int nmaxx = p->GetNDat(*max_element(v.BegI(), v.EndI(), [&](TInt& n, TInt& m){ return p->GetNDat(n).Val1 < p->GetNDat(m).Val1;})).Val1;
     int nmaxy = p->GetNDat(get_endID()).Val2;
-    corr = 300.0/d_nodi;
-    int pix_h = ceil(corr * nmaxy) + 40;
-    int pix_w = ceil(corr * nmaxx) + 40;
+    get<0>(r) = 300.0/d_nodi;
+    get<1>(r) = ceil(get<0>(r) * nmaxy) + 40;
+    get<2>(r) = ceil(get<0>(r) * nmaxx) + 40;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    if (pix_w > desktop.width) {
-        pix_w = desktop.width;
-        corr = (desktop.width - 40)/((double)nmaxx);
+    if (get<1>(r) > desktop.width) {
+        get<1>(r) = desktop.width;
+        get<0>(r) = (desktop.width - 40)/((double)nmaxx);
     }
-    if (pix_h > desktop.height) {
-        pix_h = desktop.height;
-        corr = (desktop.height -400)/((double)nmaxy);
+    if (get<2>(r) > desktop.height) {
+        get<2>(r) = desktop.height;
+        get<0>(r) = (desktop.height -400)/((double)nmaxy);
     }
-
+    return r;
+}
+void Parete::set_window(sf::RenderWindow &window, string titolo = "Parete")const{
     sf::ContextSettings settings = window.getSettings();
     settings.antialiasingLevel = 8;
-    window.create(sf::VideoMode(pix_w, pix_h),titolo , sf::Style::Default, settings);
+    window.create(sf::VideoMode(get<1>(corr()),get<2>(corr())),titolo , sf::Style::Default, settings);
     sf::View viw = window.getView();
     viw.rotate(180);
-    viw.setCenter(ceil(nmaxx*corr/2.0), ceil(nmaxy*corr/2.0));
+    viw.setCenter(ceil(get<1>(corr())/2.0), ceil(get<2>(corr())/2.0));
     window.setView(viw);
 }
-void Parete::draw(int n, sf::RenderWindow& window){
+void Parete::draw(int n, sf::RenderWindow& window)const{
     vector<sf::CircleShape> app;
     sf::VertexArray line(sf::Lines, 2);
     sf::CircleShape shape(10.f);
+    double cor = get<0>(corr());
     for(auto i = p->BegNI(); i < p->EndNI(); i++) {
         bool appog=false, appigl=false;
-        line[0].position = sf::Vector2f(i.GetDat().Val1*corr, i.GetDat().Val2*corr);
+        line[0].position = sf::Vector2f(i.GetDat().Val1*cor, i.GetDat().Val2*cor);
         line[0].color = sf::Color::Black;
         for(int j = 0; j < i.GetInDeg(); ++j){
             if(i.GetInEDat(j).Val2 > 0) appog = true;
             else appigl = true;
-            line[1].position = sf::Vector2f(i.GetInNDat(j).Val1*corr, i.GetInNDat(j).Val2*corr);
+            line[1].position = sf::Vector2f(i.GetInNDat(j).Val1*cor, i.GetInNDat(j).Val2*cor);
             line[1].color = sf::Color::Black;
             window.draw(line);
         }
         if (appog == appigl) shape.setPointCount(6);
         else shape.setPointCount(3);
         if (appog) shape.rotate(180);
-        shape.setPosition((i.GetDat().Val1*corr), (i.GetDat().Val2*corr));
+        shape.setPosition((i.GetDat().Val1*cor), (i.GetDat().Val2*cor));
         line[0] = sf::Vector2f(i.GetDat().Val1, i.GetDat().Val2);
         if (i.GetId() == end) shape.setFillColor(sf::Color::Green);
         else if (i.GetId() == n) shape.setFillColor(sf::Color::Red);
@@ -154,7 +158,7 @@ void Parete::draw(int n, sf::RenderWindow& window){
     }
 
 }
-void Parete::animate(vector<int> v, string titolo="Parete"){
+void Parete::animate(vector<int> v, string titolo="Parete")const{
     sf::RenderWindow window;
     this->set_window(window, titolo);
     vector<int>::iterator i = v.begin();
