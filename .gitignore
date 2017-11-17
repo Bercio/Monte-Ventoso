@@ -3,7 +3,6 @@
 
 *~
 *.autosave
-*.a
 *.core
 *.moc
 *.o
@@ -20,8 +19,8 @@
 core
 lib/
 build-qtgrafica-Desktop_Qt_5_9_2_G*/
-*.a
 qt5/
+.idea/
 !core/
 tags
 .DS_Store
@@ -74,4 +73,4 @@ Thumbs.db
 # --------
 *.dll
 *.exe
-
+*.a
