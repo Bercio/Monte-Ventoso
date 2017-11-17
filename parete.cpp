@@ -183,7 +183,7 @@ int Parete::get_endID()const { return end;}
 int Parete::get_min_depth()const { return min_depth;}
 double Parete::get_prob_appiglio()const { return prob_appiglio;}
 double Parete::get_prob_appoggio()const { return prob_appoggio;}
-PNet Parete::get_p()const {return p;}
+const PNet &Parete::get_p()const {return p;}
 bool Parete::operator ==(const Parete& pr) const {return end == pr.end && start == pr.start;}
 Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth) {
     vector<Point> ret = gen_p_distr(N,x,y);

@@ -39,7 +39,7 @@ public:
     int get_endID()const ;
     int get_startID()const ;
     int get_min_depth()const ;
-    TPt<TNodeEDatNet<Point,Point>> get_p()const ;
+    const TPt<TNodeEDatNet<Point, Point>> & get_p()const ;
     int get_d()const ;
     double get_prob_appiglio() const;
     double get_prob_appoggio() const;
