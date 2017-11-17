@@ -6,5 +6,5 @@ CXX_FLAGS = -g    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/bercio/Uni/Programmazione/Sistemi_Complessi/lib/gtest/include -I/home/bercio/Uni/Programmazione/Sistemi_Complessi/lib/gtest 
+CXX_INCLUDES = -I/home/rita/Documenti/Programmi/Monte-Ventoso/lib/gtest/include -I/home/rita/Documenti/Programmi/Monte-Ventoso/lib/gtest 
 
