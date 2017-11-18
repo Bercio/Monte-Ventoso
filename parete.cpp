@@ -107,33 +107,38 @@ const tuple<double, unsigned int, unsigned int> Parete::corr() const {
     p->GetNIdV(v);
     int nmaxx = p->GetNDat(*max_element(v.BegI(), v.EndI(), [&](TInt& n, TInt& m){ return p->GetNDat(n).Val1 < p->GetNDat(m).Val1;})).Val1;
     int nmaxy = p->GetNDat(get_endID()).Val2;
-    get<0>(r) = 300.0/d_nodi;
-    get<1>(r) = ceil(get<0>(r) * nmaxy) + 40;
-    get<2>(r) = ceil(get<0>(r) * nmaxx) + 40;
+    get<0>(r) = 50.0/d_nodi;
+    get<1>(r) = ceil(get<0>(r) * nmaxx) + 40;
+    get<2>(r) = ceil(get<0>(r) * nmaxy) + 40;
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     if (get<1>(r) > desktop.width) {
         get<1>(r) = desktop.width;
-        get<0>(r) = (desktop.width - 40)/((double)nmaxx);
+        get<0>(r) = (desktop.width - 20)/((double)nmaxx);
     }
     if (get<2>(r) > desktop.height) {
         get<2>(r) = desktop.height;
-        get<0>(r) = (desktop.height -400)/((double)nmaxy);
+        get<0>(r) = (desktop.height -100)/((double)nmaxy);
     }
     return r;
 }
 void Parete::set_window(sf::RenderWindow &window, string titolo = "Parete")const{
+    TIntV v;
+    p->GetNIdV(v);
+    int nmaxx = p->GetNDat(*max_element(v.BegI(), v.EndI(), [&](TInt& n, TInt& m){ return p->GetNDat(n).Val1 < p->GetNDat(m).Val1;})).Val1;
+    int nmaxy = p->GetNDat(get_endID()).Val2;
     sf::ContextSettings settings = window.getSettings();
     settings.antialiasingLevel = 8;
     window.create(sf::VideoMode(get<1>(corr()),get<2>(corr())),titolo , sf::Style::Default, settings);
     sf::View viw = window.getView();
     viw.rotate(180);
-    viw.setCenter(ceil(get<1>(corr())/2.0), ceil(get<2>(corr())/2.0));
+
+    viw.setCenter(ceil(nmaxx*get<0>(corr())/2.0), ceil(nmaxy*get<0>(corr())/2.0));
     window.setView(viw);
 }
 void Parete::draw(int n, sf::RenderWindow& window)const{
     vector<sf::CircleShape> app;
     sf::VertexArray line(sf::Lines, 2);
-    sf::CircleShape shape(10.f);
+    sf::CircleShape shape(2.f);
     double cor = get<0>(corr());
     for(auto i = p->BegNI(); i < p->EndNI(); i++) {
         bool appog=false, appigl=false;
