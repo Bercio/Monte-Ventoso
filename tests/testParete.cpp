@@ -17,13 +17,13 @@ public:
     double prob_appo, prob_appi;
     PareteTest(){
         N = 100; d = 5; x = 50; y = 100; min_depth = 3; prob_appo=0.2; prob_appi= 0.3;
-        G = get_random_p(N,x,y,d,prob_appo,prob_appi,min_depth);
-        P = G;
         default_random_engine gen;
         for (int i =0; i < 50; ++i) {
             v.push_back(Point(i / 2, i));
         }
         X = Parete(v,3,0,0, min_depth);
+        G = rnd_solvable_parete(N,x,y,d,prob_appo,prob_appi,min_depth);
+        P = G;
         AC = TSnap::GetMxWcc(X.get_p());
     }
 };
@@ -40,18 +40,14 @@ TEST_F(PareteTest, constructtest) {
 }
 TEST_F(PareteTest, ArgsEffect){
     Parete T;
-    T = get_random_p(N,x,y,d,prob_appo,prob_appi,3);
+    T = rnd_solvable_parete(N,x,y,d,prob_appo,prob_appi,2);
     EXPECT_LE(G.get_p()->GetNodes(),T.get_p()->GetNodes());
     Parete M(v,10,0.1,0.3,8);
     EXPECT_GT(AC->GetNodes(), TSnap::GetMxWccSz(M.get_p()));
-    Parete U = get_random_p(100,x,y,d,0.6,prob_appi,min_depth);
-    EXPECT_GT(U.get_p()->GetNodes(),G.get_p()->GetNodes());
 }
 TEST_F(PareteTest, Grafica){
     Parete T;
-    T = get_random_p(300, x, y, 5, prob_appo, prob_appi, 4);
-    sf::RenderWindow window;
-    T.set_window(window, std::__cxx11::string());
+    T = rnd_solvable_parete(300, x, y, 5, prob_appo, prob_appi, 2);
     /* T.set_window(v);
     T.draw(T.get_startID(),v);
     EXPECT_NO_FATAL_FAILURE(T.draw(T.get_startID(),w)); */
@@ -59,7 +55,7 @@ TEST_F(PareteTest, Grafica){
     for(auto i = T.get_p()->BegNI(); i < T.get_p()->EndNI(); i++){
         v.push_back(i.GetId());
     }
-    T.animate(v);
+    T.animate(v,"titolo");
 }
 
 
