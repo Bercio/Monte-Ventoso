@@ -1,5 +1,5 @@
 #include "grafica.h"
-grafica::grafica(QObject* parent) : QObject(parent),evo(), m_runable(false),m_running(false), m_individui(100), m_pcross(0.6), m_passi(100), m_pmuta(0.2)
+grafica::grafica(QObject* parent) : QObject(parent),evolutions(0),evo(), m_runable(false),m_running(false), m_individui(100), m_pcross(0.6), m_passi(100), m_pmuta(0.2)
 {
     funcs.push_back(&Scimmia::fit_func_lo);
     funcs.push_back(&Scimmia::fit_func_riri);
@@ -9,6 +9,7 @@ grafica::grafica(QObject* parent) : QObject(parent),evo(), m_runable(false),m_ru
     evo.set_pmuta(m_pmuta);
     evo.set_fitfunc(funcs[0]);
     evo.change_parete();
+
 }
 
 QString grafica::fit() const
@@ -42,11 +43,9 @@ int grafica::f_index() const
 
 void grafica::setFit(QString fit)
 {
-    if (m_fit == fit)
-        return;
-
-        m_fit = fit;
-        emit fitChanged(fit);
+    if (m_fit == fit) return;
+    m_fit = fit;
+    emit fitChanged(fit);
 }
 
 void grafica::setPcross(double pcross)
@@ -123,11 +122,15 @@ bool grafica::running() const{
 
 void grafica::start_evo(){
     setRunning(true);
+    QEventLoop event;
+    event.exec();
     while(m_running){
         evo.evoluzione();
         ++evolutions;
         fits.push_back(evo.best_scimmia().get_fit());
+        event.processEvents();
     }
+    event.quit();
 }
 void grafica::stop_evo(){
     setRunning(false);

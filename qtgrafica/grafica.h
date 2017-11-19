@@ -2,6 +2,7 @@
 #define GRAFICA_H
 
 #include <QObject>
+#include <QEventLoop>
 #include "evoluzione.h"
 #include "scimmia.h"
 #include "parete.h"
