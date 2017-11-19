@@ -39,7 +39,7 @@ public:
     int get_endID()const ;
     int get_startID()const ;
     int get_min_depth()const ;
-    TPt<TNodeEDatNet<Point,Point>> get_p()const ;
+    const TPt<TNodeEDatNet<Point, Point>> & get_p()const ;
     int get_d()const ;
     double get_prob_appiglio() const;
     double get_prob_appoggio() const;
@@ -50,8 +50,8 @@ public:
     Parete(const Parete &pr);
     bool operator==(const Parete& pr) const;
     Parete(std::vector<Point> ret, int d, double p_ap, double p_appi, int min_depth);
-    friend Parete get_random_p(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
+    friend Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
     void write_schema(TStr filename);
 };
-Parete get_random_p(int N, int x, int y, int dm, double prob_appo, double prob_appi,int min_depth);
+Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
 #endif //SISTEMI_COMPLESSI_GRAPH_H
