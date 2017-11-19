@@ -36,6 +36,7 @@ Item {
         Button {
             id: button2
             text: qsTr("Running")
+            checkable: false
         }
 
         Button {

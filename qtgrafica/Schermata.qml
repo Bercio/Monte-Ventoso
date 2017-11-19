@@ -1,18 +1,24 @@
 import QtQuick 2.4
 
 SchermataForm{
-    button2.checkable: evoluzione.runable
+    //verifica se evoluzione.runable e' true quando evo e' runnable.
+    button2.checkable: true
     button2.onCheckedChanged: {
         if (button2.checked)
             evoluzione.start_evo()
         else
             evoluzione.stop_evo()
-        condole.log("yoo")
     }
     comboBox.model: ["Rita", "Lorenzo"]
     comboBox.onCurrentIndexChanged: evoluzione.f_index = comboBox.currentIndex;
-    button1.onClicked: evoluzione.change_gen()
-    parete.onClicked: evoluzione.change_parete()
+    button1.onClicked: {
+        evoluzione.change_gen()
+        evoluzione.set_runable()
+    }
+    parete.onClicked: {
+        evoluzione.change_parete()
+        evoluzione.set_runable()
+    }
     passi.onValueChanged:{
         evoluzione.passi = passi.value
         evoluzione.set_runable()
