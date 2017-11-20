@@ -37,7 +37,7 @@ Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), loop(false) {;
 
 void Scimmia::set_memoria(const int& node){ memoria.push_back(node); }
 
-void Scimmia::set_fit(double f){fit+=f;}
+void Scimmia::set_fit(double f){fit=f;}
 
 void Scimmia::set_loop(bool l){loop=l;}
 

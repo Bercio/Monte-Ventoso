@@ -23,8 +23,10 @@ target_link_libraries(Scimmia Parete)
 add_library(Evoluzione STATIC evoluzione.cpp)
 add_executable(testSpeed testSpeed.cpp) #l'eseguibile è testSpeed
 add_executable(sfml mainsfml.cpp)
+add_executable(expscimmia prova_dna_aspettato.cpp)
 
 target_link_libraries(Evoluzione Scimmia)
 target_link_libraries(testSpeed Evoluzione)
 target_link_libraries(sfml Evoluzione)
+target_link_libraries(expscimmia Evoluzione)
 target_include_directories (Evoluzione PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
