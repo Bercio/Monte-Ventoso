@@ -1,5 +1,5 @@
 #include "grafica.h"
-grafica::grafica(QObject* parent) : QObject(parent),evolutions(0),evo(), m_runable(false),m_running(false), m_individui(100), m_pcross(0.6), m_passi(100), m_pmuta(0.2)
+grafica::grafica(QObject* parent) : QObject(parent),evolutions(0),evo(), animazione(0), m_runable(false),m_running(false), m_individui(100), m_pcross(0.6), m_passi(100), m_pmuta(0.2)
 {
     funcs.push_back(&Scimmia::fit_func_lo);
     funcs.push_back(&Scimmia::fit_func_riri);
@@ -122,20 +122,25 @@ bool grafica::running() const{
 
 void grafica::start_evo(){
     setRunning(true);
-    QEventLoop event;
-    event.exec();
     while(m_running){
+        //TODO: make event processing and image drawing parallel threads;
         evo.evoluzione();
         ++evolutions;
         fits.push_back(evo.best_scimmia().get_fit());
-        event.processEvents();
+        QCoreApplication::processEvents();
     }
-    event.quit();
 }
 void grafica::stop_evo(){
     setRunning(false);
-    QString fit = QString::number(evo.best_scimmia().get_fit());
+    Scimmia best = evo.best_scimmia();
+    QString fit = QString::number(best.get_fit());
     setFit(fit);
+}
+//TODO: transform parete data into Qdata ready for drawing.
+QVector<qreal> get_best_memoria(){
+    QVector<qreal> mem;
+    std::vector<int> best = evo.best_scimmia().get_memoria();
+    Parete p =
 }
 void grafica::change_gen(){
     evo.new_gen();

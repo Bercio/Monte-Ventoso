@@ -2,10 +2,19 @@
 //TODO: load in into qml and display it; write the functions
 
 AnimaParete::AnimaParete(QQuickPaintedItem *parent) : QQuickPaintedItem(parent) { ; }
-
-AnimaParete::paint(){
-    ;
+void AnimaParete::setCoor(QVector<qreal> v) {
+    if(v != m_coor){
+        m_coor = v;
+        emit coorChanged();
+    }
 }
-AnimaParete::anima(){;}
-AnimaParete::setParete(Parete p){ parete = p;}
-AnimaParete::setMemoria(std::vector<int> mem){ memoria = mem;}
+void AnimaParete::setMemoria(QVector<qreal> v) {
+    if(v != m_memoria){
+        m_memoria = v;
+        emit memoriaChanged();
+    }
+}
+QVector<qreal> AnimaParete::memoria() const {return m_memoria;}
+QVector<qreal> AnimaParete::coor() const {return m_coor;}
+void AnimaParete::paint(QPainter* painter){;
+}

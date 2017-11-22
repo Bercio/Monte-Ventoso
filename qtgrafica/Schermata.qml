@@ -8,6 +8,7 @@ SchermataForm{
             evoluzione.start_evo()
         else
             evoluzione.stop_evo()
+            anima.update()
     }
     comboBox.model: ["Rita", "Lorenzo"]
     comboBox.onCurrentIndexChanged: evoluzione.f_index = comboBox.currentIndex;
@@ -29,7 +30,7 @@ SchermataForm{
     }
     pcross.onValueChanged: evoluzione.pcross = pcross.value
     pmuta.onValueChanged: evoluzione.pmuta=pmuta.value
-    text1.text: evoluzione.fit
+    text1.text: "fit: " + evoluzione.fit
     busyIndicator.running: evoluzione.running
 }
 

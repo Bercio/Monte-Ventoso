@@ -8,7 +8,8 @@ LIBS += $$PWD/../lib/Snap-3.0/snap-core/Snap.o
 LIBS += -lrt
 LIBS += -fopenmp
 SOURCES += main.cpp \
-    grafica.cpp
+    grafica.cpp \
+    animaparete.cpp
 
 RESOURCES += qml.qrc
 
@@ -35,7 +36,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    grafica.h
+    grafica.h \
+    animaparete.h
 
 FORMS +=
 
