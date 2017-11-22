@@ -2,16 +2,18 @@
 #define GRAFICA_H
 
 #include <QObject>
-#include <QEventLoop>
+#include <QCoreApplication>
 #include "evoluzione.h"
 #include "scimmia.h"
 #include "parete.h"
+#include "animaparete.h"
 #include "Snap.h"
 
 class grafica : public QObject
 {
     Q_OBJECT
     Evoluzione evo;
+    AnimaParete animazione;
     std::vector<double> fits;
     std::vector<std::function<double(Scimmia&,TNodeEDatNet<Point,Point>::TNodeI&, const Parete&)>>
         funcs;
@@ -99,6 +101,8 @@ public slots:
     void setindividui(int individui);
     void setpassi(int passi);
     void setf_index(int f_index);
+    QVector<qreal> get_best_memoria();
+    QVector<qreal> get_coor_parete();
 };
 
 #endif // GRAFICA_H

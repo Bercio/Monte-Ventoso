@@ -2,6 +2,7 @@ import QtQuick 2.4
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Extras 1.4
+import animazione 1.0
 
 Item {
     id: item1
@@ -13,11 +14,12 @@ Item {
     property alias passi: passi
     property alias pcross: pcross
     property alias pmuta: pmuta
-    property alias busyIndicator: busyIndicator
     property alias button2: button2
     property alias button1: button1
     property alias comboBox: comboBox
-    
+    property alias anima: anima
+    property alias busyIndicator: busyIndicator
+
     RowLayout {
         id: rowLayout
         x: 0
@@ -31,8 +33,6 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: 0
 
-
-
         Button {
             id: button2
             text: qsTr("Running")
@@ -43,29 +43,23 @@ Item {
             id: button1
             text: qsTr("New Pop")
         }
-        
-        
-
-
-
 
         Button {
             id: parete
             text: qsTr("New Parete")
         }
 
-
-
-
-
         ComboBox {
             id: comboBox
             currentIndex: 0
         }
 
-
-        
-        
+        Text {
+            id: text1
+            text: qsTr("Text")
+            fontSizeMode: Text.Fit
+            font.pixelSize: 12
+        }
     }
 
     ColumnLayout {
@@ -80,12 +74,12 @@ Item {
         anchors.top: parent.top
         z: 1
         Layout.fillHeight: false
-        
+
         Slider {
             id: pmuta
             width: parent.width
             value: 0.5
-            
+
             Label {
                 id: label3
                 x: -136
@@ -96,12 +90,12 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
             }
         }
-        
+
         Slider {
             id: pcross
             width: parent.width
             value: 0.5
-            
+
             Label {
                 id: label2
                 x: -136
@@ -112,14 +106,14 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
             }
         }
-        
+
         Slider {
             id: passi
             width: parent.width
             from: 0
             to: 2000
             value: 500
-            
+
             Label {
                 id: label1
                 x: -136
@@ -132,13 +126,13 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
             }
         }
-        
+
         Slider {
             id: individui
             width: parent.width
             to: 1000
             value: 100
-            
+
             Label {
                 id: label
                 text: qsTr("individui")
@@ -147,24 +141,26 @@ Item {
                 anchors.bottomMargin: -9
             }
         }
-        
-        
-        
-    }
-    
-    BusyIndicator {
-        id: busyIndicator
-        x: 484
-        y: 193
     }
 
-    Text {
-        id: text1
-        x: 501
-        y: 146
-        text: qsTr("Text")
-        fontSizeMode: Text.Fit
-        font.pixelSize: 12
-    }
+    Frame {
+        id: frame
+        x: 8
+        y: 46
+        width: 855
+        height: 546
+        Animazione{
+            id: anima
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.left: parent.left
+        }
 
+        BusyIndicator {
+            id: busyIndicator
+            x: 386
+            y: 231
+        }
+    }
 }
