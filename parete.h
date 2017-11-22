@@ -30,6 +30,7 @@ class Parete {
     int end;
     int start;
     int min_depth;
+    int seed;
     void norm_coord();
     bool is_viable();
     void set_start();
@@ -53,6 +54,8 @@ public:
     Parete(std::vector<Point> ret, int d, double p_ap, double p_appi, int min_depth);
     friend Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
     void write_schema(TStr filename);
+    void set_seed(int i);
+    int get_seed() const;
 };
 Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
 #endif //SISTEMI_COMPLESSI_GRAPH_H

@@ -2,7 +2,7 @@
 using namespace std;
 using namespace TSnap;
 
-int N = 0b1111 + 1;
+int N = 32;
 random_device rd;
 default_random_engine gen(rd());
 
@@ -23,7 +23,7 @@ Scimmia::Scimmia(): dna(N), fit(0), loop(false), stato(0), memoria({}){
 //il dna del nascituro è l'unione della parte a sinistra del taglio del dna della madre e della parte a destra del dna del padre.
 Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false),stato(0), memoria({}) {
     vector<int> _dna(N);
-    uniform_int_distribution<int> range(1,14);
+    uniform_int_distribution<int> range(1,30);
     int rnd = range(gen);
     vector<int> primo = m.get_dna();
     vector<int> secondo = p.get_dna();
@@ -72,10 +72,11 @@ void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
             else fi = 1;
         }
     }
-    stato = fn + pn*2 + fi*4 + pi*8;
+    if(!loop){stato = fn + pn*2 + fi*4 + pi*8;} //7 fn pn fi, 8 pi, 9 pi fn, 10 pi pn, 11 pi pn fn, 12 pi fi, 13 pi fi fn, 14 pi fi pn, 15 pi fi pn fn
+    else {stato= 16 + fn + pn*2 + fi*4 + pi*8;};
 }
 
-//controlla se la scimia si alterna tra due nodi;
+//controlla se la scimmia si alterna tra due nodi;
 bool Scimmia::is_looping(const int& passi) {
            return passi > 6 &&
            *(get_memoria().end() - 2) == *(get_memoria().end() - 4) &&
