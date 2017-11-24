@@ -137,10 +137,18 @@ void grafica::stop_evo(){
     setFit(fit);
 }
 //TODO: transform parete data into Qdata ready for drawing.
-QVector<qreal> get_best_memoria(){
-    QVector<qreal> mem;
+QVector<QPoint> grafica::get_best_mem(){
+    //not using QPoint in fear of lack of compatibility with qml
     std::vector<int> best = evo.best_scimmia().get_memoria();
-    Parete p =
+    const TPt<TNodeEDatNet<Point,Point>> p = evo.getParete().get_p();
+    for(const int& i:best){
+        mem.append(QPoint(p->GetNDat(i).Val1, p->GetNDat(i).Val2));
+    }
+    return mem;
+}
+QVector<QLine> grafica::get_paths_parete(){
+    QVector<QLine> coor = {QLine(QPoint(600,20),QPoint(200,300)),QLine(QPoint(200,300),QPoint(10,10)),QLine(QPoint(200,300),QPoint(20,20))};
+    return coor;
 }
 void grafica::change_gen(){
     evo.new_gen();
