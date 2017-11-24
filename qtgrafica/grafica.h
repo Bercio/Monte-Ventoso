@@ -101,8 +101,8 @@ public slots:
     void setindividui(int individui);
     void setpassi(int passi);
     void setf_index(int f_index);
-    QVector<qreal> get_best_memoria();
-    QVector<qreal> get_coor_parete();
+    QVector<QPoint> get_best_mem();
+    QVector<QLine> get_paths_parete();
 };
 
 #endif // GRAFICA_H

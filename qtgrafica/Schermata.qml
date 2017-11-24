@@ -8,7 +8,7 @@ SchermataForm{
             evoluzione.start_evo()
         else
             evoluzione.stop_evo()
-            anima.update()
+            animaz.mem = evoluzione.get_best_mem()
     }
     comboBox.model: ["Rita", "Lorenzo"]
     comboBox.onCurrentIndexChanged: evoluzione.f_index = comboBox.currentIndex;
@@ -18,6 +18,7 @@ SchermataForm{
     }
     parete.onClicked: {
         evoluzione.change_parete()
+        animaz.paths = evoluzione.get_paths_parete();
         evoluzione.set_runable()
     }
     passi.onValueChanged:{
@@ -32,5 +33,6 @@ SchermataForm{
     pmuta.onValueChanged: evoluzione.pmuta=pmuta.value
     text1.text: "fit: " + evoluzione.fit
     busyIndicator.running: evoluzione.running
+    animaz{
 }
 

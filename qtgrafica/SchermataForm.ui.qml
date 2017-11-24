@@ -17,7 +17,7 @@ Item {
     property alias button2: button2
     property alias button1: button1
     property alias comboBox: comboBox
-    property alias anima: anima
+    property alias animaz: animaz
     property alias busyIndicator: busyIndicator
 
     RowLayout {
@@ -143,24 +143,21 @@ Item {
         }
     }
 
-    Frame {
-        id: frame
-        x: 8
-        y: 46
-        width: 855
-        height: 546
-        Animazione{
-            id: anima
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.left: parent.left
-        }
+    Animazione {
+        id: animaz
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 6
+        anchors.topMargin: 6
+        anchors.right: columnLayout.left
+        anchors.left: parent.left
+        anchors.leftMargin: 3
+        anchors.rightMargin: 3
+    }
 
-        BusyIndicator {
-            id: busyIndicator
-            x: 386
-            y: 231
-        }
+    BusyIndicator {
+        id: busyIndicator
+        anchors.horizontalCenter: animaz.horizontalCenter
+        anchors.verticalCenter: animaz.verticalCenter
     }
 }

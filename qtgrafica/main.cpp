@@ -8,6 +8,9 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     grafica evoluzione;
     qmlRegisterType<AnimaParete>("animazione",1,0, "Animazione");
+    qRegisterMetaType<QVector<QLine>>();
+    qRegisterMetaType<QVector<QPoint>>();
+
     QQmlApplicationEngine engine;
     QQmlContext* ctx = engine.rootContext();
     ctx->setContextProperty("evoluzione", &evoluzione);
