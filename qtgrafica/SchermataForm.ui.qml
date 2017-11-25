@@ -2,10 +2,12 @@ import QtQuick 2.4
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Extras 1.4
+import QtQuick.Window 2.2
 import animazione 1.0
 
 Item {
     id: item1
+    visible: true
     width: 1200
     height: 600
     property alias text1: text1
@@ -19,14 +21,9 @@ Item {
     property alias comboBox: comboBox
     property alias animaz: animaz
     property alias busyIndicator: busyIndicator
-    property alias durata: durata
 
     RowLayout {
         id: rowLayout
-        x: 0
-        y: 8
-        width: 863
-        height: 40
         anchors.right: columnLayout.left
         anchors.rightMargin: 6
         anchors.leftMargin: 0
@@ -65,12 +62,9 @@ Item {
 
     ColumnLayout {
         id: columnLayout
-        x: 869
-        y: 0
-        width: 314
-        height: 207
+        width: 200
         anchors.right: parent.right
-        anchors.rightMargin: 17
+        anchors.rightMargin: 0
         anchors.topMargin: 0
         anchors.top: parent.top
         z: 1
@@ -142,20 +136,6 @@ Item {
                 anchors.bottomMargin: -9
             }
         }
-        Slider {
-            id: durata
-            width: parent.width
-            to: 10000
-            value: 5000
-
-            Label {
-                id: label4
-                text: qsTr("durata animazione")
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: -9
-            }
-        }
     }
 
     Item {
@@ -163,15 +143,14 @@ Item {
         z: 2
         anchors.top: rowLayout.bottom
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 6
-        anchors.topMargin: -34
+        anchors.bottomMargin: 15
+        anchors.topMargin: 10
         anchors.right: columnLayout.left
         anchors.left: parent.left
-        anchors.leftMargin: 3
-        anchors.rightMargin: 3
+        anchors.leftMargin: 5
+        anchors.rightMargin: 5
         Animazione{
             id: animaz
-            z: 1
             anchors.fill: parent
         }
     }

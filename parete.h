@@ -13,6 +13,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <stdlib.h>
+
 struct Point : public TIntPr {
     Point();
     double dist(Point p);

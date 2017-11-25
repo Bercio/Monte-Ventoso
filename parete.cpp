@@ -1,7 +1,6 @@
 #include "parete.h"
-
-using namespace TSnap;
 using namespace std;
+using namespace TSnap;
 
 typedef TPt<TNodeEDatNet<Point,Point>> PNet;
 

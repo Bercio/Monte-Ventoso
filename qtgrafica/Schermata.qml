@@ -35,7 +35,10 @@ SchermataForm{
     busyIndicator.running: evoluzione.running
     animaz.onMemChanged: aniMem.start()
     animaz.onMem_indexChanged: animaz.update()
-    animaz.onPathsChanged: animaz.update()
-    PropertyAnimation {id: aniMem; target: animaz; property: "mem_index";from: 0; to: animaz.end; duration: durata.value }
+    animaz.onPathsChanged: {
+        animaz.end_point = evoluzione.get_max_coor();
+        animaz.update()
+    }
+    PropertyAnimation {id: aniMem; target: animaz; property: "mem_index";from: 0; to: animaz.end; duration: animaz.end*500 }
 }
 
