@@ -19,6 +19,7 @@ Item {
     property alias comboBox: comboBox
     property alias animaz: animaz
     property alias busyIndicator: busyIndicator
+    property alias durata: durata
 
     RowLayout {
         id: rowLayout
@@ -141,23 +142,43 @@ Item {
                 anchors.bottomMargin: -9
             }
         }
+        Slider {
+            id: durata
+            width: parent.width
+            to: 10000
+            value: 5000
+
+            Label {
+                id: label4
+                text: qsTr("durata animazione")
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: -9
+            }
+        }
     }
 
-    Animazione {
-        id: animaz
-        anchors.top: parent.top
+    Item {
+        id: parAnim
+        z: 2
+        anchors.top: rowLayout.bottom
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 6
-        anchors.topMargin: 6
+        anchors.topMargin: -34
         anchors.right: columnLayout.left
         anchors.left: parent.left
         anchors.leftMargin: 3
         anchors.rightMargin: 3
+        Animazione{
+            id: animaz
+            z: 1
+            anchors.fill: parent
+        }
     }
 
     BusyIndicator {
         id: busyIndicator
-        anchors.horizontalCenter: animaz.horizontalCenter
-        anchors.verticalCenter: animaz.verticalCenter
+        anchors.horizontalCenter: parAnim.horizontalCenter
+        anchors.verticalCenter: parAnim.verticalCenter
     }
 }

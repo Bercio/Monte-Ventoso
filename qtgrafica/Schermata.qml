@@ -33,6 +33,9 @@ SchermataForm{
     pmuta.onValueChanged: evoluzione.pmuta=pmuta.value
     text1.text: "fit: " + evoluzione.fit
     busyIndicator.running: evoluzione.running
-    animaz{
+    animaz.onMemChanged: aniMem.start()
+    animaz.onMem_indexChanged: animaz.update()
+    animaz.onPathsChanged: animaz.update()
+    PropertyAnimation {id: aniMem; target: animaz; property: "mem_index";from: 0; to: animaz.end; duration: durata.value }
 }
 
