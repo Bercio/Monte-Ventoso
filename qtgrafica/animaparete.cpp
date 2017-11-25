@@ -10,12 +10,17 @@ void AnimaParete::setPaths(QVector<QLine> v) {
     }
 }
 void AnimaParete::setMem(QVector<QPoint> mem) {
-    m_mem_index=0;
-    if(v != m_mem){
-        m_mem = mem;
-        m_end = mem.lenght();
-        emit memChanged();
-    }
+    m_mem = mem;
+    setMem_index(0);
+    setEnd(m_mem.length()-1);
+    emit memChanged();
+}
+void AnimaParete::setEnd(int e){
+    m_end = e;
+    emit endChanged();
+}
+int AnimaParete::end() const{
+    return m_end;
 }
 void AnimaParete::setMem_index(int ind) {
     if(ind != m_mem_index){
@@ -35,6 +40,8 @@ void AnimaParete::paint(QPainter* painter){
             else painter->setPen(Qt::darkRed);
             painter->drawLine(i);
         }
+    }
+    if(!m_mem.empty()){
         painter->setPen(Qt::green);
         painter->drawText(m_mem[m_mem_index],"🐵");
     }
