@@ -1,5 +1,5 @@
 #include "grafica.h"
-grafica::grafica(QObject* parent) : QObject(parent),evolutions(0),evo(), animazione(0), m_runable(false),m_running(false), m_individui(100), m_pcross(0.6), m_passi(100), m_pmuta(0.2)
+grafica::grafica(QObject* parent) : QObject(parent), m_fit(0), m_evolutions(0),evo(), animazione(0), m_runable(false),m_running(false), m_individui(100), m_pcross(0.6), m_passi(100), m_pmuta(0.2)
 {
     funcs.push_back(&Scimmia::fit_func_lo);
     funcs.push_back(&Scimmia::fit_func_riri);
@@ -12,7 +12,7 @@ grafica::grafica(QObject* parent) : QObject(parent),evolutions(0),evo(), animazi
 
 }
 
-QString grafica::fit() const
+qreal grafica::fit() const
     {
         return m_fit;
 }
@@ -41,7 +41,7 @@ int grafica::f_index() const
     return m_f_index;
 }
 
-void grafica::setFit(QString fit)
+void grafica::setFit(qreal fit)
 {
     if (m_fit == fit) return;
     m_fit = fit;
@@ -125,15 +125,14 @@ void grafica::start_evo(){
     while(m_running){
         //TODO: make event processing and image drawing parallel threads;
         evo.evoluzione();
-        ++evolutions;
+        ++m_evolutions;
         fits.push_back(evo.best_scimmia().get_fit());
         QCoreApplication::processEvents();
     }
 }
 void grafica::stop_evo(){
     setRunning(false);
-    Scimmia best = evo.best_scimmia();
-    QString fit = QString::number(best.get_fit());
+    qreal fit = evo.best_scimmia().get_fit();
     setFit(fit);
 }
 QVector<QPoint> grafica::get_best_mem(){
@@ -175,3 +174,4 @@ void grafica::set_runable(){
                    evo.getParete().get_p()->GetNodes();
     setRunable(_runable);
 }
+int grafica::evolutions() const { return m_evolutions;}
