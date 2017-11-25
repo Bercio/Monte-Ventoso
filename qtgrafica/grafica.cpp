@@ -136,21 +136,34 @@ void grafica::stop_evo(){
     QString fit = QString::number(best.get_fit());
     setFit(fit);
 }
-//TODO: transform parete data into Qdata ready for drawing.
 QVector<QPoint> grafica::get_best_mem(){
     QVector<QPoint> mem;
-    //not using QPoint in fear of lack of compatibility with qml
     std::vector<int> best = evo.best_scimmia().get_memoria();
     const TPt<TNodeEDatNet<Point,Point>> p = evo.getParete().get_p();
     for(const int& i:best){
-        mem.append(QPoint(p->GetNDat(i).Val1, p->GetNDat(i).Val2));
+        mem.append(QPoint(p->GetNDat(i).Val1,p->GetNDat(i).Val2));
     }
-    //return mem;
-    return {QPoint(100,100), QPoint(200,200), QPoint(300,300)};
+    return mem;
 }
-QVector<QLine> grafica::get_paths_parete(){
-    QVector<QLine> coor = {QLine(QPoint(600,20),QPoint(200,300)),QLine(QPoint(200,300),QPoint(10,10)),QLine(QPoint(200,300),QPoint(20,20))};
-    return coor;
+QVector<QLine> grafica::get_paths_parete() {
+    const TPt<TNodeEDatNet<Point,Point>> p = evo.getParete().get_p();
+    QVector<QLine> res;
+    for(auto orig = p->BegNI(); orig < p->EndNI(); orig++){
+        for(int end = 0; end < orig.GetOutDeg(); end++){
+            res.append(QLine(QPoint(orig.GetDat().Val1,orig.GetDat().Val2),QPoint(orig.GetOutNDat(end).Val1, orig.GetOutNDat(end).Val2)));
+        }
+    }
+    return res;
+}
+QPoint grafica::get_max_coor(){
+
+    Parete parete = evo.getParete();
+    const TPt<TNodeEDatNet<Point,Point>> p = parete.get_p();
+    TIntV v;
+    p->GetNIdV(v);
+    int nmaxx = p->GetNDat(*std::max_element(v.BegI(), v.EndI(), [&](TInt& n, TInt& m){ return p->GetNDat(n).Val1 < p->GetNDat(m).Val1;})).Val1;
+    int nmaxy = p->GetNDat(parete.get_endID()).Val2;
+    return QPoint(nmaxx,nmaxy);
 }
 void grafica::change_gen(){
     evo.new_gen();

@@ -94,6 +94,7 @@ public slots:
     void setRunable(bool runable);
 
     void setFit(QString fit);
+    QPoint get_max_coor();
 
     //double show_stats();
     void setPcross(double pcross);

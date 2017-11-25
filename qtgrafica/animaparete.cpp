@@ -2,7 +2,8 @@
 //TODO: load in into qml and display it; write the functions
 
 
-AnimaParete::AnimaParete(QQuickPaintedItem *parent) : QQuickPaintedItem(parent), m_mem_index(0) { ; }
+AnimaParete::AnimaParete(QQuickPaintedItem *parent) : QQuickPaintedItem(parent), m_mem_index(0) {
+    setRenderTarget(QQuickPaintedItem::InvertedYFramebufferObject);}
 void AnimaParete::setPaths(QVector<QLine> v) {
     if(v != m_paths){
         m_paths = v;
@@ -33,17 +34,28 @@ int AnimaParete::mem_index() const {return m_mem_index;}
 
 QVector<QLine> AnimaParete::paths() const {return m_paths;}
 void AnimaParete::paint(QPainter* painter){
+    painter->setWindow(0,0,m_end_point.x(),m_end_point.y());
     if(!m_paths.empty()){
         painter->setRenderHint(QPainter::Antialiasing);
-        for(auto& i:m_paths){
-            if(i.dy() > 0) painter->setPen(Qt::darkBlue);
-            else painter->setPen(Qt::darkRed);
+
+        for(const auto& i:m_paths){
+            if(std::find(m_paths.begin(), m_paths.end(), QLine(i.p2(),i.p1())) != m_paths.end()){
+                painter->setPen(Qt::black);
+            }
+            else if(i.dy() > 0) painter->setPen(Qt::red);
+            else painter->setPen(Qt::blue);
+            QPen fine = painter->pen();
+            fine.setWidthF(0.02);
+            painter->setPen(fine);
             painter->drawLine(i);
         }
     }
     if(!m_mem.empty()){
-        painter->setPen(Qt::green);
-        painter->drawText(m_mem[m_mem_index],"🐵");
+        QPen fine = painter->pen();
+        fine.setWidthF(0.05);
+        fine.setColor(Qt::darkGreen);
+        painter->setPen(fine);
+        painter->drawEllipse(QPointF(m_mem[m_mem_index]),0.1,0.1);
     }
 }
 
