@@ -1,4 +1,4 @@
-QT += qml quick
+QT += qml quick widgets charts
 
 CONFIG += c++14
 LIBS += -L$$PWD/../ -lEvoluzione

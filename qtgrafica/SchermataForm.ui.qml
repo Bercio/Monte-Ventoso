@@ -3,6 +3,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Extras 1.4
 import QtQuick.Window 2.2
+import QtCharts 2.2
 import animazione 1.0
 
 Item {
@@ -21,6 +22,7 @@ Item {
     property alias comboBox: comboBox
     property alias animaz: animaz
     property alias busyIndicator: busyIndicator
+    property alias grafo1: grafo1
 
     RowLayout {
         id: rowLayout
@@ -62,7 +64,7 @@ Item {
 
     ColumnLayout {
         id: columnLayout
-        width: 200
+        width: 300
         anchors.right: parent.right
         anchors.rightMargin: 0
         anchors.topMargin: 0
@@ -134,6 +136,39 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: -9
+            }
+        }
+        ChartView {
+            width: parent.width
+            height: 300
+            title: "andamento del fit"
+            legend.visible: false
+            axes: [
+                ValueAxis {
+                    id: xAxis
+                    minorGridVisible: false
+                    labelsVisible: true
+                    titleVisible: false
+                    visible:true
+                    min: 0
+                    max: 1000
+                    tickCount: 2
+                },
+                ValueAxis {
+                    id: yAxis
+                    minorGridVisible: false
+                    labelsVisible: true
+                    tickCount: 2
+                    titleVisible: false
+                    visible: true
+                    min: 0
+                    max: 1
+                }
+            ]
+            LineSeries {
+                id: grafo1
+                axisX: xAxis
+                axisY: yAxis
             }
         }
     }

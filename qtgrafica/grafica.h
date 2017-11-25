@@ -17,10 +17,10 @@ class grafica : public QObject
     std::vector<double> fits;
     std::vector<std::function<double(Scimmia&,TNodeEDatNet<Point,Point>::TNodeI&, const Parete&)>>
         funcs;
-    int evolutions;
+    Q_PROPERTY(int evolutions READ evolutions);
     Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
     Q_PROPERTY(bool runable READ running WRITE setRunning NOTIFY runningChanged)
-    Q_PROPERTY(QString fit READ fit WRITE setFit NOTIFY fitChanged)
+    Q_PROPERTY(qreal fit READ fit WRITE setFit NOTIFY fitChanged)
     Q_PROPERTY(double pcross READ pcross WRITE setPcross NOTIFY pcrossChanged)
     Q_PROPERTY(double pmuta READ pmuta WRITE setpmuta NOTIFY pmutaChanged)
     Q_PROPERTY(int individui READ individui WRITE setindividui NOTIFY individuiChanged)
@@ -28,7 +28,7 @@ class grafica : public QObject
     Q_PROPERTY(int f_index READ f_index WRITE setf_index NOTIFY f_indexChanged)
     bool m_runable;
     bool m_running;
-    QString m_fit;
+    qreal m_fit;
     double m_pcross;
 
     double m_pmuta;
@@ -39,14 +39,17 @@ class grafica : public QObject
 
     int m_f_index;
 
+    int m_evolutions;
+
 public:
     explicit grafica(QObject* parent=0);
 
+    int evolutions() const;
     bool running() const;
 
     bool runable() const;
 
-    QString fit() const;
+    qreal fit() const;
 
 
     double pcross() const;
@@ -65,7 +68,7 @@ signals:
 
     void runableChanged(bool runable);
 
-    void fitChanged(QString fit);
+    void fitChanged(qreal fit);
 
     void pcrossChanged(double pcross);
 
@@ -93,7 +96,7 @@ public slots:
 
     void setRunable(bool runable);
 
-    void setFit(QString fit);
+    void setFit(qreal fit);
     QPoint get_max_coor();
 
     //double show_stats();
