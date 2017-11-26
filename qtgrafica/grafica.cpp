@@ -1,15 +1,22 @@
 #include "grafica.h"
 grafica::grafica(QObject* parent) : QObject(parent), m_fit(0), m_evolutions(0),evo(), animazione(0), m_runable(false),m_running(false), m_individui(100), m_pcross(0.6), m_passi(100), m_pmuta(0.2)
-{
+{  
     funcs.push_back(&Scimmia::fit_func_lo);
     funcs.push_back(&Scimmia::fit_func_riri);
-    evo.set_passi(m_passi);
-    evo.set_individui(m_individui);
-    evo.set_pcross(m_pcross);
-    evo.set_pmuta(m_pmuta);
-    evo.set_fitfunc(funcs[0]);
-    evo.change_parete();
-
+    evo->set_passi(m_passi);
+    evo->set_individui(m_individui);
+    evo->set_pcross(m_pcross);
+    evo->set_pmuta(m_pmuta);
+    evo->set_fitfunc(funcs[0]);
+    evo->change_parete();
+    evo->moveToThread(&evoThread);
+    connect(&evoThread, &QThread::finished, evo, &QObject::deleteLater);
+    connect(this, &grafica::start_evo, evo, &Evoluzione::start);
+    connect(this, &grafica::pcrossChanged, evo, &Evoluzione::set_pcross);
+    connect(this, &grafica::pmutaChanged, evo, &Evoluzione::set_pmuta);
+    connect(this, &grafica::individuiChanged, evo, &Evoluzione::set_individui);
+    connect(this, &grafica::passiChanged, evo, &Evoluzione::set_passi);
+    connect(this, &grafica::f_indexChanged, evo, &Evoluzione::set_f_index);
 }
 
 qreal grafica::fit() const
@@ -54,7 +61,6 @@ void grafica::setPcross(double pcross)
         return;
 
     m_pcross = pcross;
-    evo.set_pcross(pcross);
     emit pcrossChanged(pcross);
 }
 
@@ -144,8 +150,8 @@ QVector<QPoint> grafica::get_best_mem(){
     }
     return mem;
 }
-QVector<QLine> grafica::get_paths_parete() {
-    const TPt<TNodeEDatNet<Point,Point>> p = evo.getParete().get_p();
+QVector<QLine> Evoluzione::get_paths_parete() {
+    const TPt<TNodeEDatNet<Point,Point>> p = getParete().get_p();
     QVector<QLine> res;
     for(auto orig = p->BegNI(); orig < p->EndNI(); orig++){
         for(int end = 0; end < orig.GetOutDeg(); end++){
@@ -154,10 +160,8 @@ QVector<QLine> grafica::get_paths_parete() {
     }
     return res;
 }
-QPoint grafica::get_max_coor(){
-
-    Parete parete = evo.getParete();
-    const TPt<TNodeEDatNet<Point,Point>> p = parete.get_p();
+QPoint Evoluzione::get_max_coor(){
+    const TPt<TNodeEDatNet<Point,Point>> p = get_p();
     TIntV v;
     p->GetNIdV(v);
     int nmaxx = p->GetNDat(*std::max_element(v.BegI(), v.EndI(), [&](TInt& n, TInt& m){ return p->GetNDat(n).Val1 < p->GetNDat(m).Val1;})).Val1;
