@@ -36,7 +36,6 @@ Item {
         Button {
             id: button2
             text: qsTr("Running")
-            checkable: false
         }
 
         Button {
@@ -178,7 +177,7 @@ Item {
         z: 2
         anchors.top: rowLayout.bottom
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 15
+        anchors.bottomMargin: 10
         anchors.topMargin: 10
         anchors.right: columnLayout.left
         anchors.left: parent.left

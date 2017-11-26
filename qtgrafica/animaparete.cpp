@@ -34,7 +34,7 @@ int AnimaParete::mem_index() const {return m_mem_index;}
 
 QVector<QLine> AnimaParete::paths() const {return m_paths;}
 void AnimaParete::paint(QPainter* painter){
-    painter->setWindow(0,0,m_end_point.x(),m_end_point.y());
+    painter->setWindow(0,0,m_end_point.x()+5,m_end_point.y()+5);
     if(!m_paths.empty()){
         painter->setRenderHint(QPainter::Antialiasing);
 
