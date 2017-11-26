@@ -19,7 +19,7 @@ class grafica : public QObject
         funcs;
     Q_PROPERTY(int evolutions READ evolutions);
     Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
-    Q_PROPERTY(bool runable READ running WRITE setRunning NOTIFY runningChanged)
+    Q_PROPERTY(bool runable READ runable WRITE setRunable NOTIFY runableChanged)
     Q_PROPERTY(qreal fit READ fit WRITE setFit NOTIFY fitChanged)
     Q_PROPERTY(double pcross READ pcross WRITE setPcross NOTIFY pcrossChanged)
     Q_PROPERTY(double pmuta READ pmuta WRITE setpmuta NOTIFY pmutaChanged)
@@ -90,7 +90,7 @@ public slots:
 
     void stop_evo();
 
-    void set_runable();
+    void _set_runable();
 
     void setRunning(bool running);
 

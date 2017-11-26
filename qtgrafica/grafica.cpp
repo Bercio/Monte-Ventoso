@@ -168,7 +168,7 @@ void grafica::change_gen(){
     evo.new_gen();
 }
 
-void grafica::set_runable(){
+void grafica::_set_runable(){
     bool _runable = evo.getIndividui() && evo.getPassi()
                    && !evo.getGenerazione().empty() &&
                    evo.getParete().get_p()->GetNodes();

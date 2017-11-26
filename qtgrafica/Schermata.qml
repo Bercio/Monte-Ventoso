@@ -1,8 +1,7 @@
 import QtQuick 2.4
 
 SchermataForm{
-    //verifica se evoluzione.runable e' true quando evo e' runnable.
-    button2.checkable: true
+    button2.checkable: evoluzione.runable
     button2.onCheckedChanged: {
         if (button2.checked)
             evoluzione.start_evo()
@@ -14,20 +13,20 @@ SchermataForm{
     comboBox.onCurrentIndexChanged: evoluzione.f_index = comboBox.currentIndex;
     button1.onClicked: {
         evoluzione.change_gen()
-        evoluzione.set_runable()
+        evoluzione._set_runable()
     }
     parete.onClicked: {
         evoluzione.change_parete()
         animaz.paths = evoluzione.get_paths_parete();
-        evoluzione.set_runable()
+        evoluzione._set_runable()
     }
     passi.onValueChanged:{
         evoluzione.passi = passi.value
-        evoluzione.set_runable()
+        evoluzione._set_runable()
     }
     individui.onValueChanged:{
         evoluzione.individui = individui.value
-        evoluzione.set_runable()
+        evoluzione._set_runable()
     }
     pcross.onValueChanged: evoluzione.pcross = pcross.value
     pmuta.onValueChanged: evoluzione.pmuta=pmuta.value
@@ -46,6 +45,16 @@ SchermataForm{
             grafo1.append(evoluzione.evolutions, evoluzione.fit)
         }
     }
+    Connections {
+        target: evoluzione
+        onRunableChanged: {
+            if (evoluzione.running && !evoluzione.runable) {
+                evoluzione.stop_evo()
+                button2.checked = evoluzione.running
+            }
+        }
+    }
+
     PropertyAnimation {id: aniMem; target: animaz; property: "mem_index";from: 0; to: animaz.end; duration: animaz.end*500 }
 }
 
