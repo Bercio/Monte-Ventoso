@@ -201,7 +201,7 @@ bool Parete::operator ==(const Parete& pr) const {return end == pr.end && start 
 
 Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth) {
     random_device rd;
-    int s=1903719420;
+    int s=1123;
     vector<Point> ret = gen_p_distr(N,x,y,s);
     Parete wall;
     double time = clock();

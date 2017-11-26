@@ -13,7 +13,7 @@ class Evoluzione {
     Parete parete;
     std::vector<Scimmia> generazione;
     double p_cross, p_muta;
-    std::function<double(Scimmia &, TNodeEDatNet<Point, Point>::TNodeI &, const Parete &)> fit_func;
+    std::function<double(Scimmia &, TNodeEDatNet<Point, Point>::TNodeI &, const Parete &, int passi)> fit_func;
 public:
     const Parete &getParete() const;
 
@@ -23,7 +23,7 @@ public:
 
     double getP_muta() const;
 
-    const std::function<double(Scimmia &, TNodeEDatNet<Point, Point>::TNodeI &, const Parete &)> &getFit_func() const;
+    const std::function<double(Scimmia &, TNodeEDatNet<Point, Point>::TNodeI &, const Parete &, int passi)> &getFit_func() const;
 
     int getPassi() const;
 
@@ -55,8 +55,7 @@ public:
 
     void set_pmuta(double _p_muta);
 
-    void set_fitfunc(std::function<double(Scimmia &, TNodeEDatNet<Point, Point>::TNodeI &, const Parete &)> _fit_func);
-
+    void set_fitfunc(std::function<double(Scimmia &, TNodeEDatNet<Point, Point>::TNodeI &, const Parete &, int passi)> _fit_func);
 
 };
 #endif //SISTEMI_COMPLESSI_EVOLUZIONE_H
