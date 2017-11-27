@@ -3,7 +3,7 @@
 using namespace std;
 using namespace TSnap;
 
-int N = 16;
+int N = 1024;
 random_device rd;
 default_random_engine gen(rd());
 
@@ -16,32 +16,24 @@ Iter select_randomly(Iter start, Iter end) {
 //genera una scimmia con dna casuale-> è un numero compreso tra 0 e 3 poichè sono 4 le azioni possibili:
 //andare su padri noti, padri ignoti, figli noti, figli ignoti
 Scimmia::Scimmia(): dna(N), fit(0), loop(false), stato(0), memoria({}){
-    uniform_int_distribution<int> actions(0,3);
+    uniform_int_distribution<int> actions(0,4);
     generate(dna.begin(),dna.end(),[&](){return actions(gen);});
 }
 
 //genera una scimmia con dna derivato dal cross over: per ogni elemento del vettore dna c'è 0.5 di probabilità che venga dalla madre, 0.5 dal padre
 Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false),stato(0), memoria({}) {
-    /*std::bernoulli_distribution dist (0.5);
+    std::bernoulli_distribution dist (0.5);
     vector<int> _dna(N);
     for (int i=0; i<N; ++i) {
         if (dist(gen)){_dna[i]=m.get_dna()[i];}
         else {_dna[i]=p.get_dna()[i];};
     }
-
-    set_dna(_dna);*/
-    vector<int> _dna(N);
-    uniform_int_distribution<int> range(1,11);
-    int rnd = range(gen);
-    vector<int> primo = m.get_dna();
-    vector<int> secondo = p.get_dna();
-    auto l = copy_n(primo.begin(), rnd, _dna.begin());
-    copy(secondo.begin()+rnd,secondo.end(), l );
     set_dna(_dna);
+
 }
 
 //scimmia con dna impostabile dall'esterno
-Scimmia::Scimmia(vector<int>& _dna): dna(_dna), fit(0), loop(false) {;
+Scimmia::Scimmia(vector<int> _dna): dna(_dna), fit(0), loop(false) {;
 }
 
 void Scimmia::set_memoria(const int& node){ memoria.push_back(node); }
@@ -69,10 +61,9 @@ int Scimmia::scegli_azione(){ return dna[stato]; }
 //set stato categorizza i nodi (node) raggiungibili dalla scimmia in base a se sono piu in alto (Val2 è la y) o più in
 //basso e controlla se sono presenti in memoria o meno.
 void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
+    int stato_precedente= get_stato()%32 ;
 
-
-    bool fn=0,pn(0),fi(0),pi(0);
-
+    bool fn=0,pn(0),fi(0),pi(0), np(0);
     for (int i = 0; i < node.GetOutDeg(); ++i){
 
         int fnodeEdge = node.GetOutEDat(i).Val2;
@@ -84,9 +75,9 @@ void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
             if (fnodeEdge < 0)  pi = 1;
             else fi = 1;
         }
-       // if (memoria.size()){if(memoria.back()  == fnodeID ) {if(fnodeEdge<0) pp=1; else fp=1;}}
+    if (!memoria.empty() && memoria.back()  == fnodeID) {np=1;}
     }
-    stato = fn + pn*2 + fi*4 + pi*8 ; //7 fn pn fi, 8 pi, 9 pi fn, 10 pi pn, 11 pi pn fn, 12 pi fi, 13 pi fi fn, 14 pi fi pn, 15 pi fi pn fn
+    stato = fn + pn*2 + fi*4 + pi*8  + stato_precedente*16; //7 fn pn fi, 8 pi, 9 pi fn, 10 pi pn, 11 pi pn fn, 12 pi fi, 13 pi fi fn, 14 pi fi pn, 15 pi fi pn fn
 }
 
 //controlla se la scimmia si alterna tra due nodi;
@@ -96,9 +87,9 @@ bool Scimmia::is_looping(const int& passi) {
            *(get_memoria().end() - 1) == *(get_memoria().end() - 3);
 }
 
-void Scimmia::muta(){ 
+void Scimmia::muta(){
     uniform_int_distribution<int> range(0,N-1);
-    uniform_int_distribution<int> actions(0,3);
+    uniform_int_distribution<int> actions(0,4);
     vector<int> _dna = get_dna();
     _dna[range(gen)] = actions(gen);
     set_dna(_dna);
@@ -109,18 +100,21 @@ void Scimmia::muta(){
 //in uno dei nodi a caso appartenente alla categoria scelta
 
 int Scimmia::move(const TNodeEDatNet<Point,Point>::TNodeI& pos){
-    vector<int> padri_n, padri_ig, figli_n, figli_ig;
-   // bool pp(0),fp(0);
-    for(int i = 0; i<pos.GetOutDeg(); ++i){
 
+    vector<int> padri_n, padri_ig, figli_n, figli_ig;
+    bool np(0);
+    for(int i = 0; i<pos.GetOutDeg(); ++i){
         int outNode = pos.GetOutEDat(i).Val2;
         int IDoutNode = pos.GetOutNId(i);
-        if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()){
+        if(!memoria.empty() && memoria.back() == IDoutNode){np=1;}
+        else {
+            if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()){
             if (outNode < 0) padri_n.push_back(IDoutNode);
-            else figli_n.push_back(IDoutNode);
-        } else if (outNode < 0) padri_ig.push_back(IDoutNode);
-        else figli_ig.push_back(IDoutNode);
-        //if(memoria.back()  == IDoutNode ) {if(outNode<0) pp=1; else fp=1;}
+                else figli_n.push_back(IDoutNode);
+            }
+            else if (outNode < 0) padri_ig.push_back(IDoutNode);
+            else figli_ig.push_back(IDoutNode);
+        }
     }
     switch(scegli_azione())
     {
@@ -132,10 +126,9 @@ int Scimmia::move(const TNodeEDatNet<Point,Point>::TNodeI& pos){
             return !figli_ig.empty() ?  *(select_randomly(figli_ig.begin(),figli_ig.end())) : pos.GetId();
         case a_p_ignoto:
             return !padri_ig.empty() ?  *(select_randomly(padri_ig.begin(),padri_ig.end())) : pos.GetId();
-        /*case a_f_precedente:
-            return fp ? memoria.back() : pos.GetId();
-        case a_p_precedente:
-            return pp ? memoria.back() : pos.GetId();*/
+        case a_n_precedente:
+            return np ? memoria.back() : pos.GetId();
+
     }
 }
 

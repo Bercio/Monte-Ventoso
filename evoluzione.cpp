@@ -23,11 +23,11 @@ void Evoluzione::riproduzione ()//inizializza generazione con la nuova generazio
 	for (int i=0; i<individui; i++)
 	{
 		double prob = dis(casuale);
-		Scimmia p = generazione[best(casuale)], m = generazione[best(casuale)];
+		Scimmia p (generazione[best(casuale)].get_dna()), m(generazione[best(casuale)].get_dna());
 		if(prob < p_cross) p = Scimmia(p,m);
 		if(prob > 1-p_muta) p.muta();
         new_gen.push_back(p);
-	}
+    }
     swap(generazione,new_gen);
 }
 
