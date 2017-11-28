@@ -3,14 +3,12 @@ project(Sistemi_Complessi)
 add_subdirectory(lib/gtest) #include il progetto gtest al progetto Sistemi_Complessi
 set(CMAKE_CXX_STANDARD 14) #setto il linguaggio che sto usando
 SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fopenmp")
-
 set(SOURCE_FILES
     cmake-build-debug/CMakeFiles/3.6.2/CompilerIdC/CMakeCCompilerId.c
     cmake-build-debug/CMakeFiles/3.6.2/CompilerIdCXX/CMakeCXXCompilerId.cpp
     cmake-build-debug/CMakeFiles/feature_tests.c
     cmake-build-debug/CMakeFiles/feature_tests.cxx
         )
-
 include_directories(lib/Snap-3.0/glib-core lib/Snap-3.0/snap-core) # includo le cartelle con gli header files
 add_library( snap SHARED IMPORTED) #aggiungo una libreria che si chiama snap al progetto
 add_subdirectory(tests)

@@ -4,12 +4,12 @@
 #include <random>
 using namespace std;
 int main(){
-        Evoluzione e(100, 100, 0.7, 0.3);//100 passi 100 individui 0.8 pcross 0.2 pmuta
+        Evoluzione e(100, 300, 0.7, 0.3);//100 passi 100 individui 0.8 pcross 0.2 pmuta
         e.change_parete(1000, 70, 100, 3, 0.2, 0.2, 3);//N=
         e.new_gen();
-        int N_evoluzioni = 50000;
+        int N_evoluzioni = 100;
 
-        for (int i = 0; i < N_evoluzioni; ++i) {
+        for (int i = 0; i < N_evoluzioni; ++i) {cout<<"evoluzione numero"<<i<<endl;
             e.evoluzione();
         }
         vector<int> v(e.best_scimmia().get_memoria());

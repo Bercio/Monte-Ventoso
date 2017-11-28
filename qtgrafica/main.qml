@@ -8,5 +8,7 @@ ApplicationWindow {
     width: 1200
     height: 600
     title: qsTr("Simulazione Scimmia")
-    Schermata { }
+    Schermata {
+    anchors.fill: parent
     }
+}

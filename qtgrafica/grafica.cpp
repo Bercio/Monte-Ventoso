@@ -1,5 +1,5 @@
 #include "grafica.h"
-grafica::grafica(QObject* parent) : QObject(parent),evo(), m_runable(false),m_running(false), m_individui(100), m_pcross(0.6), m_passi(100), m_pmuta(0.2)
+grafica::grafica(QObject* parent) : QObject(parent), m_fit(0), m_evolutions(0),evo(), animazione(0), m_runable(false),m_running(false), m_individui(100), m_pcross(0.6), m_passi(100), m_pmuta(0.2)
 {
     funcs.push_back(&Scimmia::fit_func_lo);
     funcs.push_back(&Scimmia::fit_func_riri);
@@ -9,9 +9,10 @@ grafica::grafica(QObject* parent) : QObject(parent),evo(), m_runable(false),m_ru
     evo.set_pmuta(m_pmuta);
     evo.set_fitfunc(funcs[0]);
     evo.change_parete();
+
 }
 
-QString grafica::fit() const
+qreal grafica::fit() const
     {
         return m_fit;
 }
@@ -40,13 +41,11 @@ int grafica::f_index() const
     return m_f_index;
 }
 
-void grafica::setFit(QString fit)
+void grafica::setFit(qreal fit)
 {
-    if (m_fit == fit)
-        return;
-
-        m_fit = fit;
-        emit fitChanged(fit);
+    if (m_fit == fit) return;
+    m_fit = fit;
+    emit fitChanged(fit);
 }
 
 void grafica::setPcross(double pcross)
@@ -124,15 +123,46 @@ bool grafica::running() const{
 void grafica::start_evo(){
     setRunning(true);
     while(m_running){
+        //TODO: make event processing and image drawing parallel threads;
         evo.evoluzione();
-        ++evolutions;
+        ++m_evolutions;
         fits.push_back(evo.best_scimmia().get_fit());
+        QCoreApplication::processEvents();
     }
 }
 void grafica::stop_evo(){
     setRunning(false);
-    QString fit = QString::number(evo.best_scimmia().get_fit());
+    qreal fit = evo.best_scimmia().get_fit();
     setFit(fit);
+}
+QVector<QPoint> grafica::get_best_mem(){
+    QVector<QPoint> mem;
+    std::vector<int> best = evo.best_scimmia().get_memoria();
+    const TPt<TNodeEDatNet<Point,Point>> p = evo.getParete().get_p();
+    for(const int& i:best){
+        mem.append(QPoint(p->GetNDat(i).Val1,p->GetNDat(i).Val2));
+    }
+    return mem;
+}
+QVector<QLine> grafica::get_paths_parete() {
+    const TPt<TNodeEDatNet<Point,Point>> p = evo.getParete().get_p();
+    QVector<QLine> res;
+    for(auto orig = p->BegNI(); orig < p->EndNI(); orig++){
+        for(int end = 0; end < orig.GetOutDeg(); end++){
+            res.append(QLine(QPoint(orig.GetDat().Val1,orig.GetDat().Val2),QPoint(orig.GetOutNDat(end).Val1, orig.GetOutNDat(end).Val2)));
+        }
+    }
+    return res;
+}
+QPoint grafica::get_max_coor(){
+
+    Parete parete = evo.getParete();
+    const TPt<TNodeEDatNet<Point,Point>> p = parete.get_p();
+    TIntV v;
+    p->GetNIdV(v);
+    int nmaxx = p->GetNDat(*std::max_element(v.BegI(), v.EndI(), [&](TInt& n, TInt& m){ return p->GetNDat(n).Val1 < p->GetNDat(m).Val1;})).Val1;
+    int nmaxy = p->GetNDat(parete.get_endID()).Val2;
+    return QPoint(nmaxx,nmaxy);
 }
 void grafica::change_gen(){
     evo.new_gen();
@@ -144,3 +174,4 @@ void grafica::set_runable(){
                    evo.getParete().get_p()->GetNodes();
     setRunable(_runable);
 }
+int grafica::evolutions() const { return m_evolutions;}

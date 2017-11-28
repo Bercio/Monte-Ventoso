@@ -29,7 +29,6 @@ Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false),stato(0), memoria(
         else {_dna[i]=p.get_dna()[i];};
     }
     set_dna(_dna);
-
 }
 
 //scimmia con dna impostabile dall'esterno
@@ -61,8 +60,7 @@ int Scimmia::scegli_azione(){ return dna[stato]; }
 //set stato categorizza i nodi (node) raggiungibili dalla scimmia in base a se sono piu in alto (Val2 è la y) o più in
 //basso e controlla se sono presenti in memoria o meno.
 void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
-    int stato_precedente= get_stato()%32 ;
-
+    int stato_precedente= get_stato()% 32 ;
     bool fn=0,pn(0),fi(0),pi(0), np(0);
     for (int i = 0; i < node.GetOutDeg(); ++i){
 
@@ -77,7 +75,7 @@ void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
         }
     if (!memoria.empty() && memoria.back()  == fnodeID) {np=1;}
     }
-    stato = fn + pn*2 + fi*4 + pi*8  + stato_precedente*16; //7 fn pn fi, 8 pi, 9 pi fn, 10 pi pn, 11 pi pn fn, 12 pi fi, 13 pi fi fn, 14 pi fi pn, 15 pi fi pn fn
+    stato = fn + pn*2 + fi*4 + pi*8 + np*16 + stato_precedente*32; //7 fn pn fi, 8 pi, 9 pi fn, 10 pi pn, 11 pi pn fn, 12 pi fi, 13 pi fi fn, 14 pi fi pn, 15 pi fi pn fn
 }
 
 //controlla se la scimmia si alterna tra due nodi;
@@ -106,7 +104,7 @@ int Scimmia::move(const TNodeEDatNet<Point,Point>::TNodeI& pos){
     for(int i = 0; i<pos.GetOutDeg(); ++i){
         int outNode = pos.GetOutEDat(i).Val2;
         int IDoutNode = pos.GetOutNId(i);
-        if(!memoria.empty() && memoria.back() == IDoutNode){np=1;}
+        if(memoria.empty()==false && memoria.back() == IDoutNode){np=1;}
         else {
             if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()){
             if (outNode < 0) padri_n.push_back(IDoutNode);
@@ -127,7 +125,7 @@ int Scimmia::move(const TNodeEDatNet<Point,Point>::TNodeI& pos){
         case a_p_ignoto:
             return !padri_ig.empty() ?  *(select_randomly(padri_ig.begin(),padri_ig.end())) : pos.GetId();
         case a_n_precedente:
-            return np ? memoria.back() : pos.GetId();
+           return np ? memoria.back() : pos.GetId();
 
     }
 }
@@ -139,7 +137,6 @@ TNodeEDatNet<Point,Point>::TNodeI Scimmia::traverse(const Parete& parete, int n_
     for (int j = 0; j < n_passi; j++) {
         int posID = pos.GetId();
         set_stato(pos);
-
         set_memoria(posID);
         set_loop(is_looping(memoria.size()));
         if(posID == parete.get_endID()) break;
