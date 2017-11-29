@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <utility>
 #include <string>
-//#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <stdlib.h>
 
 struct Point : public TIntPr {
@@ -45,12 +45,12 @@ public:
     int get_d()const ;
     double get_prob_appiglio() const;
     double get_prob_appoggio() const;
-    /*
+
     const std::tuple<double, unsigned int, unsigned int> corr() const;
         void set_window(sf::RenderWindow &window, std::string titolo) const;
     void draw(int n, sf::RenderWindow& window) const;
     void animate(std::vector<int> v, std::string titolo) const;
-   */
+
     Parete();
     Parete(const Parete &pr);
     bool operator==(const Parete& pr) const;
