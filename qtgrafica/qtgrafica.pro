@@ -37,12 +37,15 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     grafica.h \
-    animaparete.h
+    animaparete.h \
+
+
 
 FORMS +=
 
 
 INCLUDEPATH += $$PWD/../
+INCLUDEPATH += /usr/include/
 INCLUDEPATH += $$PWD/../lib/Snap-3.0/snap-core
 INCLUDEPATH += $$PWD/../lib/Snap-3.0/glib-core
 DEPENDPATH += $$PWD/../
@@ -58,6 +61,8 @@ unix:!macx: LIBS += -L$$PWD/../ -lEvoluzione
 
 INCLUDEPATH += $$PWD/../
 DEPENDPATH += $$PWD/../
+INCLUDEPATH += /usr/include/SFML/
+
 
 unix:!macx: PRE_TARGETDEPS += $$PWD/../libEvoluzione.a
 

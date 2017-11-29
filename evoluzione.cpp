@@ -21,11 +21,11 @@ void Evoluzione::riproduzione ()//inizializza generazione con la nuova generazio
 //inizializzo new_gen con Scimmie selezionate con cross-over, mutazione e clonazione
         //if individui gets changed riproduzione will generate a bigger generazione than the previous one. swap works regardless.
 	for (int i=0; i<individui; i++)
-	{
-		double prob = dis(casuale);
-		Scimmia p (generazione[best(casuale)].get_dna()), m(generazione[best(casuale)].get_dna());
-		if(prob < p_cross) p = Scimmia(p,m);
-		if(prob > 1-p_muta) p.muta();
+        {
+            double prob = dis(casuale);
+            Scimmia p (generazione[best(casuale)].get_dna()), m(generazione[best(casuale)].get_dna());
+            if(prob < p_cross) p = Scimmia(p,m);
+            if(prob > 1-p_muta) p.muta();
         new_gen.push_back(p);
     }
     swap(generazione,new_gen);
@@ -36,7 +36,6 @@ void Evoluzione::set_fitfunc(function<double(Scimmia&, TNet::TNodeI&, const Pare
 }
 void Evoluzione::evoluzione() { //TODO devo fare una funzione che animi scimmia.memoria
     riproduzione();
-   // #pragma omp parallel for
     for (auto i = generazione.begin(); i < generazione.end(); ++i) {
         TNet::TNodeI pos = i->traverse(parete, passi);
         i->set_fit(fit_func(*i, pos, parete, passi));

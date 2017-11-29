@@ -15,7 +15,7 @@ class grafica : public QObject
     Evoluzione evo;
     AnimaParete animazione;
     std::vector<double> fits;
-    std::vector<std::function<double(Scimmia&,TNodeEDatNet<Point,Point>::TNodeI&, const Parete&)>>
+    std::vector<std::function<double(Scimmia&,TNodeEDatNet<Point,Point>::TNodeI&, const Parete&,int passi)>>
         funcs;
     Q_PROPERTY(int evolutions READ evolutions);
     Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)

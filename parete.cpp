@@ -1,4 +1,5 @@
 #include "parete.h"
+#include<iostream>
 using namespace std;
 using namespace TSnap;
 
@@ -104,6 +105,7 @@ Parete::Parete(const Parete &pr) {
     prob_appoggio = pr.get_prob_appoggio();
 }
 Parete::Parete() = default;
+/*
 const tuple<double, unsigned int, unsigned int> Parete::corr() const {
     tuple<double, unsigned int, unsigned int> r;
     TIntV v;
@@ -189,6 +191,7 @@ void Parete::animate(vector<int> v, string titolo="Parete")const{
         }
     }
 }
+*/
 int Parete::get_d()const { return d_nodi;}
 int Parete::get_startID()const { return start;}
 int Parete::get_endID()const { return end;}
@@ -200,7 +203,8 @@ bool Parete::operator ==(const Parete& pr) const {return end == pr.end && start 
 
 Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth) {
     random_device rd;
-    int s=1123;
+    int s= rd();
+    cout<<s;
     vector<Point> ret = gen_p_distr(N,x,y,s);
     Parete wall;
     double time = clock();

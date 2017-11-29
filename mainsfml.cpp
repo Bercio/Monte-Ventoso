@@ -19,7 +19,7 @@ int main(){
         cout<<"passi "<<e.best_scimmia().get_memoria().size()<<endl;
         cout<<"loop "<<e.best_scimmia().get_loop()<<endl<<endl;
         cout<<"fit " <<e.best_scimmia().get_fit()<<endl;
-            e.getParete().animate(v,"titolo");
+           // e.getParete().animate(v,"titolo");
             cout<<"loop "<<e.best_scimmia().get_loop()<<endl<<endl;
 }
 //configurazioni: 0:niente, 1 fn, 2 pn, 3 pn fn, 4 fi, 5 fi fn, 6 fi pn,
