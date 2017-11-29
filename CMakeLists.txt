@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
 project(Sistemi_Complessi)
-add_subdirectory(lib/gtest) #include il progetto gtest al progetto Sistemi_Complessi
 set(CMAKE_CXX_STANDARD 14) #setto il linguaggio che sto usando
 SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fopenmp")
 set(SOURCE_FILES

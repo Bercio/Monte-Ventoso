@@ -15,7 +15,7 @@ Point::Point(const Point &p){Val1 = p.Val1; Val2 = p.Val2;}
 
 vector<Point> gen_p_distr(int N,int x, int y){
     random_device rd;
-    default_random_engine gen(1123);//rd());
+    default_random_engine gen;//rd());
     vector<Point> res;
     uniform_int_distribution<> xgen(0,x);
     uniform_int_distribution<> ygen(0,y);
@@ -62,7 +62,7 @@ Parete::Parete(vector<Point> points, int d, double p_appi, double p_appo, int m_
         d_nodi(d), prob_appiglio(p_appi), prob_appoggio(p_appo), min_depth(m_depth){
     uniform_real_distribution<> probs(0,1);
     random_device rd;
-    default_random_engine gen(12124);//rd());
+    default_random_engine gen;//rd());
     p = PNet::New();
     for(int i = 0; i < points.size(); ++i){
         if ( ! p->IsNode(i) ) p->AddNode(i,points[i]);
