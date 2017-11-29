@@ -10,7 +10,6 @@ set(SOURCE_FILES
         )
 include_directories(lib/Snap-3.0/glib-core lib/Snap-3.0/snap-core) # includo le cartelle con gli header files
 add_library( snap SHARED IMPORTED) #aggiungo una libreria che si chiama snap al progetto
-add_subdirectory(tests)
 set_target_properties( snap PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib/Snap-3.0/snap-core/Snap.o) #la libreria che si chiama snap è già un file binario quindi non andrà mai compilata
 add_library(Scimmia scimmia.cpp) #aggiungo una libreria che ho scritto io non .o quindi a una certa và compilata
 add_library(Parete parete.cpp)
