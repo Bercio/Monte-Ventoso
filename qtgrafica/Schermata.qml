@@ -38,6 +38,7 @@ SchermataForm{
         animaz.end_point = evoluzione.get_max_coor()
         animaz.update()
     }
+    dnalista.model: evoluzione.dna
     Connections {
         target: evoluzione
         onFitChanged: {

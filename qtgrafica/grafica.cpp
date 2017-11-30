@@ -144,6 +144,17 @@ QVector<QPoint> grafica::get_best_mem(){
     }
     return mem;
 }
+void grafica::setDna(QStringList dna){
+    if(dna==m_dna) return;
+    m_dna = dna;
+    emit dnaChanged(dna);
+}
+QStringList grafica::dna() {
+    QStringList dna;
+    for(int& i:evo.best_scimmia().get_dna()) dna.append(QString(i));
+    setDna(dna);
+    return m_dna;
+}
 QVector<QLine> grafica::get_paths_parete() {
     const TPt<TNodeEDatNet<Point,Point>> p = evo.getParete().get_p();
     QVector<QLine> res;

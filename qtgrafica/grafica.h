@@ -6,6 +6,7 @@
 #include "evoluzione.h"
 #include "scimmia.h"
 #include "parete.h"
+#include <QStringList>
 #include "animaparete.h"
 #include "Snap.h"
 
@@ -17,7 +18,7 @@ class grafica : public QObject
     std::vector<double> fits;
     std::vector<std::function<double(Scimmia&,TNodeEDatNet<Point,Point>::TNodeI&, const Parete&)>>
         funcs;
-    Q_PROPERTY(int evolutions READ evolutions);
+    Q_PROPERTY(int evolutions READ evolutions)
     Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
     Q_PROPERTY(bool runable READ runable WRITE setRunable NOTIFY runableChanged)
     Q_PROPERTY(qreal fit READ fit WRITE setFit NOTIFY fitChanged)
@@ -26,6 +27,7 @@ class grafica : public QObject
     Q_PROPERTY(int individui READ individui WRITE setindividui NOTIFY individuiChanged)
     Q_PROPERTY(int passi READ passi WRITE setpassi NOTIFY passiChanged)
     Q_PROPERTY(int f_index READ f_index WRITE setf_index NOTIFY f_indexChanged)
+    Q_PROPERTY(QStringList dna READ dna WRITE setDna NOTIFY dnaChanged)
     bool m_runable;
     bool m_running;
     qreal m_fit;
@@ -40,6 +42,7 @@ class grafica : public QObject
     int m_f_index;
 
     int m_evolutions;
+    QStringList m_dna;
 
 public:
     explicit grafica(QObject* parent=0);
@@ -48,6 +51,8 @@ public:
     bool running() const;
 
     bool runable() const;
+    QStringList dna() ;
+    void setDna(QStringList);
 
     qreal fit() const;
 
@@ -64,6 +69,7 @@ public:
 
 signals:
 
+    void dnaChanged(QStringList dna);
     void runningChanged(bool running);
 
     void runableChanged(bool runable);

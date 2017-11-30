@@ -62,3 +62,29 @@ DEPENDPATH += $$PWD/../
 unix:!macx: PRE_TARGETDEPS += $$PWD/../libEvoluzione.a
 
 unix: CONFIG += link_pkgconfig
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../release/ -lEvoluzione
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../debug/ -lEvoluzione
+else:unix: LIBS += -L$$PWD/../ -lEvoluzione
+
+INCLUDEPATH += $$PWD/../
+DEPENDPATH += $$PWD/../
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../release/libEvoluzione.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../debug/libEvoluzione.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../release/Evoluzione.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../debug/Evoluzione.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../libEvoluzione.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../release/ -lParete
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../debug/ -lParete
+else:unix:!macx: LIBS += -L$$PWD/../ -lParete
+
+INCLUDEPATH += $$PWD/../
+DEPENDPATH += $$PWD/../
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../release/libParete.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../debug/libParete.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../release/Parete.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../debug/Parete.lib
+else:unix:!macx: PRE_TARGETDEPS += $$PWD/../libParete.a

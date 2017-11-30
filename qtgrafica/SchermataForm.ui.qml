@@ -23,6 +23,7 @@ Item {
     property alias animaz: animaz
     property alias busyIndicator: busyIndicator
     property alias grafo1: grafo1
+    property alias dnalista: dnalista
 
     RowLayout {
         id: rowLayout
@@ -169,6 +170,11 @@ Item {
                 axisX: xAxis
                 axisY: yAxis
             }
+        }
+        ListView {
+            id: dnalista
+            width: parent.width
+            anchors.bottom: item1.bottom
         }
     }
 
