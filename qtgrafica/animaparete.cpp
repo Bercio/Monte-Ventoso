@@ -2,8 +2,7 @@
 //TODO: load in into qml and display it; write the functions
 
 
-AnimaParete::AnimaParete(QQuickPaintedItem *parent) : QQuickPaintedItem(parent), m_mem_index(0) {
-    setRenderTarget(QQuickPaintedItem::InvertedYFramebufferObject);}
+AnimaParete::AnimaParete(QQuickPaintedItem *parent) : QQuickPaintedItem(parent), m_mem_index(0) {;}
 void AnimaParete::setPaths(QVector<QLine> v) {
     if(v != m_paths){
         m_paths = v;

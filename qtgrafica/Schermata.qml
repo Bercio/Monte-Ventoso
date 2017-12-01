@@ -59,11 +59,7 @@ SchermataForm{
 
     PropertyAnimation {id: aniMem; target: animaz; property: "mem_index";from: 0; to: animaz.end; duration: animaz.end*500 }
     dnalista.model: dnas
-    dnalista.delegate: Rectangle {
-        height: dnalista.height
-        width: dnalista.width
-        Text {text: Number.toString(index,2) + ": " + modelData }
-        }
-
+    dnalista.delegate:
+        Text {text: Number.toString(index,2) + ": " + data }
 }
 
