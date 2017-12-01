@@ -6,7 +6,6 @@
 #include "evoluzione.h"
 #include "scimmia.h"
 #include "parete.h"
-#include <QStringList>
 #include "animaparete.h"
 #include "Snap.h"
 
@@ -27,7 +26,7 @@ class grafica : public QObject
     Q_PROPERTY(int individui READ individui WRITE setindividui NOTIFY individuiChanged)
     Q_PROPERTY(int passi READ passi WRITE setpassi NOTIFY passiChanged)
     Q_PROPERTY(int f_index READ f_index WRITE setf_index NOTIFY f_indexChanged)
-    Q_PROPERTY(QStringList dna READ dna WRITE setDna NOTIFY dnaChanged)
+    Q_PROPERTY(QVector<int> dna READ dna WRITE setDna NOTIFY dnaChanged)
     bool m_runable;
     bool m_running;
     qreal m_fit;
@@ -42,7 +41,7 @@ class grafica : public QObject
     int m_f_index;
 
     int m_evolutions;
-    QStringList m_dna;
+    QVector<int> m_dna;
 
 public:
     explicit grafica(QObject* parent=0);
@@ -51,8 +50,8 @@ public:
     bool running() const;
 
     bool runable() const;
-    QStringList dna() ;
-    void setDna(QStringList);
+    QVector<int> dna() ;
+    void setDna(QVector<int>);
 
     qreal fit() const;
 
@@ -69,7 +68,7 @@ public:
 
 signals:
 
-    void dnaChanged(QStringList dna);
+    void dnaChanged(QVector<int> dna);
     void runningChanged(bool running);
 
     void runableChanged(bool runable);
@@ -91,6 +90,7 @@ public slots:
     void change_gen();
 
     void change_parete();
+    void get_best_dna();
 
     void start_evo();
 

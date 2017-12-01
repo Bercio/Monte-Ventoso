@@ -173,6 +173,7 @@ Item {
         ListView {
             id: dnalista
             width: parent.width
+            height: 300
             anchors.bottom: parent.botttom
         }
     }

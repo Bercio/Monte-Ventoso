@@ -7,8 +7,9 @@ SchermataForm{
             evoluzione.start_evo()
         else
             evoluzione.stop_evo()
-            evoluzione.get_dna()
+            evoluzione.get_best_dna()
             animaz.mem = evoluzione.get_best_mem()
+            aniMem.start()
     }
     comboBox.model: ["Rita", "Lorenzo"]
     comboBox.onCurrentIndexChanged: evoluzione.f_index = comboBox.currentIndex;
@@ -33,8 +34,7 @@ SchermataForm{
     pmuta.onValueChanged: evoluzione.pmuta=pmuta.value
     text1.text: "fit: " + evoluzione.fit.toLocaleString()
     busyIndicator.running: evoluzione.running
-    animaz.onMemChanged:  aniMem.start()
-    //animaz.onMem_indexChanged: animaz.update()
+    animaz.onMem_indexChanged: animaz.update()
     animaz.onPathsChanged: {
         animaz.end_point = evoluzione.get_max_coor()
         animaz.update()
@@ -60,9 +60,9 @@ SchermataForm{
     PropertyAnimation {id: aniMem; target: animaz; property: "mem_index";from: 0; to: animaz.end; duration: animaz.end*500 }
     dnalista.model: dnas
     dnalista.delegate: Rectangle {
-        height: 25
-        width: parent.width
-        Text {text: modelData}
+        height: dnalista.height
+        width: dnalista.width
+        Text {text: Number.toString(index,2) + ": " + modelData }
         }
 
 }

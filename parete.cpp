@@ -19,7 +19,7 @@ Point::Point(const Point &p){Val1 = p.Val1; Val2 = p.Val2;}
 //generate random distribution of vectors in range (0,0) - (x,y)
 vector<Point> gen_p_distr(int N,int x, int y){
     random_device rd;
-    default_random_engine gen(1123);//rd());
+    default_random_engine gen(rd());
     vector<Point> res;
     uniform_int_distribution<> xgen(0,x);
     uniform_int_distribution<> ygen(0,y);

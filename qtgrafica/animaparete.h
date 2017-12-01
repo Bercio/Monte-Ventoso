@@ -3,7 +3,7 @@
 
 #include <QtQuick>
 #include "parete.h"
-
+#include <iterator>
 class AnimaParete : public QQuickPaintedItem
 {
     Q_OBJECT

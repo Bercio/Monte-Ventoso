@@ -3,7 +3,7 @@
 
 
 AnimaParete::AnimaParete(QQuickPaintedItem *parent) : QQuickPaintedItem(parent), m_mem_index(0) {
-    ;}
+    setRenderTarget(QQuickPaintedItem::InvertedYFramebufferObject);}
 void AnimaParete::setPaths(QVector<QLine> v) {
     if(v != m_paths){
         m_paths = v;
@@ -13,7 +13,8 @@ void AnimaParete::setPaths(QVector<QLine> v) {
 void AnimaParete::setMem(QVector<QPoint> mem) {
     m_mem = mem;
     setMem_index(0);
-    setEnd(m_mem.length()-1);
+    QVector<QPoint>::reverse_iterator diff_end = std::find_if(mem.rbegin(),mem.rend(),[&](auto& i){return mem.back() != i;});
+    setEnd(std::distance(diff_end, mem.rend()));
     emit memChanged();
 }
 void AnimaParete::setEnd(int e){

@@ -40,16 +40,16 @@ HEADERS += \
 INCLUDEPATH += $$PWD/../
 INCLUDEPATH += $$PWD/../lib/Snap-3.0/snap-core
 INCLUDEPATH += $$PWD/../lib/Snap-3.0/glib-core
-INCLUDEPATH += $$PWD/../build
-DEPENDPATH += $$PWD/../build
+INCLUDEPATH += $$PWD/../cmake-build-debug
+DEPENDPATH += $$PWD/../cmake-build-debug
 DISTFILES += \
     SchermataForm.ui.qml \
     Schermata.qml \
     qt.conf
 unix: CONFIG += link_pkgconfig
-unix:!macx: LIBS += -L$$PWD/../build/ -lParete
-unix:!macx: PRE_TARGETDEPS += $$PWD/../build/libParete.a
-unix:!macx: LIBS += -L$$PWD/../build/ -lEvoluzione
-unix:!macx: PRE_TARGETDEPS += $$PWD/../build/libEvoluzione.a
-unix:!macx: LIBS += -L$$PWD/../build/ -lScimmia
-unix:!macx: PRE_TARGETDEPS += $$PWD/../build/libScimmia.a
+unix:!macx: LIBS += -L$$PWD/../cmake-build-debug/ -lParete
+unix:!macx: PRE_TARGETDEPS += $$PWD/../cmake-build-debug/libParete.a
+unix:!macx: LIBS += -L$$PWD/../cmake-build-debug/ -lEvoluzione
+unix:!macx: PRE_TARGETDEPS += $$PWD/../cmake-build-debug/libEvoluzione.a
+unix:!macx: LIBS += -L$$PWD/../cmake-build-debug/ -lScimmia
+unix:!macx: PRE_TARGETDEPS += $$PWD/../cmake-build-debug/libScimmia.a

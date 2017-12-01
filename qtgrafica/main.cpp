@@ -15,7 +15,8 @@ int main(int argc, char *argv[])
     qRegisterMetaType<QVector<QPoint>>();
     QQmlContext* ctx = engine.rootContext();
     ctx->setContextProperty("evoluzione", &evoluzione);
-    ctx->setContextProperty("dnas", &dnas);
+    ctx->setContextProperty("dnas",&dnas);
+    QObject::connect(&evoluzione, &grafica::dnaChanged, &dnas, &DnaModel::setDna);
     engine.load(QUrl("qrc:/main.qml"));
 
     return app.exec();
