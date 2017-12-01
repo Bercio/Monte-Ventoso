@@ -66,9 +66,8 @@ Item {
         id: columnLayout
         width: 300
         anchors.right: parent.right
-        anchors.rightMargin: 0
-        anchors.topMargin: 0
         anchors.top: parent.top
+        anchors.bottom: parent.bottom
         z: 1
         Layout.fillHeight: false
 
@@ -174,7 +173,7 @@ Item {
         ListView {
             id: dnalista
             width: parent.width
-            anchors.bottom: item1.bottom
+            anchors.bottom: parent.botttom
         }
     }
 

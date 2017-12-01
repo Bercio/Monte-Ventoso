@@ -1,15 +1,13 @@
 QT += qml quick widgets charts
 
 CONFIG += c++14
-LIBS += -L$$PWD/../ -lEvoluzione
-LIBS += -L$$PWD/../ -lScimmia
-LIBS += -L$$PWD/../ -lParete
 LIBS += $$PWD/../lib/Snap-3.0/snap-core/Snap.o
 LIBS += -lrt
 LIBS += -fopenmp
 SOURCES += main.cpp \
     grafica.cpp \
-    animaparete.cpp
+    animaparete.cpp \
+    dnamodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -37,54 +35,21 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     grafica.h \
-    animaparete.h
-
-FORMS +=
-
-
+    animaparete.h \
+    dnamodel.h
 INCLUDEPATH += $$PWD/../
 INCLUDEPATH += $$PWD/../lib/Snap-3.0/snap-core
 INCLUDEPATH += $$PWD/../lib/Snap-3.0/glib-core
-DEPENDPATH += $$PWD/../
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../libEvoluzione.a
-
+INCLUDEPATH += $$PWD/../build
+DEPENDPATH += $$PWD/../build
 DISTFILES += \
     SchermataForm.ui.qml \
     Schermata.qml \
     qt.conf
-
-unix:!macx: LIBS += -L$$PWD/../ -lEvoluzione
-
-INCLUDEPATH += $$PWD/../
-DEPENDPATH += $$PWD/../
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../libEvoluzione.a
-
 unix: CONFIG += link_pkgconfig
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../release/ -lEvoluzione
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../debug/ -lEvoluzione
-else:unix: LIBS += -L$$PWD/../ -lEvoluzione
-
-INCLUDEPATH += $$PWD/../
-DEPENDPATH += $$PWD/../
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../release/libEvoluzione.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../debug/libEvoluzione.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../release/Evoluzione.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../debug/Evoluzione.lib
-else:unix: PRE_TARGETDEPS += $$PWD/../libEvoluzione.a
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../release/ -lParete
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../debug/ -lParete
-else:unix:!macx: LIBS += -L$$PWD/../ -lParete
-
-INCLUDEPATH += $$PWD/../
-DEPENDPATH += $$PWD/../
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../release/libParete.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../debug/libParete.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../release/Parete.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../debug/Parete.lib
-else:unix:!macx: PRE_TARGETDEPS += $$PWD/../libParete.a
+unix:!macx: LIBS += -L$$PWD/../build/ -lParete
+unix:!macx: PRE_TARGETDEPS += $$PWD/../build/libParete.a
+unix:!macx: LIBS += -L$$PWD/../build/ -lEvoluzione
+unix:!macx: PRE_TARGETDEPS += $$PWD/../build/libEvoluzione.a
+unix:!macx: LIBS += -L$$PWD/../build/ -lScimmia
+unix:!macx: PRE_TARGETDEPS += $$PWD/../build/libScimmia.a
