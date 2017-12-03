@@ -39,6 +39,14 @@ SchermataForm{
         animaz.end_point = evoluzione.get_max_coor()
         animaz.update()
     }
+    Connections {
+        target: evoluzione
+        onDnaChanged: {
+            dnas.setDna(evoluzione.dna)
+        }
+    }
+    //todo bind dnas change to evoluzione
+    //dnas.onDataChanged: evoluzione.change_dna(index)
 
     Connections {
         target: evoluzione
@@ -56,10 +64,19 @@ SchermataForm{
             }
         }
     }
-
+    dnas.onModelReset: dnalista.model = dnas
     PropertyAnimation {id: aniMem; target: animaz; property: "mem_index";from: 0; to: animaz.end; duration: animaz.end*500 }
-    dnalista.model: dnas
+    //todo: validate text and bind dnamodel to evo
     dnalista.delegate:
-        Text {text: Number.toString(index,2) + ": " + data }
+        TextInput {
+            text: display
+            validator: IntValidator{ bottom: 0; top: 3}
+            onActiveFocusChanged: {
+                if(activeFocus)
+                    text = edit
+                else
+                    text = display
+            }
+                onEditingFinished: model.edit = text}
 }
 

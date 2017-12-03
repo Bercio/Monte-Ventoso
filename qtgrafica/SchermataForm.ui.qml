@@ -1,4 +1,5 @@
-import QtQuick 2.4
+import QtQuick 2.7
+import dnas 1.0
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Extras 1.4
@@ -24,6 +25,7 @@ Item {
     property alias busyIndicator: busyIndicator
     property alias grafo1: grafo1
     property alias dnalista: dnalista
+    property alias dnas: dnas
 
     RowLayout {
         id: rowLayout
@@ -199,5 +201,8 @@ Item {
         id: busyIndicator
         anchors.horizontalCenter: parAnim.horizontalCenter
         anchors.verticalCenter: parAnim.verticalCenter
+    }
+    Dnas {
+        id: dnas
     }
 }

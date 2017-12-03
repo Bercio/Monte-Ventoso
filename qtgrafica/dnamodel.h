@@ -6,12 +6,10 @@
 class DnaModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(QVector<int> dna READ dna WRITE setDna NOTIFY dnaChanged)
-    QVector<int> m_dna;
+    QVector<int> m_data;
 
 public:
-    QVector<int> dna() const;
-    void setDna(QVector<int> dna);
+   Q_INVOKABLE void setDna(QVector<int> dna);
     explicit DnaModel(QObject *parent = nullptr);
 
     // Basic functionality:
@@ -25,7 +23,7 @@ public:
 
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 signals:
-    void dnaChanged(QVector<int> dna);
+    void dataChanged(const QModelIndex& top, const QModelIndex& bottom, const QVector<int> &roles =QVector<int> ());
 };
 
 #endif // DNAMODEL_H

@@ -4,11 +4,11 @@ DnaModel::DnaModel(QObject *parent)
     : QAbstractListModel(parent)
 {
 }
-QVector<int> DnaModel::dna() const{return m_dna;}
 void DnaModel::setDna(QVector<int> dna){
-    if(m_dna == dna) return;
-    m_dna= dna;
-    emit dnaChanged(dna);
+    if(m_data == dna) return;
+    beginResetModel();
+    m_data = dna;
+    endResetModel();
 }
 int DnaModel::rowCount(const QModelIndex &parent) const
 {
@@ -17,22 +17,23 @@ int DnaModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return dna().length();
+    return m_data.length();
 }
 
 QVariant DnaModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
-        return int();
+        return QVariant();
 
-    return dna().at(index.row());
+    if(role == Qt::EditRole) return m_data.at(index.row());
+    else return QString(QString::number(index.row(),2).rightJustified(4, '0') + ": " + QString::number(m_data.at(index.row())));
 }
 
 bool DnaModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (data(index, role) != value) {
-        m_dna[index.row()] = value.toInt();
-        emit dataChanged(index, index, QVector<int>() << role);
+        m_data[index.row()] = value.toInt();
+        emit dataChanged(index, index);
         return true;
     }
     return false;
