@@ -32,7 +32,7 @@ public:
 private:
     int passi, individui;
 public:
-    void change_parete(int N = 1000, int x = 70, int y = 100, int d = 3, double prob_appo = 0.2, double prob_appi = 0.2,
+    void change_parete(int s,int N = 1000, int x = 70, int y = 100, int d = 3, double prob_appo = 0.2, double prob_appi = 0.2,
                        int min_depth = 3);
 
     void riproduzione();

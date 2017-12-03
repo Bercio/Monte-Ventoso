@@ -8,7 +8,7 @@ grafica::grafica(QObject* parent) : QObject(parent), m_fit(0), m_evolutions(0),e
     evo.set_pcross(m_pcross);
     evo.set_pmuta(m_pmuta);
     evo.set_fitfunc(funcs[0]);
-    evo.change_parete();
+    change_parete();
     evo.new_gen();
     get_paths_parete();
     _set_runable();
@@ -105,7 +105,8 @@ void grafica::setf_index(int f_index)
     emit f_indexChanged(f_index);
 }
 void grafica::change_parete(){
-    evo.change_parete();
+    int s = std::rand();
+    evo.change_parete(s);
     get_paths_parete();
 }
 
@@ -210,7 +211,7 @@ void grafica::animate(){
     Scimmia m(sci_dna) ;
     const Parete parete = evo.getParete();
     TNodeEDatNet<Point,Point>::TNodeI pos = m.traverse(parete, passi());
-    setFit(evo.getFit_func()(m, pos, parete));
+    setFit(evo.getFit_func()(m, pos, parete,passi()));
     QVector<QPoint> mem;
     std::vector<int> sci_mem = m.get_memoria();
     const TPt<TNodeEDatNet<Point,Point>> p = parete.get_p();

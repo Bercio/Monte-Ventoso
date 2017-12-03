@@ -18,7 +18,7 @@ Point::Point(const Point &p){Val1 = p.Val1; Val2 = p.Val2;}
 
 vector<Point> gen_p_distr(int N,int x, int y, int seed){
     random_device rd;
-    default_random_engine gen(seed);//rd());//1123
+    default_random_engine gen(seed);//rd());
     vector<Point> res;
     uniform_int_distribution<> xgen(0,x);
     uniform_int_distribution<> ygen(0,y);
@@ -77,7 +77,7 @@ Parete::Parete(vector<Point> points, int d, double p_appi, double p_appo, int m_
         d_nodi(d), prob_appiglio(p_appi), prob_appoggio(p_appo), min_depth(m_depth){
     uniform_real_distribution<> probs(0,1);
     random_device rd;
-    default_random_engine gen(rd());
+    default_random_engine gen(12124);//rd());
     p = PNet::New();
     for(int i = 0; i < points.size(); ++i){
         if ( ! p->IsNode(i) ) p->AddNode(i,points[i]);
@@ -145,8 +145,8 @@ const PNet &Parete::get_p()const {return p;}
 bool Parete::operator ==(const Parete& pr) const {return end == pr.end && start == pr.start;}
 
 //construct random viable parete from random distribution of N points in interval (0,0) - (x,y)
-Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth){
-    vector<Point> ret = gen_p_distr(N,x,y);
+Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth,int s){
+    vector<Point> ret = gen_p_distr(N,x,y,s);
     Parete wall;
     double time = clock();
     do {

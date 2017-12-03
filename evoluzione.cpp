@@ -5,9 +5,9 @@ random_device caso;
 default_random_engine casuale(caso());
 typedef TNodeEDatNet<Point,Point> TNet;
 
-void Evoluzione::change_parete(int N, int x, int y, int d, double prob_appo, double prob_appi, int min_depth)
+void Evoluzione::change_parete(int s,int N, int x, int y, int d, double prob_appo, double prob_appi, int min_depth)
 {
-	parete = rnd_solvable_parete(N, x, y, d, prob_appo, prob_appi, min_depth);
+    parete = rnd_solvable_parete(N, x, y, d, prob_appo, prob_appi, min_depth, s);
 
 }
 
@@ -34,7 +34,7 @@ void Evoluzione::riproduzione ()//inizializza generazione con la nuova generazio
 void Evoluzione::set_fitfunc(function<double(Scimmia&, TNet::TNodeI&, const Parete&, int passi)> _fit_func){
     fit_func = _fit_func;
 }
-void Evoluzione::evoluzione() { //TODO devo fare una funzione che animi scimmia.memoria
+void Evoluzione::evoluzione() {
     riproduzione();
     for (auto i = generazione.begin(); i < generazione.end(); ++i) {
         TNet::TNodeI pos = i->traverse(parete, passi);
@@ -50,7 +50,6 @@ Evoluzione::Evoluzione() = default;
 
 Evoluzione::Evoluzione(int passi, int individui, double p_cross, double p_muta) :
 		passi(passi), individui(individui), p_cross(p_cross), p_muta(p_muta), generazione(individui), parete(), fit_func(&Scimmia::fit_func_riri){
-	change_parete();
 }
 
 void Evoluzione::new_gen(){

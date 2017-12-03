@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Extras 1.4
 import QtQuick.Window 2.2
 import QtCharts 2.2
+import dnas 1.0
 import animazione 1.0
 
 Item {
