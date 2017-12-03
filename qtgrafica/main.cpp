@@ -8,6 +8,10 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     grafica evoluzione;
+    qmlRegisterType<AnimaParete>("animazione",1,0, "Animazione");
+    qRegisterMetaType<QVector<QLine>>();
+    qRegisterMetaType<QVector<QPoint>>();
+
     QQmlApplicationEngine engine;
     qmlRegisterType<AnimaParete>("animazione",1,0, "Animazione");
     qmlRegisterType<DnaModel>("dnas",1,0, "Dnas");

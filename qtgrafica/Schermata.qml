@@ -1,7 +1,7 @@
-import QtQuick 2.7
+import QtQuick 2.4
 
 SchermataForm{
-
+    //verifica se evoluzione.runable e' true quando evo e' runnable.
     button2.checkable: evoluzione.runable
     button2.onCheckedChanged: {
         if (button2.checked)

@@ -52,6 +52,8 @@ public:
     friend Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
     friend void swap(Parete& p, Parete& s);
     void write_schema(TStr filename);
+    void set_seed(int i);
+    int get_seed() const;
 };
 Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
 #endif //SISTEMI_COMPLESSI_GRAPH_H

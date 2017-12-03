@@ -89,6 +89,7 @@ signals:
     void individuiChanged(int individui);
 
     void passiChanged(int passi);
+
     void f_indexChanged(int f_index);
     void pathsChanged(QVector<QLine> paths);
 

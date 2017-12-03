@@ -1,5 +1,4 @@
-import QtQuick 2.7
-import dnas 1.0
+import QtQuick 2.4
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Extras 1.4
@@ -30,6 +29,10 @@ Item {
 
     RowLayout {
         id: rowLayout
+        x: 0
+        y: 8
+        width: 863
+        height: 40
         anchors.right: columnLayout.left
         anchors.rightMargin: 6
         anchors.leftMargin: 0
@@ -51,10 +54,15 @@ Item {
             text: qsTr("New Pop")
         }
 
+        
         Button {
             id: parete
             text: qsTr("New Parete")
         }
+
+
+
+
 
         ComboBox {
             id: comboBox
@@ -112,6 +120,7 @@ Item {
         Slider {
             id: passi
             width: parent.width
+            stepSize: 1
             from: 0
             to: 2000
             value: 500
@@ -132,6 +141,7 @@ Item {
         Slider {
             id: individui
             width: parent.width
+            stepSize: 1
             to: 1000
             value: 100
 

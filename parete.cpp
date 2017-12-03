@@ -16,10 +16,9 @@ Point Point::operator-(const Point& p){return Point(p.Val1 - Val1, p.Val2 - Val2
 bool Point::operator==(const Point& p) const {return p.Val1 == Val1 && p.Val2 == Val2;}
 Point::Point(const Point &p){Val1 = p.Val1; Val2 = p.Val2;}
 
-//generate random distribution of vectors in range (0,0) - (x,y)
-vector<Point> gen_p_distr(int N,int x, int y){
+vector<Point> gen_p_distr(int N,int x, int y, int seed){
     random_device rd;
-    default_random_engine gen(rd());
+    default_random_engine gen(seed);//rd());//1123
     vector<Point> res;
     uniform_int_distribution<> xgen(0,x);
     uniform_int_distribution<> ygen(0,y);
@@ -28,6 +27,10 @@ vector<Point> gen_p_distr(int N,int x, int y){
     }
     return res;
 }
+
+void Parete::set_seed(int i) {seed=i;}
+
+int Parete::get_seed() const {return seed;}
 
 //finds end node
 void Parete::set_end() {
@@ -138,7 +141,9 @@ int Parete::get_endID()const { return end;}
 int Parete::get_min_depth()const { return min_depth;}
 double Parete::get_prob_appiglio()const { return prob_appiglio;}
 double Parete::get_prob_appoggio()const { return prob_appoggio;}
-const PNet& Parete::get_p()const {return p;}
+const PNet &Parete::get_p()const {return p;}
+bool Parete::operator ==(const Parete& pr) const {return end == pr.end && start == pr.start;}
+
 //construct random viable parete from random distribution of N points in interval (0,0) - (x,y)
 Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth){
     vector<Point> ret = gen_p_distr(N,x,y);
@@ -157,7 +162,7 @@ Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double 
     wall.set_end();
     wall.set_start();
     wall.norm_coord();
+    wall.set_seed(s);
     return wall;
 }
-bool Parete::operator ==(const Parete& pr) const {return end == pr.end && start == pr.start;}
 
