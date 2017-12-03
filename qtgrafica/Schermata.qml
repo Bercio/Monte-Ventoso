@@ -1,6 +1,7 @@
-import QtQuick 2.4
+import QtQuick 2.7
 
 SchermataForm{
+
     button2.checkable: evoluzione.runable
     button2.onCheckedChanged: {
         if (button2.checked)
@@ -37,6 +38,7 @@ SchermataForm{
     animaz.onMem_indexChanged: animaz.update()
     animaz.onPathsChanged: {
         animaz.end_point = evoluzione.get_max_coor()
+        aniMem.complete()
         animaz.update()
     }
     Connections {
