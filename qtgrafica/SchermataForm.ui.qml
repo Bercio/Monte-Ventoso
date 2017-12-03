@@ -17,6 +17,11 @@ Item {
     property alias passi: passi
     property alias pcross: pcross
     property alias pmuta: pmuta
+    property alias label: label
+    property alias label1: label1
+    property alias label2: label2
+    property alias label3: label3
+
     property alias button2: button2
     property alias button1: button1
     property alias comboBox: comboBox
@@ -81,7 +86,6 @@ Item {
                 id: label3
                 x: -136
                 y: 65
-                text: qsTr("pmuta")
                 anchors.bottomMargin: -9
                 anchors.bottom: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -97,7 +101,6 @@ Item {
                 id: label2
                 x: -136
                 y: 65
-                text: qsTr("pcross")
                 anchors.bottomMargin: -9
                 anchors.bottom: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -107,6 +110,7 @@ Item {
         Slider {
             id: passi
             width: parent.width
+            stepSize: 1
             from: 0
             to: 2000
             value: 500
@@ -115,7 +119,6 @@ Item {
                 id: label1
                 x: -136
                 y: 65
-                text: qsTr("passi")
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
                 anchors.bottomMargin: -9
@@ -127,12 +130,12 @@ Item {
         Slider {
             id: individui
             width: parent.width
+            stepSize: 1
             to: 1000
             value: 100
 
             Label {
                 id: label
-                text: qsTr("individui")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: -9

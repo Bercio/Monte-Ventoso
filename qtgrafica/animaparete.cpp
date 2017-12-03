@@ -34,7 +34,7 @@ int AnimaParete::mem_index() const {return m_mem_index;}
 
 QVector<QLine> AnimaParete::paths() const {return m_paths;}
 void AnimaParete::paint(QPainter* painter){
-    painter->setWindow(0,0,m_end_point.x()+5,m_end_point.y()+5);
+    painter->setWindow(0,0,m_end_point.x(),m_end_point.y());
     if(!m_paths.empty()){
         painter->setRenderHint(QPainter::Antialiasing);
 
@@ -52,10 +52,10 @@ void AnimaParete::paint(QPainter* painter){
     }
     if(!m_mem.empty()){
         QPen fine = painter->pen();
-        fine.setWidthF(0.05);
+        fine.setWidthF(0.1);
         fine.setColor(Qt::darkGreen);
         painter->setPen(fine);
-        painter->drawEllipse(QPointF(m_mem[m_mem_index]),0.1,0.1);
+        painter->drawEllipse(QPointF(m_mem[m_mem_index]),0.2,0.2);
     }
 }
 

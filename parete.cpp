@@ -105,7 +105,7 @@ Parete::Parete(const Parete &pr) {
     prob_appoggio = pr.get_prob_appoggio();
 }
 Parete::Parete() = default;
-//
+/*
 const tuple<double, unsigned int, unsigned int> Parete::corr() const {
     tuple<double, unsigned int, unsigned int> r;
     TIntV v;
@@ -191,7 +191,7 @@ void Parete::animate(vector<int> v, string titolo="Parete")const{
         }
     }
 }
-//
+*/
 int Parete::get_d()const { return d_nodi;}
 int Parete::get_startID()const { return start;}
 int Parete::get_endID()const { return end;}

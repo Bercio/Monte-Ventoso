@@ -32,6 +32,11 @@ SchermataForm{
     pcross.onValueChanged: evoluzione.pcross = pcross.value
     pmuta.onValueChanged: evoluzione.pmuta=pmuta.value
     text1.text: "fit: " + evoluzione.fit.toLocaleString()
+    label.text: "individui: " + label.parent.value.toLocaleString()
+    label1.text: "passi: " + label1.parent.value.toLocaleString()
+    label2.text: "pcross: " + label2.parent.value.toLocaleString()
+    label3.text: "pmuta: " + label3.parent.value.toLocaleString()
+
     busyIndicator.running: evoluzione.running
     animaz.onMemChanged: aniMem.start()
     animaz.onMem_indexChanged: animaz.update()

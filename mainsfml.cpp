@@ -4,10 +4,10 @@
 #include <random>
 using namespace std;
 int main(){
-        Evoluzione e(100, 300, 0.7, 0.3);//100 passi 100 individui 0.8 pcross 0.2 pmuta
+        Evoluzione e(200, 100, 0.7, 0.3);//100 passi 100 individui 0.8 pcross 0.2 pmuta
         e.change_parete(1000, 70, 100, 3, 0.2, 0.2, 3);//N=
         e.new_gen();
-        int N_evoluzioni = 100;
+        int N_evoluzioni = 50000;
 
         for (int i = 0; i < N_evoluzioni; ++i) {cout<<"evoluzione numero"<<i<<endl;
             e.evoluzione();
@@ -19,7 +19,7 @@ int main(){
         cout<<"passi "<<e.best_scimmia().get_memoria().size()<<endl;
         cout<<"loop "<<e.best_scimmia().get_loop()<<endl<<endl;
         cout<<"fit " <<e.best_scimmia().get_fit()<<endl;
-           // e.getParete().animate(v,"titolo");
+            //e.getParete().animate(v,"titolo");
             cout<<"loop "<<e.best_scimmia().get_loop()<<endl<<endl;
 }
 //configurazioni: 0:niente, 1 fn, 2 pn, 3 pn fn, 4 fi, 5 fi fn, 6 fi pn,

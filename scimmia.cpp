@@ -3,7 +3,7 @@
 using namespace std;
 using namespace TSnap;
 
-int N = 32;
+const int N = 1024;
 random_device rd;
 default_random_engine gen(rd());
 
@@ -60,7 +60,7 @@ int Scimmia::scegli_azione(){ return dna[stato]; }
 //set stato categorizza i nodi (node) raggiungibili dalla scimmia in base a se sono piu in alto (Val2 è la y) o più in
 //basso e controlla se sono presenti in memoria o meno.
 void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
-  //  int stato_precedente= get_stato()% 32 ;
+    int stato_precedente= get_stato()% 32 ;
     bool fn=0,pn(0),fi(0),pi(0), np(0);
     for (int i = 0; i < node.GetOutDeg(); ++i){
 
@@ -75,7 +75,7 @@ void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
         }
     if (!memoria.empty() && memoria.back()  == fnodeID) {np=1;}
     }
-    stato = fn + pn*2 + fi*4 + pi*8 + np*16 ; //stato_precedente*32; //7 fn pn fi, 8 pi, 9 pi fn, 10 pi pn, 11 pi pn fn, 12 pi fi, 13 pi fi fn, 14 pi fi pn, 15 pi fi pn fn
+    stato = fn + pn*2 + fi*4 + pi*8 + np*16 ; stato_precedente*32; //7 fn pn fi, 8 pi, 9 pi fn, 10 pi pn, 11 pi pn fn, 12 pi fi, 13 pi fi fn, 14 pi fi pn, 15 pi fi pn fn
 }
 
 //controlla se la scimmia si alterna tra due nodi;
@@ -162,12 +162,12 @@ double Scimmia::fit_func_riri(TNodeEDatNet<Point,Point>::TNodeI& n, const Parete
 	double fit;
 	set<int> nodi_visitati(memoria.begin(),memoria.end());
 	if(loop==false){
-		fit=((double)nodi_visitati.size()-1)/pow((double)memoria.size()/passi,2);
-	 	for (auto k : nodi_visitati) {fit+=g.get_p()->GetNDat(k).Val2/((double)pow(memoria.size()/passi, 2));}
+		fit=((double)nodi_visitati.size()-1)*passi/(double)memoria.size();
+	 	for (auto k : nodi_visitati) {fit+=g.get_p()->GetNDat(k).Val2*passi/(double)memoria.size();}
 	}
 	else {
-		fit=(0.01*((double)nodi_visitati.size()-1))/pow((double)memoria.size()/passi, 2);
-		for (auto k : nodi_visitati) fit+=0.01*g.get_p()->GetNDat(k).Val2/((double)pow(memoria.size()/passi, 2));
+		fit=(0.01*((double)nodi_visitati.size()-1)*passi)/(double)memoria.size();
+		for (auto k : nodi_visitati) fit+=0.01*g.get_p()->GetNDat(k).Val2*passi/(double)memoria.size();
 	}
 	return fit;
 }
