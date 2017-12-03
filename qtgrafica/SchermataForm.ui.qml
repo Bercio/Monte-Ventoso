@@ -19,6 +19,7 @@ Item {
     property alias pcross: pcross
     property alias pmuta: pmuta
     property alias button2: button2
+    property alias button3: button3
     property alias button1: button1
     property alias comboBox: comboBox
     property alias animaz: animaz
@@ -39,6 +40,10 @@ Item {
         Button {
             id: button2
             text: qsTr("Running")
+        }
+        Button {
+        id:button3
+        text: qsTr("Animate")
         }
 
         Button {
@@ -71,7 +76,6 @@ Item {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         z: 1
-        Layout.fillHeight: false
 
         Slider {
             id: pmuta
@@ -174,9 +178,7 @@ Item {
         }
         ListView {
             id: dnalista
-            width: parent.width
-            height: 300
-            anchors.bottom: parent.botttom
+            Layout.fillHeight: true
         }
     }
 

@@ -18,6 +18,7 @@ public:
     void setPaths(QVector<QLine> v);
     void setMem_index(int index);
     void setEnd(int end);
+    Q_INVOKABLE void get_end();
     QVector<QPoint> mem() const;
     QVector<QLine> paths() const;
     int end() const;

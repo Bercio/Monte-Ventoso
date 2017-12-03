@@ -19,9 +19,12 @@ void AnimaParete::setEnd(int e){
     emit endChanged();
 }
 int AnimaParete::end() const{
-    QVector<QPoint>::const_reverse_iterator diff_end = std::find_if(m_mem.rbegin(),m_mem.rend(),[&](auto& i){return m_mem.back() != i;});
-    int r = std::distance(diff_end, m_mem.rend());
-    return r;
+    return m_end;
+}
+void AnimaParete::get_end() {
+    int r = m_mem.length()-1;
+    for(QVector<QPoint>::reverse_iterator i = m_mem.rbegin(); i != m_mem.rend() && *i == m_mem.back(); ++i) --r;
+    setEnd(r);
 }
 void AnimaParete::setMem_index(int ind) {
     if(ind != m_mem_index){

@@ -2,6 +2,7 @@
 #define DNAMODEL_H
 
 #include <QAbstractListModel>
+#include <cmath>
 
 class DnaModel : public QAbstractListModel
 {

@@ -26,7 +26,7 @@ QVariant DnaModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     if(role == Qt::EditRole) return m_data.at(index.row());
-    else return QString(QString::number(index.row(),2).rightJustified(4, '0') + ": " + QString::number(m_data.at(index.row())));
+    else return QString(QString::number(index.row(),2).rightJustified(std::log2(m_data.length()), '0') + ": " + QString::number(m_data.at(index.row())));
 }
 
 bool DnaModel::setData(const QModelIndex &index, const QVariant &value, int role)
