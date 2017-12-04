@@ -25,7 +25,8 @@ double grafica::pcross() const
 {
     return m_pcross;
 }
-
+double grafica::seed() const { return m_seed;}
+void grafica::setSeed(int s){ m_seed = s;}
 double grafica::pmuta() const
 {
     return m_pmuta;
@@ -105,11 +106,23 @@ void grafica::setf_index(int f_index)
     emit f_indexChanged(f_index);
 }
 void grafica::change_parete(){
-    int s = std::rand();
-    evo.change_parete(s);
+    setSeed(std::rand());
+    evo.change_parete(m_seed);
     get_paths_parete();
 }
-
+void grafica::write(QJsonObject &j){
+    j["parete"] = seed();
+    j["dna"] = dna();
+    j["fit"] = fit();
+}
+void grafica::read_parete(QJsonObject &j){
+    setSeed(j["parete"].toInt());
+    evo.change_parete(seed());
+}
+void grafica::read_scimmia(QJsonObject &j){
+    setDna(j["dna"].toArray());
+    setFit(j["fit"].toDouble())
+}
 
 void grafica::setRunning(bool running){
     if (m_running == running)

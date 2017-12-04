@@ -49,12 +49,26 @@ La scimmia che era capace di attraversare l'albero \`{e} solo in parte capace di
 
 Per far evolvere la scimmia sulle pareti sono state usate due diverse funzioni di fitness, verificando quale fosse la migliore: quella usata anche per gli alberi ed un'altra,che definisce il valore di fitness come inversamente proporzionale al minimo numero di passi necessari per arrivare alla cima. Risulta che le scimmie che si sono evolute con la funzione di fitness precedentemente usata hanno una strategia quasi identica a quella che ci aspettiamo, quelle evolute con la seconda funzione arrivano in cima con la stessa probabilit\`{a} rispetto alle prime ma presentano una strategia leggermente diversa. Questo pu\`{o} essere dovuto a una maggiore specializzazione della scimmia evoluta col secondo fit nei confronti della parete che si trova davanti.
 
-\subsection{Modifica della visuale della scimmia: correzione del loop}
+\subsection{Modifica della visuale della scimmia}
+\subsubsection{Correzione del loop}
 Per risolvere il problema del loop abbiamo adottato una soluzione ad hoc: abbiamo ampliato il numero di informazioni disponibili alla scimmia aggiungendo il caso in cui si trovasse in un loop.
 Quindi le configurazini possibili, nonch\`{e} il numero di elementi nel vettore di dna, sono diventati $2^5=32$. 
 
 Dopo questa modifica l'algoritmo \`{e} diventato pi\`{u} efficace: compiuto un numero sufficiente di evoluzioni, la scimmia \`{e} sempre capace di attraversare la parete su cui predentemente aveva avuto difficolt\`{a} a causa del loop.
 
 Ma testando la scimmia su qualche decina di pareti random  abbiamo notato che non sempre la strategia adottata le permette di raggiungere la cima. In particolare la scimmia fallisce circa 1 volta su 5. Questo implica che la soluzione trovata corregge solo un comportamento sbagliato ma non permette di elaborare una strategia universalmente valida.
+
+
+\subsubsection{Memoria della configurazione precedente}
+Abbiamo provato a modificare il set delle informazioni disponibili alla scimmia rimuovendo l'informazione del loop e aggiungendone altre due:
+\begin{itemize}
+		\item se \`{e} possibile o meno accedere al nodo immediatamente precedente a quello attuale (informazione non banale dato che gli archi sono direzionati);
+		\item qual'era la configurazione dei nodi che si presentava davanti alla scimmia quando questa si trovava nella posizione immediatamente precedente a quella attuale. 
+	\end{itemize}
+ In questo modo le possibili configurazioni, e quindi gli elementi del vettore dna, sono 1024.
+ Abbiamo anche aggiunto alle azioni che la scimmia pu\`{o} compiere anche quella di tornare nella posizione immediatamente precedente.
+ 
+ Dopo 60,000 evoluzioni, la scimmia \`{e} capace di attraversare le pareti pi\`{u} semplici con un'efficienza maggiore rispetto a quando aveva meno informazioni a sua disposizione (raggiunge la cima in meno passi), ma sulle pareti con biforcazioni e strettoie non raggiunge ancora la cima.
+ 
 
 \end{document}

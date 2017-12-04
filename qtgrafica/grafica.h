@@ -29,6 +29,7 @@ class grafica : public QObject
     Q_PROPERTY(QVector<int> dna READ dna WRITE setDna NOTIFY dnaChanged)
     Q_PROPERTY(QVector<QPoint> mem READ mem WRITE setMem NOTIFY memChanged)
     Q_PROPERTY(QVector<QLine> paths READ paths WRITE setPaths NOTIFY pathsChanged)
+    Q_PROPERTY(int seed READ seed WRITE setSeed)
     bool m_runable;
     bool m_running;
     double m_fit;
@@ -36,7 +37,7 @@ class grafica : public QObject
 
     double m_pmuta;
 
-    int m_individui;
+    int m_individui; m_seed;
 
     int m_passi;
 
@@ -51,6 +52,11 @@ public:
     explicit grafica(QObject* parent=0);
 
     int evolutions() const;
+    int seed() const;
+    void setSeed(int s);
+    void write(QJsonObject &j);
+    void read_parete(QJsonObject &j);
+    void read_scimmia(QJsonObject &j);
     bool running() const;
     QVector<QPoint> mem() const;
     void setMem(QVector<QPoint> mem);
