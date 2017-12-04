@@ -6,6 +6,7 @@
 #define SISTEMI_COMPLESSI_GRAPH_H
 #include "Snap.h"
 #include <cstdlib>
+#include <iostream>
 #include <random>
 #include <cmath>
 #include <vector>
