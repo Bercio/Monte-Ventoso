@@ -22,8 +22,10 @@ int AnimaParete::end() const{
     return m_end;
 }
 void AnimaParete::get_end() {
+    if(m_mem.empty()) setEnd(0); return;
     int r = m_mem.length()-1;
-    for(QVector<QPoint>::reverse_iterator i = m_mem.rbegin(); i != m_mem.rend() && *i == m_mem.back(); ++i) --r;
+    QVector<QPoint>::reverse_iterator rend = ++m_mem.rend();
+    for(QVector<QPoint>::reverse_iterator i = m_mem.rbegin(); i != rend && *i == m_mem.back(); ++i) --r;
     setEnd(r);
 }
 void AnimaParete::setMem_index(int ind) {
