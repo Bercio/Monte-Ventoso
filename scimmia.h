@@ -15,7 +15,7 @@ class Scimmia
     double fit;
     std::vector<int> memoria;
 	bool loop;
-	enum Azione {a_f_noto=0, a_p_noto, a_f_ignoto, a_p_ignoto};
+	enum Azione {a_f_noto=0, a_p_noto, a_f_ignoto, a_p_ignoto, a_n_precedente};
 public:
 	void set_loop(bool l);
 	bool get_loop() const;
@@ -27,15 +27,15 @@ public:
     void set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node);
     int get_stato() const;
     double get_fit() const;
-    double fit_func_lo(TNodeEDatNet<Point,Point>::TNodeI& n,const Parete& g);
-    double fit_func_riri(TNodeEDatNet<Point,Point>::TNodeI& n ,const Parete& g);
+    double fit_func_lo(TNodeEDatNet<Point,Point>::TNodeI& n,const Parete& g, int passi);
+    double fit_func_riri(TNodeEDatNet<Point,Point>::TNodeI& n ,const Parete& g, int passi);
     void set_fit(double f);
 	Scimmia();
     Scimmia(Scimmia& m, Scimmia& p);
     void muta(); 
 	bool is_looping(const int& passi);
 	TNodeEDatNet<Point,Point>::TNodeI traverse(const Parete& parete, int n_passi);
-    Scimmia(std::vector<int>& _dna);
+    Scimmia(std::vector<int> _dna);
     int move(const TNodeEDatNet<Point,Point>::TNodeI& pos);
 };
 #endif

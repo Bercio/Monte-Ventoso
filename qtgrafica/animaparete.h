@@ -3,7 +3,7 @@
 
 #include <QtQuick>
 #include "parete.h"
-
+#include <iterator>
 class AnimaParete : public QQuickPaintedItem
 {
     Q_OBJECT
@@ -18,7 +18,7 @@ public:
     void setPaths(QVector<QLine> v);
     void setMem_index(int index);
     void setEnd(int end);
-    void setEnd_point(QPoint end_p);
+    Q_INVOKABLE void get_end();
     QVector<QPoint> mem() const;
     QVector<QLine> paths() const;
     int end() const;

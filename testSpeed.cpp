@@ -12,7 +12,7 @@ int main(){
     double time = clock();
     for(int i = 0; i < N; ++i) {
         e.evoluzione();
-    }
+   }
     cout << "tempo impiegato per fare " << N << "evoluzioni con " << e.getIndividui() << "scimmie "
          "e una parete di " << e.getParete().get_p()->GetNodes() << " Nodi = " << (clock()-time)/CLOCKS_PER_SEC;
 }

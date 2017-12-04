@@ -1,15 +1,13 @@
 QT += qml quick widgets charts
 
 CONFIG += c++14
-LIBS += -L$$PWD/../ -lEvoluzione
-LIBS += -L$$PWD/../ -lScimmia
-LIBS += -L$$PWD/../ -lParete
 LIBS += $$PWD/../lib/Snap-3.0/snap-core/Snap.o
 LIBS += -lrt
 LIBS += -fopenmp
 SOURCES += main.cpp \
     grafica.cpp \
-    animaparete.cpp
+    animaparete.cpp \
+    dnamodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -37,28 +35,21 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     grafica.h \
-    animaparete.h
-
-FORMS +=
-
-
+    animaparete.h \
+    dnamodel.h
 INCLUDEPATH += $$PWD/../
 INCLUDEPATH += $$PWD/../lib/Snap-3.0/snap-core
 INCLUDEPATH += $$PWD/../lib/Snap-3.0/glib-core
-DEPENDPATH += $$PWD/../
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../libEvoluzione.a
-
+INCLUDEPATH += $$PWD/../cmake-build-debug
+DEPENDPATH += $$PWD/../cmake-build-debug
 DISTFILES += \
     SchermataForm.ui.qml \
     Schermata.qml \
     qt.conf
-
-unix:!macx: LIBS += -L$$PWD/../ -lEvoluzione
-
-INCLUDEPATH += $$PWD/../
-DEPENDPATH += $$PWD/../
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../libEvoluzione.a
-
 unix: CONFIG += link_pkgconfig
+unix:!macx: LIBS += -L$$PWD/../ -lParete
+unix:!macx: PRE_TARGETDEPS += $$PWD/../libParete.a
+unix:!macx: LIBS += -L$$PWD/../ -lEvoluzione
+unix:!macx: PRE_TARGETDEPS += $$PWD/../libEvoluzione.a
+unix:!macx: LIBS += -L$$PWD/../ -lScimmia
+unix:!macx: PRE_TARGETDEPS += $$PWD/../libScimmia.a

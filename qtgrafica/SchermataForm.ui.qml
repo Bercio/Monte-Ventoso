@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Extras 1.4
 import QtQuick.Window 2.2
 import QtCharts 2.2
+import dnas 1.0
 import animazione 1.0
 
 Item {
@@ -18,14 +19,21 @@ Item {
     property alias pcross: pcross
     property alias pmuta: pmuta
     property alias button2: button2
+    property alias button3: button3
     property alias button1: button1
     property alias comboBox: comboBox
     property alias animaz: animaz
     property alias busyIndicator: busyIndicator
     property alias grafo1: grafo1
+    property alias dnalista: dnalista
+    property alias dnas: dnas
 
     RowLayout {
         id: rowLayout
+        x: 0
+        y: 8
+        width: 863
+        height: 40
         anchors.right: columnLayout.left
         anchors.rightMargin: 6
         anchors.leftMargin: 0
@@ -37,16 +45,25 @@ Item {
             id: button2
             text: qsTr("Running")
         }
+        Button {
+        id:button3
+        text: qsTr("Animate")
+        }
 
         Button {
             id: button1
             text: qsTr("New Pop")
         }
 
+        
         Button {
             id: parete
             text: qsTr("New Parete")
         }
+
+
+
+
 
         ComboBox {
             id: comboBox
@@ -65,11 +82,9 @@ Item {
         id: columnLayout
         width: 300
         anchors.right: parent.right
-        anchors.rightMargin: 0
-        anchors.topMargin: 0
         anchors.top: parent.top
+        anchors.bottom: parent.bottom
         z: 1
-        Layout.fillHeight: false
 
         Slider {
             id: pmuta
@@ -106,6 +121,7 @@ Item {
         Slider {
             id: passi
             width: parent.width
+            stepSize: 1
             from: 0
             to: 2000
             value: 500
@@ -126,6 +142,7 @@ Item {
         Slider {
             id: individui
             width: parent.width
+            stepSize: 1
             to: 1000
             value: 100
 
@@ -170,6 +187,10 @@ Item {
                 axisY: yAxis
             }
         }
+        ListView {
+            id: dnalista
+            Layout.fillHeight: true
+        }
     }
 
     Item {
@@ -193,5 +214,8 @@ Item {
         id: busyIndicator
         anchors.horizontalCenter: parAnim.horizontalCenter
         anchors.verticalCenter: parAnim.verticalCenter
+    }
+    Dnas {
+        id: dnas
     }
 }

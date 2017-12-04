@@ -11,7 +11,6 @@
 #include <vector>
 #include <algorithm>
 #include <string>
-#include <SFML/Graphics.hpp>
 #include <stdlib.h>
 
 struct Point : public TIntPr {
@@ -31,6 +30,7 @@ class Parete {
     int start;
     double corr;
     int min_depth;
+    int seed;
     void norm_coord();
     bool is_viable();
     void set_start();
@@ -40,19 +40,21 @@ public:
     int get_endID()const ;
     int get_startID()const ;
     int get_min_depth()const ;
-    const TPt<TNodeEDatNet<Point, Point>> & get_p()const ;
+    const TPt<TNodeEDatNet<Point,Point>>& get_p()const ;
     int get_d()const ;
     double get_prob_appiglio() const;
     double get_prob_appoggio() const;
-    void set_window(sf::RenderWindow& window, std::string titolo);
-    void draw(int n, sf::RenderWindow& window);
-    void animate(std::vector<int> v, std::string titolo);
     Parete();
     Parete(const Parete &pr);
+    Parete(Parete &&pr);
+    Parete operator=(Parete pr);
     bool operator==(const Parete& pr) const;
     Parete(std::vector<Point> ret, int d, double p_ap, double p_appi, int min_depth);
-    friend Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
+    friend Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth, int s);
+    friend void swap(Parete& p, Parete& s);
     void write_schema(TStr filename);
+    void set_seed(int i);
+    int get_seed() const;
 };
-Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth);
+Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth, int s);
 #endif //SISTEMI_COMPLESSI_GRAPH_H

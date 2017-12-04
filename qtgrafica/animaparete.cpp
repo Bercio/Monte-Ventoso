@@ -3,7 +3,6 @@
 
 
 AnimaParete::AnimaParete(QQuickPaintedItem *parent) : QQuickPaintedItem(parent), m_mem_index(0) {
-    setRenderTarget(QQuickPaintedItem::InvertedYFramebufferObject);
 }
 void AnimaParete::setPaths(QVector<QLine> v) {
     if(v != m_paths){
@@ -13,8 +12,6 @@ void AnimaParete::setPaths(QVector<QLine> v) {
 }
 void AnimaParete::setMem(QVector<QPoint> mem) {
     m_mem = mem;
-    setMem_index(0);
-    setEnd(m_mem.length()-1);
     emit memChanged();
 }
 void AnimaParete::setEnd_point(QPoint end_p){
@@ -30,6 +27,13 @@ void AnimaParete::setEnd(int e){
 int AnimaParete::end() const{
     return m_end;
 }
+void AnimaParete::get_end() {
+    if(m_mem.empty()) setEnd(0); return;
+    int r = m_mem.length()-1;
+    QVector<QPoint>::reverse_iterator rend = ++m_mem.rend();
+    for(QVector<QPoint>::reverse_iterator i = m_mem.rbegin(); i != rend && *i == m_mem.back(); ++i) --r;
+    setEnd(r);
+}
 void AnimaParete::setMem_index(int ind) {
     if(ind != m_mem_index){
         m_mem_index = ind;
@@ -41,9 +45,7 @@ int AnimaParete::mem_index() const {return m_mem_index;}
 QPoint AnimaParete::end_point() const {return m_end_point;}
 QVector<QLine> AnimaParete::paths() const {return m_paths;}
 void AnimaParete::paint(QPainter* painter){
-    //TODO: make sure paint device is = to parent item, not whole window
-    painter->setWindow(0,0,end_point().x()+40,end_point().y()+20);
-
+    painter->setWindow(0,0,m_end_point.x(),m_end_point.y());
     if(!m_paths.empty()){
         painter->setRenderHint(QPainter::Antialiasing);
 
@@ -61,10 +63,10 @@ void AnimaParete::paint(QPainter* painter){
     }
     if(!m_mem.empty()){
         QPen fine = painter->pen();
-        fine.setWidthF(0.05);
+        fine.setWidthF(0.1);
         fine.setColor(Qt::darkGreen);
         painter->setPen(fine);
-        painter->drawEllipse(QPointF(m_mem[m_mem_index]),0.1,0.1);
+        painter->drawEllipse(QPointF(m_mem[m_mem_index]),0.2,0.2);
     }
 }
 
