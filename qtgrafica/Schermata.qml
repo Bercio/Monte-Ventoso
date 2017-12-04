@@ -16,6 +16,16 @@ SchermataForm{
             evoluzione.animate
             aniMem.restart()
     }
+    salva.onClicked: {
+        evoluzione.write(filename.text)
+    }
+    leggip.onClicked: {
+        evoluzione.read_parete(filename.text)
+    }
+    leggis.onClicked: {
+        evoluzione.read_scimmia(filename.text)
+    }
+
     comboBox.model: ["Rita", "Lorenzo"]
     comboBox.onCurrentIndexChanged: evoluzione.f_index = currentIndex;
     button1.onClicked: {
@@ -36,7 +46,7 @@ SchermataForm{
     }
     pcross.onValueChanged: evoluzione.pcross = pcross.value
     pmuta.onValueChanged: evoluzione.pmuta=pmuta.value
-    text1.text: "fit: " + evoluzione.fit.toLocaleString()
+    text1.text: "fit: " + evoluzione.fit.toLocaleString(Qt.locale("it_IT"),'f',3)
     busyIndicator.running: evoluzione.running
     animaz.onMem_indexChanged: animaz.update()
     animaz.onPathsChanged: {

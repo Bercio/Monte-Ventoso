@@ -12,7 +12,7 @@ SOURCES += main.cpp \
 RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =/opt/Qt/5.7/
+QML_IMPORT_PATH =/Data/data/Qt/5.9.2
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
@@ -40,8 +40,8 @@ HEADERS += \
 INCLUDEPATH += $$PWD/../
 INCLUDEPATH += $$PWD/../lib/Snap-3.0/snap-core
 INCLUDEPATH += $$PWD/../lib/Snap-3.0/glib-core
-INCLUDEPATH += $$PWD/../cmake-build-debug
-DEPENDPATH += $$PWD/../cmake-build-debug
+INCLUDEPATH += $$PWD/../
+DEPENDPATH += $$PWD/../
 DISTFILES += \
     SchermataForm.ui.qml \
     Schermata.qml \

@@ -2,6 +2,7 @@
 #define GRAFICA_H
 
 #include <QObject>
+#include <exception>
 #include <QCoreApplication>
 #include "evoluzione.h"
 #include "scimmia.h"
@@ -37,7 +38,7 @@ class grafica : public QObject
 
     double m_pmuta;
 
-    int m_individui; m_seed;
+    int m_individui, m_seed;
 
     int m_passi;
 
@@ -54,9 +55,6 @@ public:
     int evolutions() const;
     int seed() const;
     void setSeed(int s);
-    void write(QJsonObject &j);
-    void read_parete(QJsonObject &j);
-    void read_scimmia(QJsonObject &j);
     bool running() const;
     QVector<QPoint> mem() const;
     void setMem(QVector<QPoint> mem);
@@ -101,6 +99,9 @@ signals:
 
 public slots:
 
+    void write(QString filename);
+    void read_parete(QString filename);
+    void read_scimmia(QString filename);
     void change_gen();
     void change_dna(const QModelIndex& top, const QModelIndex& bottom);
 

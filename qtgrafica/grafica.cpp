@@ -25,7 +25,7 @@ double grafica::pcross() const
 {
     return m_pcross;
 }
-double grafica::seed() const { return m_seed;}
+int grafica::seed() const { return m_seed;}
 void grafica::setSeed(int s){ m_seed = s;}
 double grafica::pmuta() const
 {
@@ -110,18 +110,47 @@ void grafica::change_parete(){
     evo.change_parete(m_seed);
     get_paths_parete();
 }
-void grafica::write(QJsonObject &j){
+void grafica::write(QString filename){
+    QFile f(filename + ".json");
+    if(!f.open(QIODevice::WriteOnly | QIODevice::Text)){
+        std::cout << "errore aprendo file per scrivere" << std::endl;
+        return;
+    }
+    QJsonObject j;
     j["parete"] = seed();
-    j["dna"] = dna();
+    QVariantList q;
+    for(auto& e:dna()) q.append(QVariant(e));
+    j["dna"] = QJsonArray::fromVariantList(q);
     j["fit"] = fit();
+    QJsonDocument d(j);
+    f.write(d.toJson());
 }
-void grafica::read_parete(QJsonObject &j){
+void grafica::read_parete(QString filename){
+    QFile f(filename + ".json");
+    if(!f.open(QIODevice::ReadOnly | QIODevice::Text)){
+        std::cout << "errore aprendo file per scrivere" << std::endl;
+        return;
+    }
+    QByteArray saveData = f.readAll();
+    QJsonDocument d = QJsonDocument::fromJson(saveData);
+    QJsonObject j(d.object());
     setSeed(j["parete"].toInt());
     evo.change_parete(seed());
+    get_paths_parete();
 }
-void grafica::read_scimmia(QJsonObject &j){
-    setDna(j["dna"].toArray());
-    setFit(j["fit"].toDouble())
+void grafica::read_scimmia(QString filename){
+    QFile f(filename + ".json");
+    if(!f.open(QIODevice::ReadOnly | QIODevice::Text)){
+        std::cout << "errore aprendo file per scrivere" << std::endl;
+        return;
+    }
+    QByteArray saveData = f.readAll();
+    QJsonObject j = QJsonDocument(QJsonDocument::fromJson(saveData)).object();
+    QVariantList q = j["dna"].toArray().toVariantList();
+    QVector<int> v;
+    for(auto& e:q){v.append(e.toInt());}
+    setDna(v);
+    setFit(j["fit"].toDouble());
 }
 
 void grafica::setRunning(bool running){
