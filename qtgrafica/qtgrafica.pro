@@ -47,9 +47,9 @@ DISTFILES += \
     Schermata.qml \
     qt.conf
 unix: CONFIG += link_pkgconfig
-unix:!macx: LIBS += -L$$PWD/../cmake-build-debug/ -lParete
-unix:!macx: PRE_TARGETDEPS += $$PWD/../cmake-build-debug/libParete.a
-unix:!macx: LIBS += -L$$PWD/../cmake-build-debug/ -lEvoluzione
-unix:!macx: PRE_TARGETDEPS += $$PWD/../cmake-build-debug/libEvoluzione.a
-unix:!macx: LIBS += -L$$PWD/../cmake-build-debug/ -lScimmia
-unix:!macx: PRE_TARGETDEPS += $$PWD/../cmake-build-debug/libScimmia.a
+unix:!macx: LIBS += -L$$PWD/../ -lParete
+unix:!macx: PRE_TARGETDEPS += $$PWD/../libParete.a
+unix:!macx: LIBS += -L$$PWD/../ -lEvoluzione
+unix:!macx: PRE_TARGETDEPS += $$PWD/../libEvoluzione.a
+unix:!macx: LIBS += -L$$PWD/../ -lScimmia
+unix:!macx: PRE_TARGETDEPS += $$PWD/../libScimmia.a
