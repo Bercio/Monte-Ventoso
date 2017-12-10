@@ -61,7 +61,7 @@ void grafica::setPcross(double pcross)
 {
     if (m_pcross == pcross)
         return;
-
+    evo.set_pcross(pcross);
     m_pcross = pcross;
     emit pcrossChanged(pcross);
 }
@@ -221,8 +221,9 @@ void grafica::get_paths_parete() {
     }
     setPaths(res);
 }
-QPoint Evoluzione::get_max_coor(){
-    const TPt<TNodeEDatNet<Point,Point>> p = get_p();
+QPoint grafica::get_max_coor(){
+    Parete parete = evo.getParete();
+    const TPt<TNodeEDatNet<Point,Point>> p = parete.get_p();
     TIntV v;
     p->GetNIdV(v);
     int nmaxx = p->GetNDat(*std::max_element(v.BegI(), v.EndI(), [&](TInt& n, TInt& m){ return p->GetNDat(n).Val1 < p->GetNDat(m).Val1;})).Val1;

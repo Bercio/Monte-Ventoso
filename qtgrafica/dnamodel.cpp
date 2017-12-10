@@ -25,24 +25,5 @@ QVariant DnaModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if(role == Qt::EditRole) return m_data.at(index.row());
-    else return QString(QString::number(index.row(),2).rightJustified(std::log2(m_data.length()), '0') + ": " + QString::number(m_data.at(index.row())));
-}
-
-bool DnaModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-    if (data(index, role) != value) {
-        m_data[index.row()] = value.toInt();
-        emit dataChanged(index, index);
-        return true;
-    }
-    return false;
-}
-
-Qt::ItemFlags DnaModel::flags(const QModelIndex &index) const
-{
-    if (!index.isValid())
-        return Qt::NoItemFlags;
-
-    return Qt::ItemIsEditable;
+    return QString(QString::number(index.row(),2).rightJustified(std::log2(m_data.length()), '0') + ": " + QString::number(m_data.at(index.row())));
 }

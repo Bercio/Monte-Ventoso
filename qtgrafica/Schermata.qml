@@ -55,8 +55,6 @@ SchermataForm{
     }
     animaz.paths: evoluzione.paths
     animaz.onMemChanged: animaz.get_end()
-    //todo bind dnas change to evoluzione
-    //dnas.onDataChanged: evoluzione.change_dna(index)
     animaz.onEndChanged: {
     animaz.update()
     aniMem.target = animaz;
@@ -89,20 +87,12 @@ SchermataForm{
     dnas.onModelReset:{
         dnalista.model = dnas
     }
-    // TODO:dnas.onDataChanged: {evoluzione.change_dna(top,bottom)}
     PropertyAnimation {
         from: 0;
         id: aniMem; }
     dnalista.delegate:
-        TextInput {
+        Text{
             text: display
-            validator: IntValidator{ bottom: 0; top: 3}
-            onActiveFocusChanged: {
-                if(activeFocus)
-                    text = edit
-                else
-                    text = display
-            }
-                onEditingFinished: model.edit = text}
+    }
 }
 

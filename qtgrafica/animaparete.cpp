@@ -11,12 +11,6 @@ void AnimaParete::setMem(QVector<QPoint> mem) {
     m_mem = mem;
     emit memChanged(mem);
 }
-void AnimaParete::setEnd_point(QPoint end_p){
-    if(end_p != m_end_point){
-        m_end_point = end_p;
-        emit end_pointChanged();
-    }
-}
 void AnimaParete::setEnd(int e){
     m_end = e;
     emit endChanged(e);
@@ -42,7 +36,6 @@ void AnimaParete::setMem_index(int ind) {
 }
 QVector<QPoint> AnimaParete::mem() const {return m_mem;}
 int AnimaParete::mem_index() const {return m_mem_index;}
-QPoint AnimaParete::end_point() const {return m_end_point;}
 QVector<QLine> AnimaParete::paths() const {return m_paths;}
 void AnimaParete::paint(QPainter* painter){
     painter->setWindow(QRect(m_end_point + QPoint(1,1),QPoint(-2,-2)));

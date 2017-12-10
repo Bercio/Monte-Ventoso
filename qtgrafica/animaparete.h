@@ -11,7 +11,7 @@ class AnimaParete : public QQuickPaintedItem
     Q_PROPERTY(QVector<QLine> paths READ paths WRITE setPaths NOTIFY pathsChanged)
     Q_PROPERTY(int mem_index READ mem_index WRITE setMem_index NOTIFY mem_indexChanged)
     Q_PROPERTY(int end READ end WRITE setEnd NOTIFY endChanged)
-    Q_PROPERTY(QPoint end_point WRITE setEnd_point NOTIFY end_pointChanged)
+    Q_PROPERTY(QPoint end_point MEMBER m_end_point)
 public:
     AnimaParete(QQuickPaintedItem *parent = 0);
     void setMem(QVector<QPoint> mem);
@@ -22,7 +22,6 @@ public:
     QVector<QPoint> mem() const;
     QVector<QLine> paths() const;
     int end() const;
-    QPoint end_point() const;
     int mem_index() const;
     void paint(QPainter *painter);
     Q_INVOKABLE void clear_mem();
