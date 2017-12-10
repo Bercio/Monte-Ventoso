@@ -24,11 +24,13 @@ public:
     int end() const;
     int mem_index() const;
     void paint(QPainter *painter);
+    Q_INVOKABLE void clear_mem();
+
 signals:
-    void memChanged();
-    void pathsChanged();
-    void mem_indexChanged();
-    void endChanged();
+    void memChanged(QVector<QPoint> mem);
+    void pathsChanged(QVector<QLine> paths);
+    void mem_indexChanged(int index);
+    void endChanged(int end);
 private:
     QVector<QLine> m_paths;
     QVector<QPoint> m_mem;

@@ -11,6 +11,7 @@ grafica::grafica(QObject* parent) : QObject(parent), m_fit(0), m_evolutions(0),e
     change_parete();
     evo.new_gen();
     get_paths_parete();
+    get_best_dna();
     _set_runable();
 }
 
@@ -52,7 +53,6 @@ void grafica::setPaths(QVector<QLine> paths){
 }
 void grafica::setFit(double fit)
 {
-    if (m_fit == fit) return;
     m_fit = fit;
     emit fitChanged(fit);
 }
@@ -199,12 +199,10 @@ void grafica::get_best_mem(){
      setMem(mem);
 }
 void grafica::setMem(QVector<QPoint> mem){
-    if(m_mem == mem) return;
     m_mem=mem;
     emit memChanged(mem);
 }
 void grafica::setDna(QVector<int> dna){
-    if(dna==m_dna) return;
     m_dna = dna;
     emit dnaChanged(dna);
 }

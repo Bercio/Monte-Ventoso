@@ -50,6 +50,7 @@ Item {
         Button {
         id:button3
         text: qsTr("Animate")
+        checkable: false
         }
 
         Button {
