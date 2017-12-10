@@ -3,6 +3,7 @@
 #include <QQmlContext>
 #include <QQmlApplicationEngine>
 #include "grafica.h"
+#include "animaparete.h"
 #include "dnamodel.h"
 int main(int argc, char *argv[])
 {

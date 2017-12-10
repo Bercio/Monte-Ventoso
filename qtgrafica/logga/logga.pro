@@ -1,15 +1,13 @@
-QT += qml quick widgets charts
+QT -= gui
 
 CONFIG += c++14
-LIBS += $$PWD/../lib/Snap-3.0/snap-core/Snap.o
+LIBS += $$PWD/../../lib/Snap-3.0/snap-core/Snap.o
 LIBS += -lrt
 LIBS += -fopenmp
-SOURCES += main.cpp \
-    grafica.cpp \
-    animaparete.cpp \
-    dnamodel.cpp \
-
-RESOURCES += qml.qrc
+SOURCES += mainlog.cpp \
+    $$PWD/../grafica.cpp
+QMAKE_CXXFLAGS+= -fopenmp
+QMAKE_LFLAGS +=  -fopenmp
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =/Data/data/Qt/5.9.2
@@ -34,22 +32,16 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    grafica.h \
-    animaparete.h \
-    dnamodel.h
-INCLUDEPATH += $$PWD/../
-INCLUDEPATH += $$PWD/../lib/Snap-3.0/snap-core
-INCLUDEPATH += $$PWD/../lib/Snap-3.0/glib-core
-INCLUDEPATH += $$PWD/../
-DEPENDPATH += $$PWD/../
-DISTFILES += \
-    SchermataForm.ui.qml \
-    Schermata.qml \
-    qt.conf
+    $$PWD/../grafica.h \
+INCLUDEPATH += $$PWD/../../
+INCLUDEPATH += $$PWD/../../lib/Snap-3.0/snap-core
+INCLUDEPATH += $$PWD/../../lib/Snap-3.0/glib-core
+INCLUDEPATH += $$PWD/../../
+DEPENDPATH += $$PWD/../../
 unix: CONFIG += link_pkgconfig
-unix:!macx: LIBS += -L$$PWD/../ -lParete
-unix:!macx: PRE_TARGETDEPS += $$PWD/../libParete.a
-unix:!macx: LIBS += -L$$PWD/../ -lEvoluzione
-unix:!macx: PRE_TARGETDEPS += $$PWD/../libEvoluzione.a
-unix:!macx: LIBS += -L$$PWD/../ -lScimmia
-unix:!macx: PRE_TARGETDEPS += $$PWD/../libScimmia.a
+unix:!macx: LIBS += -L$$PWD/../../ -lParete
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../libParete.a
+unix:!macx: LIBS += -L$$PWD/../../ -lEvoluzione
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../libEvoluzione.a
+unix:!macx: LIBS += -L$$PWD/../../ -lScimmia
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../libScimmia.a

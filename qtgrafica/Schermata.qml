@@ -23,10 +23,6 @@ SchermataForm{
     leggis.onClicked: {
         evoluzione.read_scimmia(filename.text)
     }
-    log.onClicked: {
-        evoluzione.log_evo()
-    }
-
     comboBox.model: ["Rita", "Lorenzo"]
     comboBox.onCurrentIndexChanged: evoluzione.f_index = currentIndex;
     button1.onClicked: {

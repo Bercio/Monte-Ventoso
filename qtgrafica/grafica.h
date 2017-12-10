@@ -2,20 +2,26 @@
 #define GRAFICA_H
 
 #include <QObject>
+#include <QVector>
+#include <QPoint>
+#include <QLine>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QFile>
+#include <QAbstractListModel>
+#include <QVariant>
 #include <exception>
 #include <QCoreApplication>
 #include "evoluzione.h"
 #include "scimmia.h"
 #include "parete.h"
-#include <QAbstractListModel>
-#include "animaparete.h"
 #include "Snap.h"
 
 class grafica : public QObject
 {
     Q_OBJECT
     Evoluzione evo;
-    AnimaParete animazione;
     std::vector<std::function<double(Scimmia&,TNodeEDatNet<Point,Point>::TNodeI&, const Parete&, int p)>>
         funcs;
     Q_PROPERTY(int evolutions READ evolutions)

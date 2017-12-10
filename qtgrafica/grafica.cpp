@@ -1,5 +1,5 @@
 #include "grafica.h"
-grafica::grafica(QObject* parent) : QObject(parent), m_fit(0), m_evolutions(0),evo(), animazione(0), m_runable(false),m_running(false), m_individui(100), m_pcross(0.6), m_passi(100), m_pmuta(0.3)
+grafica::grafica(QObject* parent) : QObject(parent), m_fit(0), m_evolutions(0),evo(), m_runable(false),m_running(false), m_individui(100), m_pcross(0.6), m_passi(100), m_pmuta(0.3)
 {  
     funcs.push_back(&Scimmia::fit_func_lo);
     funcs.push_back(&Scimmia::fit_func_riri);
@@ -185,7 +185,7 @@ void grafica::start_evo(){
 void grafica::log_evo(){
     if(running()) return;
     setRunning(true);
-    while(m_running && m_evolutions != 1000000);
+    while(m_running && m_evolutions != 1000000){
         evo.evoluzione();
         std::vector<double> av_fit;
         ++m_evolutions;
@@ -205,6 +205,7 @@ void grafica::log_evo(){
             }
             if(m_evolutions %100000 == 0) change_parete();
         }
+    }
 }
 void grafica::stop_evo(){
     setRunning(false);
