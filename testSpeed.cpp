@@ -6,7 +6,7 @@
 using namespace std;
 int main(){
     Evoluzione e(100,100,0.8,0.2);
-    e.change_parete(2000,100,50,3,0.2,0.2,3);
+    e.change_parete(rand(),2000,100,50,3,0.2,0.2,3);
     e.new_gen();
     int N = 1000;
     double time = clock();

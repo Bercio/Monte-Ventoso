@@ -36,6 +36,7 @@ void Evoluzione::set_fitfunc(function<double(Scimmia&, TNet::TNodeI&, const Pare
 }
 void Evoluzione::evoluzione() {
     riproduzione();
+#pragma omp parallel for
     for (auto i = generazione.begin(); i < generazione.end(); ++i) {
         TNet::TNodeI pos = i->traverse(parete, passi);
         i->set_fit(fit_func(*i, pos, parete, passi));
