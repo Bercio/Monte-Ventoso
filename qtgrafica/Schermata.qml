@@ -9,13 +9,21 @@ SchermataForm{
         else
             evoluzione.stop_evo()
             evoluzione.get_best_dna()
-            evoluzione.get_best_mem()
     }
-    button3.checkable: animaz.end > 0
-    button3.onClicked:{
-            evoluzione.animate
+    button3.onClicked: {
+            evoluzione.animate()
             aniMem.restart()
     }
+    salva.onClicked: {
+        evoluzione.write(filename.text)
+    }
+    leggip.onClicked: {
+        evoluzione.read_parete(filename.text)
+    }
+    leggis.onClicked: {
+        evoluzione.read_scimmia(filename.text)
+    }
+
     comboBox.model: ["Rita", "Lorenzo"]
     comboBox.onCurrentIndexChanged: evoluzione.f_index = currentIndex;
     button1.onClicked: {
@@ -24,6 +32,7 @@ SchermataForm{
     }
     parete.onClicked: {
         evoluzione.change_parete()
+
         evoluzione._set_runable()
     }
     passi.onValueChanged:{
@@ -36,45 +45,54 @@ SchermataForm{
     }
     pcross.onValueChanged: evoluzione.pcross = pcross.value
     pmuta.onValueChanged: evoluzione.pmuta=pmuta.value
-    text1.text: "fit: " + evoluzione.fit.toLocaleString()
+    text1.text: "fit"
     busyIndicator.running: evoluzione.running
     animaz.onMem_indexChanged: animaz.update()
     animaz.onPathsChanged: {
         animaz.end_point = evoluzione.get_max_coor()
-        aniMem.complete()
+        animaz.clear_mem()
         animaz.update()
     }
-    animaz.mem: evoluzione.mem
-    animaz.onMemChanged: animaz.get_end()
     animaz.paths: evoluzione.paths
-    Connections {
-        target: evoluzione
-        onDnaChanged: dnas.setDna(dna)
-    }
+    animaz.onMemChanged: animaz.get_end()
     //todo bind dnas change to evoluzione
     //dnas.onDataChanged: evoluzione.change_dna(index)
+    animaz.onEndChanged: {
+    animaz.update()
+    aniMem.target = animaz;
+    aniMem.property = "mem_index";
+    aniMem.to = animaz.end;
+    aniMem.duration = (aniMem.to+1)*500;
+    }
 
     Connections {
         target: evoluzione
         onFitChanged: {
             grafo1.axisX.max = evoluzione.evolutions * 1.3;
             grafo1.append(evoluzione.evolutions, evoluzione.fit)
+            text1.text = "fit: " + evoluzione.fit.toLocaleString(Qt.locale("it_IT"),'f',5)
         }
-    }
-    Connections {
-        target: evoluzione
         onRunableChanged: {
             if (evoluzione.running && !evoluzione.runable) {
                 evoluzione.stop_evo()
                 button2.checked = evoluzione.running
             }
         }
+        onMemChanged: animaz.mem = mem
+        onDnaChanged: {
+            animaz.clear_mem()
+            aniMem.complete()
+            dnas.setDna(dna)
+        }
+        onPathsChanged: animaz.paths = paths
     }
     dnas.onModelReset:{
         dnalista.model = dnas
     }
-    dnas.onDataChanged: {evoluzione.change_dna(top,bottom)}
-    PropertyAnimation {id: aniMem; target: animaz; property: "mem_index";from: 0; to: animaz.end; duration: animaz.end*500 }
+    // TODO:dnas.onDataChanged: {evoluzione.change_dna(top,bottom)}
+    PropertyAnimation {
+        from: 0;
+        id: aniMem; }
     dnalista.delegate:
         TextInput {
             text: display

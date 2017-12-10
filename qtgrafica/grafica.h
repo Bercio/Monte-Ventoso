@@ -2,6 +2,7 @@
 #define GRAFICA_H
 
 #include <QObject>
+#include <exception>
 #include <QCoreApplication>
 #include "evoluzione.h"
 #include "scimmia.h"
@@ -29,6 +30,7 @@ class grafica : public QObject
     Q_PROPERTY(QVector<int> dna READ dna WRITE setDna NOTIFY dnaChanged)
     Q_PROPERTY(QVector<QPoint> mem READ mem WRITE setMem NOTIFY memChanged)
     Q_PROPERTY(QVector<QLine> paths READ paths WRITE setPaths NOTIFY pathsChanged)
+    Q_PROPERTY(int seed READ seed WRITE setSeed)
     bool m_runable;
     bool m_running;
     double m_fit;
@@ -36,7 +38,7 @@ class grafica : public QObject
 
     double m_pmuta;
 
-    int m_individui;
+    int m_individui, m_seed;
 
     int m_passi;
 
@@ -51,6 +53,8 @@ public:
     explicit grafica(QObject* parent=0);
 
     int evolutions() const;
+    int seed() const;
+    void setSeed(int s);
     bool running() const;
     QVector<QPoint> mem() const;
     void setMem(QVector<QPoint> mem);
@@ -95,6 +99,9 @@ signals:
 
 public slots:
 
+    void write(QString filename);
+    void read_parete(QString filename);
+    void read_scimmia(QString filename);
     void change_gen();
     void change_dna(const QModelIndex& top, const QModelIndex& bottom);
 

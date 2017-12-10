@@ -154,9 +154,9 @@ Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double 
         //gets the biggest connected subgraph and checks wether it's viable; if not, repeat
         wall.p = GetMxWcc(wall.get_p());
         wall.set_end();
-        if((clock()-time)/CLOCKS_PER_SEC > 20) {
-            throw invalid_argument("too few numbers or too small a "
-                    "distance for min_depth specified.");
+        if((clock()-time)/CLOCKS_PER_SEC > 10) {
+            cout << "takes too long, recurse!" << endl;
+            return rnd_solvable_parete(N,x,y,d,prob_appo,prob_appi,min_depth,rand());
         }
     } while (!wall.is_viable());
     wall.set_end();

@@ -27,14 +27,16 @@ Item {
     property alias grafo1: grafo1
     property alias dnalista: dnalista
     property alias dnas: dnas
+    property alias filename: filename
+    property alias salva: salva
+    property alias leggip: leggip
+    property alias leggis: leggis
 
     RowLayout {
         id: rowLayout
-        x: 0
-        y: 8
-        width: 863
-        height: 40
         anchors.right: columnLayout.left
+        spacing:0
+        Layout.maximumWidth: parent.width - columnLayout.width
         anchors.rightMargin: 6
         anchors.leftMargin: 0
         anchors.left: parent.left
@@ -48,6 +50,7 @@ Item {
         Button {
         id:button3
         text: qsTr("Animate")
+        checkable: false
         }
 
         Button {
@@ -60,11 +63,6 @@ Item {
             id: parete
             text: qsTr("New Parete")
         }
-
-
-
-
-
         ComboBox {
             id: comboBox
             currentIndex: 0
@@ -72,15 +70,31 @@ Item {
 
         Text {
             id: text1
-            text: qsTr("Text")
-            fontSizeMode: Text.Fit
-            font.pixelSize: 12
         }
+        Button {
+            id: leggip
+            text: "carica parete"
+        }
+        Button {
+            id: leggis
+            text: "carica scimmia"
+            }
+        Button{
+            id: salva
+            text: "salva p+s"
+            Layout.minimumWidth: 2
+            }
+
+        TextField {
+            id: filename
+            placeholderText:  "filename:"
+            implicitWidth: 100
+            }
     }
 
     ColumnLayout {
         id: columnLayout
-        width: 300
+        width: 200
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom

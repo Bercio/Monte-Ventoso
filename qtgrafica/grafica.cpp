@@ -11,6 +11,7 @@ grafica::grafica(QObject* parent) : QObject(parent), m_fit(0), m_evolutions(0),e
     change_parete();
     evo.new_gen();
     get_paths_parete();
+    get_best_dna();
     _set_runable();
 }
 
@@ -25,7 +26,8 @@ double grafica::pcross() const
 {
     return m_pcross;
 }
-
+int grafica::seed() const { return m_seed;}
+void grafica::setSeed(int s){ m_seed = s;}
 double grafica::pmuta() const
 {
     return m_pmuta;
@@ -51,7 +53,6 @@ void grafica::setPaths(QVector<QLine> paths){
 }
 void grafica::setFit(double fit)
 {
-    if (m_fit == fit) return;
     m_fit = fit;
     emit fitChanged(fit);
 }
@@ -104,11 +105,52 @@ void grafica::setf_index(int f_index)
     emit f_indexChanged(f_index);
 }
 void grafica::change_parete(){
-    int s = std::rand();
-    evo.change_parete(s);
+    setSeed(std::rand());
+    evo.change_parete(m_seed);
     get_paths_parete();
 }
-
+void grafica::write(QString filename){
+    QFile f(filename + ".json");
+    if(!f.open(QIODevice::WriteOnly | QIODevice::Text)){
+        std::cout << "errore aprendo file per scrivere" << std::endl;
+        return;
+    }
+    QJsonObject j;
+    j["parete"] = seed();
+    QVariantList q;
+    for(auto& e:dna()) q.append(QVariant(e));
+    j["dna"] = QJsonArray::fromVariantList(q);
+    j["fit"] = fit();
+    QJsonDocument d(j);
+    f.write(d.toJson());
+}
+void grafica::read_parete(QString filename){
+    QFile f(filename + ".json");
+    if(!f.open(QIODevice::ReadOnly | QIODevice::Text)){
+        std::cout << "errore aprendo file per scrivere" << std::endl;
+        return;
+    }
+    QByteArray saveData = f.readAll();
+    QJsonDocument d = QJsonDocument::fromJson(saveData);
+    QJsonObject j(d.object());
+    setSeed(j["parete"].toInt());
+    evo.change_parete(seed());
+    get_paths_parete();
+}
+void grafica::read_scimmia(QString filename){
+    QFile f(filename + ".json");
+    if(!f.open(QIODevice::ReadOnly | QIODevice::Text)){
+        std::cout << "errore aprendo file per scrivere" << std::endl;
+        return;
+    }
+    QByteArray saveData = f.readAll();
+    QJsonObject j = QJsonDocument(QJsonDocument::fromJson(saveData)).object();
+    QVariantList q = j["dna"].toArray().toVariantList();
+    QVector<int> v;
+    for(auto& e:q){v.append(e.toInt());}
+    setDna(v);
+    setFit(j["fit"].toDouble());
+}
 
 void grafica::setRunning(bool running){
     if (m_running == running)
@@ -156,12 +198,10 @@ void grafica::get_best_mem(){
      setMem(mem);
 }
 void grafica::setMem(QVector<QPoint> mem){
-    if(m_mem == mem) return;
     m_mem=mem;
     emit memChanged(mem);
 }
 void grafica::setDna(QVector<int> dna){
-    if(dna==m_dna) return;
     m_dna = dna;
     emit dnaChanged(dna);
 }
