@@ -15,6 +15,10 @@ Item {
     property alias text1: text1
     property alias parete: parete
     property alias individui: individui
+    property alias label: label
+    property alias label1: label1
+    property alias label2: label2
+    property alias label3: label3
     property alias passi: passi
     property alias pcross: pcross
     property alias pmuta: pmuta
@@ -57,8 +61,6 @@ Item {
             id: button1
             text: qsTr("New Pop")
         }
-
-        
         Button {
             id: parete
             text: qsTr("New Parete")

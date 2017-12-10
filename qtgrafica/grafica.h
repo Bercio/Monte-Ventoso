@@ -111,6 +111,7 @@ public slots:
 
     void start_evo();
 
+    void log_evo();
     void stop_evo();
 
     void _set_runable();

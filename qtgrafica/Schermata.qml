@@ -23,6 +23,9 @@ SchermataForm{
     leggis.onClicked: {
         evoluzione.read_scimmia(filename.text)
     }
+    log.onClicked: {
+        evoluzione.log_evo()
+    }
 
     comboBox.model: ["Rita", "Lorenzo"]
     comboBox.onCurrentIndexChanged: evoluzione.f_index = currentIndex;
@@ -35,6 +38,10 @@ SchermataForm{
 
         evoluzione._set_runable()
     }
+    label.text: "individui: " + evoluzione.individui.toString()
+    label1.text: "passi: " + evoluzione.passi.toString()
+    label2.text: "pcross: " + evoluzione.pcross.toString()
+    label3.text: "pmuta: " + evoluzione.pmuta.toString()
     passi.onValueChanged:{
         evoluzione.passi = passi.value
         evoluzione._set_runable()
