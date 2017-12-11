@@ -66,11 +66,11 @@ void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
 
         int fnodeEdge = node.GetOutEDat(i).Val2;
         int fnodeID = node.GetOutNId(i);
-        if (find(memoria.begin(), memoria.end(), fnodeID) != memoria.end())  {
-            if  (fnodeEdge < 0) pn = 1;
-            else fn = 1;
+        if   (fnodeEdge < 0){
+            if (find(memoria.begin(), memoria.end(), fnodeID) != memoria.end())  pn = 1;
+            else pi = 1;
         } else {
-            if (fnodeEdge < 0)  pi = 1;
+            if (find(memoria.begin(), memoria.end(), fnodeID) != memoria.end())  fn = 1;
             else fi = 1;
         }
     if (!memoria.empty() && memoria.back()  == fnodeID) {np=1;}
@@ -106,11 +106,11 @@ int Scimmia::move(const TNodeEDatNet<Point,Point>::TNodeI& pos){
         int IDoutNode = pos.GetOutNId(i);
         if(memoria.empty()==false && memoria.back() == IDoutNode){np=1;}
         else {
-            if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()){
-            if (outNode < 0) padri_n.push_back(IDoutNode);
-                else figli_n.push_back(IDoutNode);
+            if (outNode < 0){
+            if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()) padri_n.push_back(IDoutNode);
+                else padri_ig.push_back(IDoutNode);
             }
-            else if (outNode < 0) padri_ig.push_back(IDoutNode);
+            else if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()) figli_n.push_back(IDoutNode);
             else figli_ig.push_back(IDoutNode);
         }
     }
