@@ -14,13 +14,13 @@ Iter select_randomly(Iter start, Iter end) {
 }
 //genera una scimmia con dna casuale-> è un numero compreso tra 0 e 3 poichè sono 4 le azioni possibili:
 //andare su padri noti, padri ignoti, figli noti, figli ignoti
-Scimmia::Scimmia(): cache(), dna(N), fit(0), loop(false), stato(0), memoria({}){
+Scimmia::Scimmia(): dna(N), fit(0), loop(false), stato(0), memoria({}){
     uniform_int_distribution<int> actions(0,4);
     generate(dna.begin(),dna.end(),[&](){return actions(gen);});
 }
 
 //genera una scimmia con dna derivato dal cross over: per ogni elemento del vettore dna c'è 0.5 di probabilità che venga dalla madre, 0.5 dal padre
-Scimmia::Scimmia(Scimmia& m, Scimmia& p): cache(), fit(0), loop(false),stato(0), memoria({}) {
+Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false),stato(0), memoria({}) {
     std::bernoulli_distribution dist (0.5);
     vector<int> _dna(N);
     for (int i=0; i<N; ++i) {
@@ -33,13 +33,12 @@ Scimmia Scimmia::operator=(const Scimmia& m){
    set_dna(m.get_dna());
     set_fit(0);
     set_loop(false);
-    cache = unordered_map<int,vector<int>::iterator>();
     memoria = vector<int>();
     return *this;
 }
 
 //scimmia con dna impostabile dall'esterno
-Scimmia::Scimmia(vector<int> _dna): dna(_dna), fit(0), loop(false), cache() {;
+Scimmia::Scimmia(vector<int> _dna): dna(_dna), fit(0), loop(false) {;
 }
 
 void Scimmia::set_memoria(const int& node){ memoria.push_back(node); }
@@ -101,7 +100,7 @@ void Scimmia::muta(){
 }
 bool Scimmia::cache_find(const vector<int>::iterator &begin, const vector<int>::iterator& vend, int key){
     if(begin == vend) return false;
-    vector<int>::iterator last_watched = begin, res = vend;
+    vector<int>::iterator last_watched = begin, res;
     if(this->cache.count(key)) {
         last_watched = cache[key];
         if (last_watched == begin) return true;
