@@ -114,6 +114,7 @@ public slots:
     void change_parete();
     void animate();
     void get_best_dna();
+    void get_best_fit();
 
     void start_evo();
 
