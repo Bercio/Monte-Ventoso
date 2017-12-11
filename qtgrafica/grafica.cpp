@@ -190,6 +190,8 @@ void grafica::log_evo(){
         std::vector<double> av_fit;
         ++m_evolutions;
         if(m_evolutions % 10000 == 0){
+            get_best_dna();
+            get_best_fit();
             if(fit() < 0.001){
                 write(QString("L" + QString::number(m_evolutions)));
             } else {
@@ -209,6 +211,10 @@ void grafica::log_evo(){
 }
 void grafica::stop_evo(){
     setRunning(false);
+    double fit = evo.best_scimmia().get_fit();
+    setFit(fit);
+}
+void grafica::get_best_fit(){
     double fit = evo.best_scimmia().get_fit();
     setFit(fit);
 }
