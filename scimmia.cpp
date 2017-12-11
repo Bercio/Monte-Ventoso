@@ -1,5 +1,4 @@
 #include "scimmia.h"
-#include<iostream>
 using namespace std;
 using namespace TSnap;
 
@@ -15,13 +14,13 @@ Iter select_randomly(Iter start, Iter end) {
 }
 //genera una scimmia con dna casuale-> è un numero compreso tra 0 e 3 poichè sono 4 le azioni possibili:
 //andare su padri noti, padri ignoti, figli noti, figli ignoti
-Scimmia::Scimmia(): dna(N), fit(0), loop(false), stato(0), memoria({}){
+Scimmia::Scimmia(): cache(), dna(N), fit(0), loop(false), stato(0), memoria({}){
     uniform_int_distribution<int> actions(0,4);
     generate(dna.begin(),dna.end(),[&](){return actions(gen);});
 }
 
 //genera una scimmia con dna derivato dal cross over: per ogni elemento del vettore dna c'è 0.5 di probabilità che venga dalla madre, 0.5 dal padre
-Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false),stato(0), memoria({}) {
+Scimmia::Scimmia(Scimmia& m, Scimmia& p): cache(), fit(0), loop(false),stato(0), memoria({}) {
     std::bernoulli_distribution dist (0.5);
     vector<int> _dna(N);
     for (int i=0; i<N; ++i) {
@@ -30,9 +29,17 @@ Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false),stato(0), memoria(
     }
     set_dna(_dna);
 }
+Scimmia Scimmia::operator=(const Scimmia& m){
+   set_dna(m.get_dna());
+    set_fit(0);
+    set_loop(false);
+    cache = unordered_map<int,vector<int>::iterator>();
+    memoria = vector<int>();
+    return *this;
+}
 
 //scimmia con dna impostabile dall'esterno
-Scimmia::Scimmia(vector<int> _dna): dna(_dna), fit(0), loop(false) {;
+Scimmia::Scimmia(vector<int> _dna): dna(_dna), fit(0), loop(false), cache() {;
 }
 
 void Scimmia::set_memoria(const int& node){ memoria.push_back(node); }
@@ -66,11 +73,11 @@ void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
 
         int fnodeEdge = node.GetOutEDat(i).Val2;
         int fnodeID = node.GetOutNId(i);
-        if (find(memoria.begin(), memoria.end(), fnodeID) != memoria.end())  {
-            if  (fnodeEdge < 0) pn = 1;
-            else fn = 1;
+        if (fnodeEdge < 0)  {
+            if  (cache_find(memoria.begin(), memoria.end(), fnodeID)) pn = 1;
+            else pi = 1;
         } else {
-            if (fnodeEdge < 0)  pi = 1;
+            if (cache_find(memoria.begin(), memoria.end(), fnodeID))  fn = 1;
             else fi = 1;
         }
     if (!memoria.empty() && memoria.back()  == fnodeID) {np=1;}
@@ -92,6 +99,20 @@ void Scimmia::muta(){
     _dna[range(gen)] = actions(gen);
     set_dna(_dna);
 }
+bool Scimmia::cache_find(const vector<int>::iterator &begin, const vector<int>::iterator& vend, int key){
+    if(begin == vend) return false;
+    vector<int>::iterator last_watched = begin, res = vend;
+    if(this->cache.count(key)) {
+        last_watched = cache[key];
+        if (last_watched == begin) return true;
+    }
+    //we lookup last element in the sequence to be known not to be equal to key
+    res = find(last_watched,vend,key);
+//if element is found we assign beginning of vector to key as a symbol to convey this, since it cant't otherwise be assigned to a key
+    if(res != vend) res = begin;
+    cache.insert({key,res});
+    return res == begin;
+}
 //fa muovere la scimmia in base alla sua strategia (dna)  tramite la funz scegli_azione
 //prima di chiamarla devo chiamare set stato altrimenti non ha senso
 //riceve la posizione della scimmia assegna ogni id del nodo a una categoria e poi nello switch sposta la posizione
@@ -106,11 +127,11 @@ int Scimmia::move(const TNodeEDatNet<Point,Point>::TNodeI& pos){
         int IDoutNode = pos.GetOutNId(i);
         if(memoria.empty()==false && memoria.back() == IDoutNode){np=1;}
         else {
-            if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()){
-            if (outNode < 0) padri_n.push_back(IDoutNode);
-                else figli_n.push_back(IDoutNode);
+            if (outNode < 0){
+            if (cache_find(memoria.begin(),memoria.end(), IDoutNode)) padri_n.push_back(IDoutNode);
+                else padri_ig.push_back(IDoutNode);
             }
-            else if (outNode < 0) padri_ig.push_back(IDoutNode);
+            else if (cache_find(memoria.begin(),memoria.end(), IDoutNode)) figli_n.push_back(IDoutNode);
             else figli_ig.push_back(IDoutNode);
         }
     }

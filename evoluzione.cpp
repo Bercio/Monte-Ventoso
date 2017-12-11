@@ -38,6 +38,7 @@ void Evoluzione::evoluzione() {
     riproduzione();
     #pragma omp parallel for
     for (auto i = generazione.begin(); i < generazione.end(); ++i) {
+        i->cache.clear();
         TNet::TNodeI pos = i->traverse(parete, passi);
         i->set_fit(fit_func(*i, pos, parete, passi));
     }

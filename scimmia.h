@@ -1,9 +1,11 @@
 #ifndef SCIMMIA
 #define SCIMMIA
 #include <cmath>
+#include <string>
 #include <set>
 #include <cstdlib>
 #include <vector>
+#include <unordered_map>
 #include <random>
 #include <algorithm>
 #include "parete.h"
@@ -17,6 +19,7 @@ class Scimmia
 	bool loop;
 	enum Azione {a_f_noto=0, a_p_noto, a_f_ignoto, a_p_ignoto, a_n_precedente};
 public:
+	std::unordered_map<int, std::vector<int>::iterator> cache;
 	void set_loop(bool l);
 	bool get_loop() const;
     std::vector<int> get_dna() const;
@@ -36,6 +39,8 @@ public:
 	bool is_looping(const int& passi);
 	TNodeEDatNet<Point,Point>::TNodeI traverse(const Parete& parete, int n_passi);
     Scimmia(std::vector<int> _dna);
+    Scimmia operator=(const Scimmia& m);
     int move(const TNodeEDatNet<Point,Point>::TNodeI& pos);
+    bool cache_find(const std::vector<int>::iterator &begin, const std::vector<int>::iterator &vend, int key);
 };
 #endif
