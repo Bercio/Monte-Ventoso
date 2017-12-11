@@ -14,17 +14,14 @@ set_target_properties( snap PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib
 add_library(Scimmia scimmia.cpp) #aggiungo una libreria che ho scritto io non .o quindi a una certa và compilata
 add_library(Parete parete.cpp)
 target_link_libraries(Parete snap rt)
-target_link_libraries(Parete sfml-graphics sfml-system sfml-window)
 target_link_libraries(Scimmia Parete)
 add_library(Evoluzione STATIC evoluzione.cpp)
 add_executable(testSpeed testSpeed.cpp) #l'eseguibile è testSpeed
-add_executable(sfml mainsfml.cpp)
 add_executable(expscimmia prova_dna_aspettato.cpp)
 add_executable(testo main_testo.cpp)
 
 target_link_libraries(Evoluzione Scimmia)
 target_link_libraries(testSpeed Evoluzione)
-target_link_libraries(sfml Evoluzione)
 target_link_libraries(expscimmia Evoluzione)
 target_link_libraries(testo Evoluzione)
 target_include_directories (Evoluzione PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
