@@ -1,6 +1,4 @@
 #include "parete.h"
-#include <exception>
-#include "ctime"
 
 using namespace TSnap;
 using namespace std;
@@ -17,8 +15,7 @@ bool Point::operator==(const Point& p) const {return p.Val1 == Val1 && p.Val2 ==
 Point::Point(const Point &p){Val1 = p.Val1; Val2 = p.Val2;}
 
 vector<Point> gen_p_distr(int N,int x, int y, int seed){
-    random_device rd;
-    default_random_engine gen(seed);//rd());
+    default_random_engine gen(seed);
     vector<Point> res;
     uniform_int_distribution<> xgen(0,x);
     uniform_int_distribution<> ygen(0,y);
@@ -76,8 +73,7 @@ void Parete::norm_coord(){
 Parete::Parete(vector<Point> points, int d, double p_appi, double p_appo, int m_depth) :
         d_nodi(d), prob_appiglio(p_appi), prob_appoggio(p_appo), min_depth(m_depth){
     uniform_real_distribution<> probs(0,1);
-    random_device rd;
-    default_random_engine gen(12124);//rd());
+    default_random_engine gen(get_seed());
     p = PNet::New();
     for(int i = 0; i < points.size(); ++i){
         if ( ! p->IsNode(i) ) p->AddNode(i,points[i]);
@@ -146,6 +142,7 @@ bool Parete::operator ==(const Parete& pr) const {return end == pr.end && start 
 
 //construct random viable parete from random distribution of N points in interval (0,0) - (x,y)
 Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double prob_appi,int min_depth,int s){
+    random_device rd;
     vector<Point> ret = gen_p_distr(N,x,y,s);
     Parete wall;
     double time = clock();
@@ -156,7 +153,8 @@ Parete rnd_solvable_parete(int N, int x, int y, int d, double prob_appo, double 
         wall.set_end();
         if((clock()-time)/CLOCKS_PER_SEC > 10) {
             cout << "takes too long, recurse!" << endl;
-            return rnd_solvable_parete(N,x,y,d,prob_appo,prob_appi,min_depth,rand());
+            s = rd();
+            return rnd_solvable_parete(N,x,y,d,prob_appo,prob_appi,min_depth,s);
         }
     } while (!wall.is_viable());
     wall.set_end();

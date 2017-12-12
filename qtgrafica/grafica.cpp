@@ -175,6 +175,7 @@ void grafica::log_evo(){
     setRunning(true);
     int n = 100000, evol_per_parete=1000;
     evo.log(n,evol_per_parete);
+}
 void grafica::stop_evo(){
     setRunning(false);
     double fit = evo.best_scimmia().get_fit();

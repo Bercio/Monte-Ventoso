@@ -6,6 +6,6 @@ int main(int argc, char** argv){
                   << std::endl;
         return 1;
     }
-    Evoluzione evoluzione;
+    Evoluzione evoluzione(100,100,0.6,0.3);
     evoluzione.log(std::atoi(argv[1]), std::atoi(argv[2]));
 }

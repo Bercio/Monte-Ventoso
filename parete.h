@@ -5,14 +5,12 @@
 #ifndef SISTEMI_COMPLESSI_GRAPH_H
 #define SISTEMI_COMPLESSI_GRAPH_H
 #include "Snap.h"
-#include <cstdlib>
 #include <iostream>
 #include <random>
 #include <cmath>
 #include <vector>
 #include <algorithm>
 #include <string>
-#include <stdlib.h>
 
 struct Point : public TIntPr {
     Point();

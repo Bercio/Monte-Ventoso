@@ -6,10 +6,12 @@ default_random_engine casuale(caso());
 typedef TNodeEDatNet<Point,Point> TNet;
 
 void Evoluzione::log(int numero_evol, int evol_per_parete){
+    change_parete(caso());
     for(int evolutions = 0; evolutions != numero_evol; ++evolutions){
         evoluzione();
         vector<double> av_fit;
-        if(evolutions % 10000 == 0){
+        cout << evolutions;
+        if(evolutions % 1000 == 0 && evolutions != 0){
             vector<int> dna = this->best_scimmia().get_dna();
             double fit = this->best_scimmia().get_fit();
             if(fit < 0.001){
@@ -25,7 +27,7 @@ void Evoluzione::log(int numero_evol, int evol_per_parete){
                 }
                 else write(QString::number(evolutions));
             }
-            if(evolutions %evol_per_parete == 0) change_parete(rand());
+            if(evolutions %evol_per_parete == 0 && evolutions != 0) change_parete(caso());
         }
     }
 }
