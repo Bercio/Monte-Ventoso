@@ -1,5 +1,4 @@
 #include "scimmia.h"
-#include<iostream>
 using namespace std;
 using namespace TSnap;
 
@@ -29,6 +28,13 @@ Scimmia::Scimmia(Scimmia& m, Scimmia& p): fit(0), loop(false),stato(0), memoria(
         else {_dna[i]=p.get_dna()[i];};
     }
     set_dna(_dna);
+}
+Scimmia Scimmia::operator=(const Scimmia& m){
+   set_dna(m.get_dna());
+    set_fit(0);
+    set_loop(false);
+    memoria = vector<int>();
+    return *this;
 }
 
 //scimmia con dna impostabile dall'esterno
@@ -66,16 +72,17 @@ void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
 
         int fnodeEdge = node.GetOutEDat(i).Val2;
         int fnodeID = node.GetOutNId(i);
-        if   (fnodeEdge < 0){
-            if (find(memoria.begin(), memoria.end(), fnodeID) != memoria.end())  pn = 1;
+        if (fnodeEdge < 0)  {
+            if  (cache_find(memoria.begin(), memoria.end(), fnodeID)) pn = 1;
             else pi = 1;
         } else {
-            if (find(memoria.begin(), memoria.end(), fnodeID) != memoria.end())  fn = 1;
+            if (cache_find(memoria.begin(), memoria.end(), fnodeID))  fn = 1;
             else fi = 1;
         }
     if (!memoria.empty() && memoria.back()  == fnodeID) {np=1;}
     }
-    stato = fn + pn*2 + fi*4 + pi*8 + np*16 ; stato_precedente*32; //7 fn pn fi, 8 pi, 9 pi fn, 10 pi pn, 11 pi pn fn, 12 pi fi, 13 pi fi fn, 14 pi fi pn, 15 pi fi pn fn
+    //WAT?
+    stato = fn + pn*2 + fi*4 + pi*8 + np*16 + stato_precedente*32; //7 fn pn fi, 8 pi, 9 pi fn, 10 pi pn, 11 pi pn fn, 12 pi fi, 13 pi fi fn, 14 pi fi pn, 15 pi fi pn fn
 }
 
 //controlla se la scimmia si alterna tra due nodi;
@@ -92,6 +99,20 @@ void Scimmia::muta(){
     _dna[range(gen)] = actions(gen);
     set_dna(_dna);
 }
+bool Scimmia::cache_find(const vector<int>::iterator &begin, const vector<int>::iterator& vend, int key){
+    if(begin == vend) return false;
+    vector<int>::iterator last_watched = begin, res;
+    if(this->cache.count(key)) {
+        last_watched = cache[key];
+        if (last_watched == begin) return true;
+    }
+    //we lookup last element in the sequence to be known not to be equal to key
+    res = find(last_watched,vend,key);
+//if element is found we assign beginning of vector to key as a symbol to convey this, since it cant't otherwise be assigned to a key
+    if(res != vend) res = begin;
+    cache.insert({key,res});
+    return res == begin;
+}
 //fa muovere la scimmia in base alla sua strategia (dna)  tramite la funz scegli_azione
 //prima di chiamarla devo chiamare set stato altrimenti non ha senso
 //riceve la posizione della scimmia assegna ogni id del nodo a una categoria e poi nello switch sposta la posizione
@@ -107,11 +128,13 @@ int Scimmia::move(const TNodeEDatNet<Point,Point>::TNodeI& pos){
         if(memoria.empty()==false && memoria.back() == IDoutNode){np=1;}
         else {
             if (outNode < 0){
-            if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()) padri_n.push_back(IDoutNode);
-                else padri_ig.push_back(IDoutNode);
-            }
-            else if (find(memoria.begin(),memoria.end(), IDoutNode)!= memoria.end()) figli_n.push_back(IDoutNode);
-            else figli_ig.push_back(IDoutNode);
+		    if (cache_find(memoria.begin(),memoria.end(), IDoutNode)) padri_n.push_back(IDoutNode);
+		    else padri_ig.push_back(IDoutNode);
+	    }
+	    else { 
+		 if (cache_find(memoria.begin(),memoria.end(), IDoutNode)) figli_n.push_back(IDoutNode);
+		 else figli_ig.push_back(IDoutNode);
+	    }
         }
     }
     switch(scegli_azione())
