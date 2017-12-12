@@ -5,6 +5,48 @@ random_device caso;
 default_random_engine casuale(caso());
 typedef TNodeEDatNet<Point,Point> TNet;
 
+void Evoluzione::log(int numero_evol, int evol_per_parete){
+    for(int evolutions = 0; evolutions != numero_evol; ++evolutions){
+        evoluzione();
+        vector<double> av_fit;
+        if(evolutions % 10000 == 0){
+            vector<int> dna = this->best_scimmia().get_dna();
+            double fit = this->best_scimmia().get_fit();
+            if(fit < 0.001){
+                write(QString("L" + QString::number(evolutions)));
+            } else {
+                av_fit.push_back(fit);
+                double ave;
+                std::accumulate(av_fit.begin(), av_fit.end(),ave);
+                ave /= av_fit.size();
+                if(fit > ave){
+                    write(QString("W" + QString::number(evolutions)));
+                    change_parete(rand());
+                }
+                else write(QString::number(evolutions));
+            }
+            if(evolutions %evol_per_parete == 0) change_parete(rand());
+        }
+    }
+}
+void Evoluzione::write(const QString& filename){
+    vector<int> dna = best_scimmia().get_dna();
+    double fit = best_scimmia().get_fit();
+    QFile f(filename + ".json");
+    if(!f.open(QIODevice::WriteOnly | QIODevice::Text)){
+        std::cout << "errore aprendo file per scrivere" << std::endl;
+        return;
+    }
+    QJsonObject j;
+    j["parete"] = parete.get_seed();
+    QVariantList q;
+    for(auto& e:dna) q.append(QVariant(e));
+    j["dna"] = QJsonArray::fromVariantList(q);
+    j["fit"] = fit;
+    QJsonDocument d(j);
+    f.write(d.toJson());
+}
+	;
 void Evoluzione::change_parete(int s,int N, int x, int y, int d, double prob_appo, double prob_appi, int min_depth)
 {
     parete = rnd_solvable_parete(N, x, y, d, prob_appo, prob_appi, min_depth, s);

@@ -110,19 +110,7 @@ void grafica::change_parete(){
     get_paths_parete();
 }
 void grafica::write(QString filename){
-    QFile f(filename + ".json");
-    if(!f.open(QIODevice::WriteOnly | QIODevice::Text)){
-        std::cout << "errore aprendo file per scrivere" << std::endl;
-        return;
-    }
-    QJsonObject j;
-    j["parete"] = seed();
-    QVariantList q;
-    for(auto& e:dna()) q.append(QVariant(e));
-    j["dna"] = QJsonArray::fromVariantList(q);
-    j["fit"] = fit();
-    QJsonDocument d(j);
-    f.write(d.toJson());
+    evo.write(filename);
 }
 void grafica::read_parete(QString filename){
     QFile f(filename + ".json");
@@ -185,30 +173,8 @@ void grafica::start_evo(){
 void grafica::log_evo(){
     if(running()) return;
     setRunning(true);
-    while(m_running && m_evolutions != 1000000){
-        evo.evoluzione();
-        std::vector<double> av_fit;
-        ++m_evolutions;
-        if(m_evolutions % 10000 == 0){
-            get_best_dna();
-            get_best_fit();
-            if(fit() < 0.001){
-                write(QString("L" + QString::number(m_evolutions)));
-            } else {
-                av_fit.push_back(fit());
-                double ave;
-                std::accumulate(av_fit.begin(), av_fit.end(),ave);
-                ave /= av_fit.size();
-                if(fit() > ave){
-                    write(QString("W" + QString::number(m_evolutions)));
-                    change_parete();
-                }
-                else write(QString::number(m_evolutions));
-            }
-            if(m_evolutions %100000 == 0) change_parete();
-        }
-    }
-}
+    int n = 100000, evol_per_parete=1000;
+    evo.log(n,evol_per_parete);
 void grafica::stop_evo(){
     setRunning(false);
     double fit = evo.best_scimmia().get_fit();

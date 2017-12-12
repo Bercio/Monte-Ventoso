@@ -8,6 +8,12 @@
 #include "scimmia.h"
 #include <iostream>
 #include <functional>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QVariant>
+#include <QFile>
+#include <QString>
 
 class Evoluzione {
     Parete parete;
@@ -32,6 +38,8 @@ public:
 private:
     int passi, individui;
 public:
+    void write(const QString& filename);
+    void log(int numero_evol, int evol_per_parete); 
     void change_parete(int s,int N = 1000, int x = 70, int y = 100, int d = 3, double prob_appo = 0.2, double prob_appi = 0.2,
                        int min_depth = 3);
 
