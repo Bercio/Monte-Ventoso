@@ -5,6 +5,7 @@
 #include <set>
 #include <cstdlib>
 #include <vector>
+#include <set>
 #include <unordered_map>
 #include <random>
 #include <algorithm>
@@ -18,6 +19,7 @@ class Scimmia
     std::vector<int> memoria;
 	bool loop;
 	enum Azione {a_f_noto=0, a_p_noto, a_f_ignoto, a_p_ignoto, a_n_precedente};
+	std::set<int> mem;
 public:
 	std::unordered_map<int, std::vector<int>::iterator> cache;
 	void set_loop(bool l);

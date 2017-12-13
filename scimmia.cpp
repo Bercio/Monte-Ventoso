@@ -41,7 +41,10 @@ Scimmia Scimmia::operator=(const Scimmia& m){
 Scimmia::Scimmia(vector<int> _dna): dna(_dna), fit(0), loop(false) {;
 }
 
-void Scimmia::set_memoria(const int& node){ memoria.push_back(node); }
+void Scimmia::set_memoria(const int& node){ 
+	memoria.push_back(node);
+	mem.insert(node);
+}
 
 void Scimmia::set_fit(double f){fit=f;}
 
@@ -73,16 +76,16 @@ void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
         int fnodeEdge = node.GetOutEDat(i).Val2;
         int fnodeID = node.GetOutNId(i);
         if (fnodeEdge < 0)  {
-            if  (cache_find(memoria.begin(), memoria.end(), fnodeID)) pn = 1;
+            if  (mem.count(fnodeID)) pn = 1;
             else pi = 1;
         } else {
-            if (cache_find(memoria.begin(), memoria.end(), fnodeID))  fn = 1;
+            if (mem.count(fnodeID))  fn = 1;
             else fi = 1;
         }
     if (!memoria.empty() && memoria.back()  == fnodeID) {np=1;}
     }
     //WAT?
-    stato = fn + pn*2 + fi*4 + pi*8 + np*16 + stato_precedente*32; //7 fn pn fi, 8 pi, 9 pi fn, 10 pi pn, 11 pi pn fn, 12 pi fi, 13 pi fi fn, 14 pi fi pn, 15 pi fi pn fn
+    stato = fn + pn*2 + fi*4 + pi*8 + np*16 ; stato_precedente*32; //7 fn pn fi, 8 pi, 9 pi fn, 10 pi pn, 11 pi pn fn, 12 pi fi, 13 pi fi fn, 14 pi fi pn, 15 pi fi pn fn
 }
 
 //controlla se la scimmia si alterna tra due nodi;
@@ -127,11 +130,11 @@ int Scimmia::move(const TNodeEDatNet<Point,Point>::TNodeI& pos){
         int IDoutNode = pos.GetOutNId(i);
         if(memoria.empty()==false && memoria.back() == IDoutNode){np=1;}
         if (outNode < 0){
-		    if (cache_find(memoria.begin(),memoria.end(), IDoutNode)) padri_n.push_back(IDoutNode);
+		    if (mem.count(IDoutNode)) padri_n.push_back(IDoutNode);
 		    else padri_ig.push_back(IDoutNode);
 	    }
 	    else {
-            if (cache_find(memoria.begin(), memoria.end(), IDoutNode)) figli_n.push_back(IDoutNode);
+            if (mem.count(IDoutNode)) figli_n.push_back(IDoutNode);
             else figli_ig.push_back(IDoutNode);
         }
     }
