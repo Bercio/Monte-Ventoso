@@ -126,15 +126,13 @@ int Scimmia::move(const TNodeEDatNet<Point,Point>::TNodeI& pos){
         int outNode = pos.GetOutEDat(i).Val2;
         int IDoutNode = pos.GetOutNId(i);
         if(memoria.empty()==false && memoria.back() == IDoutNode){np=1;}
-        else {
-            if (outNode < 0){
+        if (outNode < 0){
 		    if (cache_find(memoria.begin(),memoria.end(), IDoutNode)) padri_n.push_back(IDoutNode);
 		    else padri_ig.push_back(IDoutNode);
 	    }
-	    else { 
-		 if (cache_find(memoria.begin(),memoria.end(), IDoutNode)) figli_n.push_back(IDoutNode);
-		 else figli_ig.push_back(IDoutNode);
-	    }
+	    else {
+            if (cache_find(memoria.begin(), memoria.end(), IDoutNode)) figli_n.push_back(IDoutNode);
+            else figli_ig.push_back(IDoutNode);
         }
     }
     switch(scegli_azione())
