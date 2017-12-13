@@ -6,7 +6,6 @@
 #include <cstdlib>
 #include <vector>
 #include <set>
-#include <unordered_map>
 #include <random>
 #include <algorithm>
 #include "parete.h"
@@ -19,9 +18,8 @@ class Scimmia
     std::vector<int> memoria;
 	bool loop;
 	enum Azione {a_f_noto=0, a_p_noto, a_f_ignoto, a_p_ignoto, a_n_precedente};
-	std::set<int> mem;
+	std::set<int> memset;
 public:
-	std::unordered_map<int, std::vector<int>::iterator> cache;
 	void set_loop(bool l);
 	bool get_loop() const;
     std::vector<int> get_dna() const;
@@ -43,6 +41,5 @@ public:
     Scimmia(std::vector<int> _dna);
     Scimmia operator=(const Scimmia& m);
     int move(const TNodeEDatNet<Point,Point>::TNodeI& pos);
-    bool cache_find(const std::vector<int>::iterator &begin, const std::vector<int>::iterator &vend, int key);
 };
 #endif
