@@ -82,7 +82,7 @@ void Scimmia::set_stato(const TNodeEDatNet<Point,Point>::TNodeI& node){
     if (!memoria.empty() && memoria.back()  == fnodeID) {np=1;}
     }
     //WAT?
-    stato = fn + pn*2 + fi*4 + pi*8 + np*16 + stato_precedente*32; //7 fn pn fi, 8 pi, 9 pi fn, 10 pi pn, 11 pi pn fn, 12 pi fi, 13 pi fi fn, 14 pi fi pn, 15 pi fi pn fn
+    stato = fn + pn*2 + fi*4 + pi*8 + np*16 ; stato_precedente*32; //7 fn pn fi, 8 pi, 9 pi fn, 10 pi pn, 11 pi pn fn, 12 pi fi, 13 pi fi fn, 14 pi fi pn, 15 pi fi pn fn
 }
 
 //controlla se la scimmia si alterna tra due nodi;
