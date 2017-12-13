@@ -9,6 +9,7 @@
 #include <iostream>
 #include <functional>
 #include <QJsonArray>
+#include <ctime>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QVariant>

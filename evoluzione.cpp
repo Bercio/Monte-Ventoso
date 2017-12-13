@@ -7,25 +7,25 @@ typedef TNodeEDatNet<Point,Point> TNet;
 
 void Evoluzione::log(int numero_evol, int evol_per_parete){
     change_parete(caso());
+    evoluzione();
+    std::time_t timestamp = std::time(nullptr);
     for(int evolutions = 0; evolutions != numero_evol; ++evolutions){
         evoluzione();
         vector<double> av_fit;
-        cout << evolutions;
         if(evolutions % 1000 == 0 && evolutions != 0){
-            vector<int> dna = this->best_scimmia().get_dna();
             double fit = this->best_scimmia().get_fit();
             if(fit < 0.001){
-                write(QString("L" + QString::number(evolutions)));
+                write(QString("data/" + QString::number(timestamp) + "L" + QString::number(evolutions)));
             } else {
                 av_fit.push_back(fit);
                 double ave;
                 std::accumulate(av_fit.begin(), av_fit.end(),ave);
                 ave /= av_fit.size();
                 if(fit > ave){
-                    write(QString("W" + QString::number(evolutions)));
+                    write(QString("data/" + QString::number(timestamp) + "W" + QString::number(evolutions)));
                     change_parete(rand());
                 }
-                else write(QString::number(evolutions));
+                else write(QString("data/" +QString::number(timestamp) + QString::number(evolutions)));
             }
             if(evolutions %evol_per_parete == 0 && evolutions != 0) change_parete(caso());
         }
