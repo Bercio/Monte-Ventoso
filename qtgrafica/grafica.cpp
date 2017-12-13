@@ -173,7 +173,7 @@ void grafica::start_evo(){
 void grafica::log_evo(){
     if(running()) return;
     setRunning(true);
-    int n = 100000, evol_per_parete=1000;
+    int n = 1000, evol_per_parete=1000;
     evo.log(n,evol_per_parete);
 }
 void grafica::stop_evo(){

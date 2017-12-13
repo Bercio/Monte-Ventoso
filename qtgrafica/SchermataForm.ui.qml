@@ -31,6 +31,7 @@ Item {
     property alias grafo1: grafo1
     property alias dnalista: dnalista
     property alias dnas: dnas
+    property alias log: log
     property alias filename: filename
     property alias salva: salva
     property alias leggip: leggip
@@ -77,6 +78,11 @@ Item {
             id: leggip
             text: "carica parete"
         }
+        Button {
+            id:  log
+            text: "logga"
+            }
+
         Button {
             id: leggis
             text: "carica scimmia"

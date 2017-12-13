@@ -14,6 +14,10 @@ SchermataForm{
             evoluzione.animate()
             aniMem.restart()
     }
+    log.onClicked: {
+        evoluzione.log_evo()
+    }
+
     salva.onClicked: {
         evoluzione.write(filename.text)
     }
