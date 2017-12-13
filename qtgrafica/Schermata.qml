@@ -14,8 +14,10 @@ SchermataForm{
             evoluzione.animate()
             aniMem.restart()
     }
-    log.onClicked: {
-        evoluzione.log_evo()
+    log.checkable: evoluzione.runable
+    log.onCheckedChanged: {
+        if (log.checked)
+           evoluzione.log_evo(filename.text)
     }
 
     salva.onClicked: {
@@ -90,6 +92,9 @@ SchermataForm{
             dnas.setDna(dna)
         }
         onPathsChanged: animaz.paths = paths
+        onRunningChanged: {
+            if(log.checked) log.checked = false;
+        }
     }
     dnas.onModelReset:{
         dnalista.model = dnas

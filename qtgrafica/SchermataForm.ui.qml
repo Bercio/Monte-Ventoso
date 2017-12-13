@@ -80,7 +80,8 @@ Item {
         }
         Button {
             id:  log
-            text: "logga"
+            text: "log"
+            implicitWidth: 50
             }
 
         Button {
@@ -185,6 +186,7 @@ Item {
                 ValueAxis {
                     id: xAxis
                     minorGridVisible: false
+
                     labelsVisible: true
                     titleVisible: false
                     visible:true

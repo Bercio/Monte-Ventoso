@@ -10,30 +10,24 @@ void Evoluzione::log(int numero_evol, int evol_per_parete){
     evoluzione();
     std::time_t timestamp = std::time(nullptr);
     for(int evolutions = 0; evolutions != numero_evol; ++evolutions){
-        evoluzione();
-        double av_fit;
-        if(evolutions % 1000 == 0 && evolutions != 0){
-            double fit = this->best_scimmia().get_fit();
-            double ave;
-            if(fit < 0.001){
-                write(QString("data/" + QString::number(timestamp) + "L" + QString::number(evolutions)));
-            } else {
-                av_fit += fit;
-                ave = av_fit / (evolutions/1000);
-                if(fit > ave){
-                    write(QString("data/" + QString::number(timestamp) + "W" + QString::number(evolutions)));
-                    change_parete(rand());
-                }
-                else write(QString("data/" +QString::number(timestamp) + "N" + QString::number(evolutions)));
-            }
-            if(evolutions %evol_per_parete == 0 && evolutions != 0) change_parete(caso());
-        }
+	    evoluzione();
+	    double av_fit;
+	    if(evolutions % 1000 == 0 && evolutions != 0){
+		    double fit = this->best_scimmia().get_fit();
+		    double ave;
+		    av_fit += fit;
+		    ave = av_fit / (evolutions/1000);
+		    if(fit > ave) write(QString( QString::number(timestamp) +  QString::number(evolutions))+ "W");
+		    else write(QString( QString::number(timestamp) + QString::number(evolutions))+"L");
+	    }
+	    if(evolutions %evol_per_parete == 0 && evolutions != 0) change_parete(caso());
     }
 }
+
 void Evoluzione::write(const QString& filename){
     vector<int> dna = best_scimmia().get_dna();
     double fit = best_scimmia().get_fit();
-    QFile f(filename + ".json");
+    QFile f("data/" + filename + ".json");
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text)){
         std::cout << "errore aprendo file per scrivere" << std::endl;
         return;

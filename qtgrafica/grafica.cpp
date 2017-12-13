@@ -170,11 +170,16 @@ void grafica::start_evo(){
         QCoreApplication::processEvents();
     }
 }
-void grafica::log_evo(){
+void grafica::log_evo(QString filename){
     if(running()) return;
     setRunning(true);
-    int n = 1000, evol_per_parete=1000;
-    evo.log(n,evol_per_parete);
+    for(int i = 0; i < 10; ++i){
+        evo.evoluzione();
+    }
+    write(filename);
+    get_best_fit();
+    get_best_dna();
+    setRunning(false);
 }
 void grafica::stop_evo(){
     setRunning(false);
