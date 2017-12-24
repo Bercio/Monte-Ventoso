@@ -17,7 +17,6 @@
 .#*
 *.*#
 core
-lib/
 build-qtgrafica-Desktop_Qt_5_9_2_G*/
 qt5/
 .idea/
