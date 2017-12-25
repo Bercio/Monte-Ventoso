@@ -4,4 +4,4 @@ For more info check the [report](LATEX/Monte-Ventoso.tex), in italian.
 
 ## Building
 
-Cmake required; Downloand the repo and in the top-level directory ran `cmake && make app && qtgrafica/app`
+Cmake required; Downloand the repo and in the top-level directory run `cmake && make app && qtgrafica/app`
